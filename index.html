@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+  <head>
+    <title>車輛違規查詢系統</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, user-scalable=no"
+    />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="EXPIRES" content="0" />
+
+    <!-- Bootstrap core CSS-->
+    <link
+      rel="stylesheet"
+      href="vendor/bootstrap/3.4.1/css/bootstrap.min.css"
+    />
+
+    <!-- materialize plugin css-->
+    <link
+      rel="stylesheet"
+      href="vendor/materialize/1.0.0/css/materialize.min.css"
+    />
+
+    <!-- JavaScript-->
+    <script src="js/jquery.min.js"></script>
+
+    <script src="vendor/validata/js/jquery.validate.min.js"></script>
+
+    <!-- materialize plugin JavaScript-->
+    <script src="vendor/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <!-- sweetalert plugin JavaScript-->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+    <!-- IE 解決在 IE 11 出現 'Promise' 未經定義的錯誤  Optional: include a polyfill for ES6 Promises for IE11 -->
+    <script src="https://cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.min.js"></script>
+
+    <script src="js/main.js"></script>
+
+    <style>
+      .app-content {
+        position: relative;
+        z-index: 1;
+        background: #ffffff;
+        max-width: 450px;
+        margin: 10% auto 100px;
+        padding: 45px;
+        text-align: center;
+        -webkit-box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+        box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+      }
+
+      .app-login {
+        text-align: center;
+        padding: 3.5em 0 2em 0;
+        cursor: default;
+        /* background-color: #24272c; */
+      }
+
+      .login-button {
+        position: relative;
+        display: inline-block;
+        background: #44a0b3;
+        color: #fff;
+        border-radius: 100%;
+        width: 4.5em;
+        height: 4.5em;
+        line-height: 4.5em;
+        text-align: center;
+        font-size: 1.25em;
+        padding: 0;
+
+        text-decoration: none;
+        border: 0;
+        cursor: pointer;
+        outline: 0;
+        font-weight: 300;
+        -moz-transition: background-color 0.35s ease-in-out,
+          color 0.35s ease-in-out, border-bottom-color 0.35s ease-in-out;
+        -webkit-transition: background-color 0.35s ease-in-out,
+          color 0.35s ease-in-out, border-bottom-color 0.35s ease-in-out;
+        -ms-transition: background-color 0.35s ease-in-out,
+          color 0.35s ease-in-out, border-bottom-color 0.35s ease-in-out;
+        transition: background-color 0.35s ease-in-out, color 0.35s ease-in-out,
+          border-bottom-color 0.35s ease-in-out;
+      }
+
+      .login-button:hover {
+        color: #fff;
+        background: #54b5c9;
+      }
+
+      .title {
+        color: rgba(68, 160, 179, 0.5);
+        font-weight: 700;
+        font-size: 30px;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+      .error {
+        color: red;
+      }
+      .span_error {
+        text-align: left !important;
+      }
+      .input-field.col label {
+        width: 100%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="app-content">
+      <div class="app-title">
+        <span class="title">車輛違規查詢系統</span>
+      </div>
+      <div class="app-login">
+        <form name="myForm" id="myForm">
+          <div>
+            <div class="input-field col s6">
+              <input
+                type="text"
+                name="txt_acc"
+                id="txt_acc"
+                class="validate"
+                required
+              />
+              <label for="txt_acc">帳號</label>
+              <span class="span_error" id="errorToShow_acc"></span>
+            </div>
+            <div class="input-field col s6">
+              <input
+                type="password"
+                name="txt_pwd"
+                id="txt_pwd"
+                class="validate"
+                required
+              />
+              <label for="txt_pwd">密碼</label>
+              <span class="span_error" id="errorToShow_pwd"></span>
+            </div>
+          </div>
+          <div>
+            <button
+              type="submit"
+              class="login-button circled scrolly"
+              id="btn_login"
+              name="btn_login"
+            >
+              登入
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script src="vendor/validata/js/jquery.validate.min.js"></script>
+
+    <script type="text/javascript">
+      $("#myForm").validate({
+        submitHandler: function (form) {
+          //   return false; //回傳false會阻止原本的form submit。
+          //    form.submit(); //没有这一句表单不会提交
+          myForm(form);
+        },
+        errorPlacement: function (error, element) {
+          if (element.attr("name") == "txt_acc") {
+            error.appendTo("#errorToShow_acc");
+          } else if (element.attr("name") == "txt_pwd") {
+            error.appendTo("#errorToShow_pwd");
+          }
+        },
+      });
+
+      //定義中文訊息
+      var cnmsg = {
+        required: "*必填欄位",
+        remote: "請修正該欄位",
+        email: "請輸入正確格式的電子郵件",
+        url: "請輸入合法的網址",
+        date: "請輸入合法的日期",
+        dateISO: "請輸入合法的日期(ISO).",
+        number: "請輸入合法的數字",
+        digits: "只能輸入整數",
+        creditcard: "請輸入合法的信用卡號",
+        equalTo: "請再次輸入相同的值",
+        accept: "請輸入擁有合法字尾名的字串",
+        //  maxlength: jQuery.format("請輸入一個長度最多是 {0} 的字串"),
+        // minlength: jQuery.format("請輸入一個長度最少是 {0} 的字串"),
+        // rangelength: jQuery.format("請輸入一個長度介於 {0} 和 {1} 之間的字串"),
+        // range: jQuery.format("請輸入一個介於 {0} 和 {1} 之間的值"),
+        // max: jQuery.format("請輸入一個最大為 {0} 的值"),
+        // min: jQuery.format("請輸入一個最小為 {0} 的值")
+      };
+      jQuery.extend(jQuery.validator.messages, cnmsg);
+
+      function myForm(form) {
+        $.ajax({
+          type: "POST",
+          url: "./php/login.php",
+          cache: false,
+          contentType: "application/json",
+          data: JSON.stringify({
+            acc: $("#txt_acc").val().trim(),
+            pwd: $("#txt_pwd").val().trim(),
+          }),
+          success: function (msg) {
+            if (msg.messageType == "OK") {
+              if (msg.status === "1") {
+                setCookie("account", msg.acc, 1);
+                setCookie("status", msg.status, 1);
+                setCookie("auth", msg.auth, 1);
+                window.location.replace("./main.html");
+              } else {
+                swal.fire({
+                  title: "此帳號已停權",
+                  icon: "info",
+                  confirmButtonColor: "#3085d6",
+                  confirmButtonText: "確定",
+                });
+              }
+            } else {
+              swal.fire({
+                title: "登入失敗，請確認帳號或密碼是否有誤",
+                icon: "error",
+                confirmButtonColor: "#3085d6",
+                confirmButtonText: "確定",
+              });
+            }
+          },
+          error: function (jqXHR, textStatus, errorThrown) {
+            swal.fire({
+              title: "登入失敗",
+              icon: "error",
+              confirmButtonColor: "#3085d6",
+              confirmButtonText: "確定",
+            });
+          },
+        });
+      }
+    </script>
+  </body>
+</html>

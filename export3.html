@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+  <head>
+    <title>車輛違規查詢系統</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, user-scalable=no"
+    />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="EXPIRES" content="0" />
+    <meta http-equiv="REFRESH" content="86400;URL=index.html" />
+
+    <!-- Bootstrap core CSS-->
+    <link
+      rel="stylesheet"
+      href="vendor/bootstrap/3.4.1/css/bootstrap.min.css"
+    />
+
+    <!-- materialize plugin css-->
+    <link
+      rel="stylesheet"
+      href="vendor/materialize/1.0.0/css/materialize.min.css"
+    />
+
+    <!-- Ican CSS -->
+    <link href="vendor/themify-icons/themify-icons.css" rel="stylesheet" />
+
+    <!-- gijgo plugin css-->
+    <!-- <link rel="stylesheet" href="vendor/gijgo-1.9.13/css/gijgo.min.css" /> -->
+    <link
+      href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+
+    <link rel="stylesheet" href="css/main.css" />
+
+    <!-- JavaScript-->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/sidebar.js"></script>
+
+    <!-- materialize plugin JavaScript-->
+    <script src="vendor/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <!-- gijgo plugin JavaScript-->
+    <!-- <script src='vendor/gijgo-1.9.13/js/gijgo.min.js'></script> -->
+    <script
+      src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js"
+      type="text/javascript"
+    ></script>
+
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+
+    <script src="vendor/validata/js/jquery.validate.min.js"></script>
+
+    <!-- Chart plugin JavaScript-->
+    <script src="vendor/chart/Chart.min.js"></script>
+    <script src="js/main.js"></script>
+  </head>
+
+  <body class="app">
+    <!-- #Left Sidebar ==================== -->
+    <div id="sidebar_menu"></div>
+
+    <!-- #Main ============================ -->
+    <div class="page-container">
+      <!-- ### Header ### -->
+      <header class="header navbar">
+        <div class="header-container">
+          <ul class="nav-left">
+            <li>
+              <a
+                id="sidebar-toggle"
+                class="sidebar-toggle"
+                href="javascript:void(0);"
+              >
+                <i class="ti-menu"></i>
+              </a>
+            </li>
+          </ul>
+          <ul class="nav-right header-ul-base">
+            <li>
+              <span class="header-li" id="menuUserName"></span>
+            </li>
+            <li class="header-split">|</li>
+            <li>
+              <div>
+                <a onclick="logout()">
+                  <div class="header-li" style="color: #ffd07b">登出</div>
+                </a>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </header>
+
+      <!-- ### $App Screen Content ### -->
+      <main class="main-content bgc-grey-100 p-3">
+        <div class="guided-tour-menu">
+          <span><a href="main.html">首頁</a></span>
+          <span>&nbsp;>&nbsp;</span>
+          <span style="color: #9e9e9e">統計報表生成</span>
+          <span>&nbsp;>&nbsp;</span>
+          <span>區間時段違規統計表</span>
+
+          <div class="menu-ican">
+            <a
+              class="btn-floating waves-effect waves-light modal-trigger"
+              onclick="csv_btn()"
+            >
+              <i class="ti-download"></i>
+            </a>
+          </div>
+        </div>
+
+        <div class="contain-header">
+          <div class="contain-field input-field col s6">
+            <input
+              type="text"
+              name="txt_date1"
+              id="txt_date1"
+              class="validate"
+              placeholder="查詢起始日期："
+            />
+          </div>
+          <div class="contain-field input-field col s6">
+            <input
+              type="text"
+              name="txt_date2"
+              id="txt_date2"
+              class="validate"
+              placeholder="查詢結束日期："
+            />
+          </div>
+
+          <div class="contain-field">
+            <a
+              class="waves-effect waves-light btn"
+              id="btn_search"
+              style="background-color: #4d85ff; border-radius: 20px"
+            >
+              GO
+              <i class="far fa-hand-point-left"></i>
+            </a>
+            <a
+              class="waves-effect waves-light btn"
+              id="btn_reset"
+              style="background-color: #4d85ff; border-radius: 20px"
+            >
+              清除
+              <i class="far fa-hand-point-left"></i>
+            </a>
+          </div>
+        </div>
+
+        <div class="contain-body">
+          <table id="table1"></table>
+        </div>
+
+        <div class="contain-body">
+          <div class="chart-div">
+            <div class="chart-header">
+              <span>違規統計圖</span>
+            </div>
+            <div class="chart-body">
+              <canvas id="Chart_bar"></canvas>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- ### $App Screen Footer ### -->
+      <footer class="bdT ta-c p-20 fs-sm c-grey-600 col-12">
+        <span>Copyright © 2020. All rights reserved. </span>
+      </footer>
+    </div>
+
+    <script type="text/javascript">
+      var grid;
+      var chartLabel = [],
+        chartData = [];
+
+      $(document).ready(function () {
+        //#region 日期格式化
+        $("#txt_date1").datepicker({ format: "yyyy-mm-dd" });
+        $("#txt_date1").val(GetDateStr(0));
+        $("#txt_date2").datepicker({ format: "yyyy-mm-dd" });
+        $("#txt_date2").val(GetDateStr(0));
+        // #endregion 日期格式化
+
+        // #region 取得table資料
+        createFunc();
+        filterData();
+        // #endregion 取得table資料
+      });
+
+      // #region 長條圖
+      var ctx_bar = document.getElementById("Chart_bar");
+      var myChart_bar = new Chart(ctx_bar, {
+        type: "bar",
+        data: {
+          labels: [],
+          datasets: [],
+        },
+      });
+      // #endregion 長條圖
+
+      function createFunc() {
+        $.ajax({
+          url: "./php/GetLocations.php",
+          type: "GET",
+          dataType: "json",
+          async: false,
+          contentType: "application/json",
+          success: function (msg) {
+            var Columns = [];
+            Columns.push(
+              {
+                field: "id",
+                align: "center",
+                sortable: false,
+                filterable: false,
+                width: 65,
+                hidden: true,
+              },
+              {
+                field: "datetime",
+                title: "日期",
+                align: "center",
+                sortable: true,
+                // type: "date",
+                // format: "HH:MM:ss",
+                filterable: false,
+                width: 90,
+              }
+            );
+            for (var i = 0; i < msg.data.length; i++) {
+              Columns.push({
+                field: msg.data[i].Location,
+                title: msg.data[i].Location,
+                align: "center",
+                sortable: true,
+                filterable: false,
+                width: 70,
+              });
+            }
+            Columns.push({
+              field: "sum",
+              title: "總數",
+              align: "center",
+              sortable: true,
+              filterable: false,
+              width: 70,
+            });
+            grid = $("#table1").grid({
+              dataSource: [],
+              fontSize: "16px",
+              headerFilter: false,
+              columns: Columns,
+              pager: { limit: 24, sizes: [24, 50, 100, 200] },
+            });
+          },
+          error: function (XMLHttpRequest, textStatus, errorThrown) {
+            console.log(XMLHttpRequest.responseText);
+          },
+        });
+      }
+
+      //篩選
+      $("#btn_search").on("click", function () {
+        $("#table1").grid("destroy", true, true);
+        createFunc();
+        filterData();
+      });
+
+      //清除
+      $("#btn_reset").on("click", function () {
+        $("#txt_date1").val(GetDateStr(0));
+        $("#txt_date2").val(GetDateStr(0));
+
+        $("#table1").grid("destroy", true, true);
+        createFunc();
+        filterData();
+      });
+
+      function filterData() {
+        var postdata = {
+          txt_date1: $("#txt_date1").val(),
+          txt_date2: $("#txt_date2").val(),
+        };
+
+        $.ajax({
+          url: "./php/GetExport3.php",
+          type: "POST",
+          dataType: "json",
+          data: JSON.stringify(postdata),
+          contentType: "application/json",
+          success: function (msg) {
+            (chartLabel = []), (chartData = []);
+            for (var i = 0; i < msg.data.length; i++) {
+              grid.addRow(msg.data[i]);
+
+              chartLabel.push(msg.data[i].date);
+            }
+            if (myChart_bar.data.datasets.length !== 0) {
+              for (var i = 0; i < msg.location.length; i++) {
+                myChart_bar.data.datasets[i].data.shift();
+              }
+            }
+            for (var i = 0; i < msg.location.length; i++) {
+              temp = [];
+              for (var j = 0; j < msg.data.length; j++) {
+                temp.push(msg.data[j][msg.location[i].Location]);
+              }
+              chartData.push(temp);
+            }
+            godisplay_Chart(chartLabel, chartData, msg.location);
+          },
+          error: function (XMLHttpRequest, textStatus, errorThrown) {
+            console.log(XMLHttpRequest.responseText);
+          },
+        });
+      }
+
+      function godisplay_Chart(chartLabel, chartData, location) {
+        var backgroundColor = [
+          "#f17e5d",
+          "#4acccd",
+          "#fcc468",
+          "#8d6e63",
+          "#66615c",
+        ];
+        var dataSets = [];
+        for (var i = 0; i < location.length; i++) {
+          dataSets.push({
+            label: location[i].Location,
+            backgroundColor: backgroundColor[i],
+            data: chartData[i],
+          });
+        }
+
+        myChart_bar = new Chart(ctx_bar, {
+          type: "bar",
+          data: {
+            labels: chartLabel,
+            datasets: dataSets,
+          },
+          options: {
+            scales: {
+              yAxes: [
+                {
+                  ticks: {
+                    beginAtZero: true,
+                    fontSize: 12,
+                    display: true,
+                    callback: function (value, index, values) {
+                      return value.toLocaleString();
+                    },
+                  },
+                },
+              ],
+              xAxes: [
+                {
+                  ticks: {
+                    display: true,
+                  },
+                },
+              ],
+            },
+            title: {
+              maintainAsppectRadio: true,
+            },
+          },
+        });
+      }
+
+      //匯出csv
+      function csv_btn() {
+        var filename = GetDateStr(0) + "區間時段違規統計表.csv";
+        var url =
+          "./php/GetExportCSV3.php?" +
+          "txt_date1=" +
+          $("#txt_date1").val() +
+          "&txt_date2=" +
+          $("#txt_date2").val();
+        var downloadLink = document.createElement("a");
+
+        document.body.appendChild(downloadLink);
+
+        downloadLink.href = url;
+        downloadLink.download = filename;
+        downloadLink.click();
+
+        document.body.removeChild(downloadLink);
+      }
+    </script>
+  </body>
+</html>

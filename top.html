@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+  <head>
+    <title>車輛違規查詢系統</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, user-scalable=no"
+    />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="EXPIRES" content="0" />
+    <meta http-equiv="REFRESH" content="86400;URL=index.html" />
+
+    <!-- Bootstrap core CSS-->
+    <link
+      rel="stylesheet"
+      href="vendor/bootstrap/3.4.1/css/bootstrap.min.css"
+    />
+
+    <!-- materialize plugin css-->
+    <link
+      rel="stylesheet"
+      href="vendor/materialize/1.0.0/css/materialize.min.css"
+    />
+
+    <!-- Ican CSS -->
+    <link href="vendor/themify-icons/themify-icons.css" rel="stylesheet" />
+
+    <!-- gijgo plugin css-->
+    <!-- <link rel="stylesheet" href="vendor/gijgo-1.9.13/css/gijgo.min.css" /> -->
+    <link
+      href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+
+    <!-- sweetalert plugin CSS-->
+    <link
+      href="https://cdn.bootcss.com/limonte-sweetalert2/8.11.8/sweetalert2.min.css"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="css/main.css" />
+
+    <!-- 多選的東西 -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- JavaScript-->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/sidebar.js"></script>
+
+    <!-- materialize plugin JavaScript-->
+    <script src="vendor/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <!-- gijgo plugin JavaScript-->
+    <!-- <script src='vendor/gijgo-1.9.13/js/gijgo.min.js'></script> -->
+    <script
+      src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js"
+      type="text/javascript"
+    ></script>
+
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+
+    <script src="vendor/validata/js/jquery.validate.min.js"></script>
+
+    <!-- sweetalert plugin JavaScript-->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+    <!-- IE 解決在 IE 11 出現 'Promise' 未經定義的錯誤  Optional: include a polyfill for ES6 Promises for IE11 -->
+    <script src="https://cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.min.js"></script>
+
+    <!-- 多選的東西 -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+
+    <script src="js/main.js"></script>
+
+    <style>
+      .gj-dialog-md-close {
+        margin-right: 55px;
+        z-index: 10;
+      }
+
+      .gj-dialog-md-header {
+        padding: 5px 24px 0;
+      }
+
+      .row .col {
+        padding-top: 15px;
+      }
+
+      .row {
+        background-color: #f2f7f9;
+        display: -webkit-box;
+      }
+
+      .gj-modal {
+        overflow-y: visible;
+      }
+
+      /* gjigo 下拉式選單CSS */
+      .gj-dropdown [role="presenter"] {
+        color: #1f271b;
+        font-weight: 700;
+        font-size: 22px;
+      }
+
+      .card {
+        top: 15px !important;
+      }
+    </style>
+  </head>
+
+  <body class="app">
+    <!-- #Left Sidebar ==================== -->
+    <div id="sidebar_menu"></div>
+
+    <!-- #Main ============================ -->
+    <div class="page-container">
+      <!-- ### Header ### -->
+      <header class="header navbar">
+        <div class="header-container">
+          <ul class="nav-left">
+            <li>
+              <a
+                id="sidebar-toggle"
+                class="sidebar-toggle"
+                href="javascript:void(0);"
+              >
+                <i class="ti-menu"></i>
+              </a>
+            </li>
+          </ul>
+          <ul class="nav-right header-ul-base">
+            <li>
+              <span class="header-li" id="menuUserName"></span>
+            </li>
+            <li class="header-split">|</li>
+            <li>
+              <div>
+                <a onclick="logout()">
+                  <div class="header-li" style="color: #ffd07b">登出</div>
+                </a>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </header>
+
+      <!-- ### $App Screen Content ### -->
+      <main class="main-content bgc-grey-100 p-3">
+        <div class="guided-tour-menu">
+          <span><a href="main.html">首頁</a></span>
+          <span>&nbsp;>&nbsp;</span>
+          <span>車輛查詢</span>
+        </div>
+
+        <div class="contain-header">
+          <div class="contain-field input-field col s6">
+            <input
+              type="text"
+              name="txt_date1"
+              id="txt_date1"
+              class="validate"
+              placeholder="日期："
+            />
+          </div>
+          <div class="contain-field input-field col s6">
+            <input
+              type="text"
+              name="txt_date2"
+              id="txt_date2"
+              class="validate"
+              placeholder="日期："
+            />
+          </div>
+          <div class="contain-field input-field col s6">
+            <input type="text" name="txt_num" id="txt_num" class="validate" />
+            <label for="txt_num">車牌號碼：</label>
+          </div>
+
+          <div class="contain-field">
+            <a
+              class="waves-effect waves-light btn"
+              id="btn_search"
+              style="background-color: #4d85ff; border-radius: 20px"
+            >
+              GO
+              <i class="far fa-hand-point-left"></i>
+            </a>
+            <a
+              class="waves-effect waves-light btn"
+              id="btn_reset"
+              style="background-color: #4d85ff; border-radius: 20px"
+            >
+              清除
+              <i class="far fa-hand-point-left"></i>
+            </a>
+          </div>
+        </div>
+
+        <div class="contain-body">
+          <table id="table1" class="striped"></table>
+        </div>
+      </main>
+
+      <!-- ### $App Screen Footer ### -->
+      <footer class="bdT ta-c p-20 fs-sm c-grey-600 col-12">
+        <span>Copyright © 2020. All rights reserved. </span>
+      </footer>
+    </div>
+
+    <!--修改視窗 -->
+    <div id="dialog" class="card gj-display-none">
+      <div data-role="body">
+        <input type="hidden" id="ID" />
+
+        <div class="data-row">
+          <a
+            class="left carousel-control"
+            onclick="Previous_id();"
+            style="width: 80px; padding-right: 60px"
+          >
+            <i class="material-icons icons">chevron_left</i>
+          </a>
+
+          <div class="data-contain">
+            <div class="data-contain-row" style="min-width: 800px">
+              <div>
+                <img
+                  src=""
+                  style="margin-bottom: 0.8%; max-width: 800px"
+                  id="m_photoURL"
+                  onerror="newsImgLoadError()"
+                />
+              </div>
+            </div>
+            <div
+              class="data-contain-row"
+              style="padding-left: 3px; width: 100%"
+            >
+              <div>
+                <video controls width="100%">
+                  <source src="" id="m_videoURL" type="video/mp4" />
+                </video>
+              </div>
+
+              <div>
+                <div class="dark-card">
+                  <div class="dark-card-body">
+                    <div class="row">
+                      <div class="data-left">
+                        <div class="text-title">時間日期</div>
+                        <div class="text-title">停放位置</div>
+                        <div class="text-title">偵測地點</div>
+                        <div class="text-title">違規法條</div>
+                        <div class="text-title">車種</div>
+                        <div class="text-title">車牌號碼</div>
+                      </div>
+                      <div class="data-right">
+                        <div class="text-body" id="m_datetime"></div>
+                        <div class="text-body" id="m_location"></div>
+                        <div class="text-body" id="m_detectLocation"></div>
+                        <select id="m_law" width="100%">
+                          <option value="0" disabled="disabled" selected>
+                            請選擇
+                          </option>
+                          <option value="5610102">
+                            在禁止臨時停車處所停車
+                          </option>
+                          <option value="5610402">
+                            在設有禁止停車標線之處所停車
+                          </option>
+                          <option value="5620002">併排停車</option>
+                          <option value="5510404">併排臨時停車</option>
+                        </select>
+                        <select id="m_carType" width="100%">
+                          <option value="0" disabled="disabled" selected>
+                            請選擇
+                          </option>
+                          <option value="1">機車</option>
+                          <option value="2">汽車</option>
+                        </select>
+
+                        <div style="color: #e65100">
+                          <input
+                            type="text"
+                            id="m_carNumber"
+                            class="validate"
+                            style="font-size: 25px"
+                          />
+                        </div>
+                        <input type="hidden" id="m_id" name="m_id" />
+                      </div>
+                    </div>
+
+                    <div style="text-align: center">
+                      <button
+                        type="button"
+                        id="btn_checked"
+                        class="btn red darken-1"
+                      >
+                        開單
+                      </button>
+                      <button type="button" id="btn_unchecked" class="btn">
+                        不開單
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <a
+            class="right carousel-control"
+            onclick="Next_id();"
+            style="width: 80px; padding-right: 80px"
+          >
+            <i class="material-icons icons">chevron_right</i>
+          </a>
+        </div>
+      </div>
+    </div>
+    <!--END 修改視窗 -->
+
+    <script type="text/javascript">
+      var grid;
+      var dataIndex = 0; //記錄當前Index
+
+      $(document).ready(function () {
+        //#region 日期格式化
+        $("#txt_date1").datepicker({ format: "yyyy-mm-dd" });
+        $("#txt_date1").val(GetDateStr(0));
+        $("#txt_date2").datepicker({ format: "yyyy-mm-dd" });
+        $("#txt_date2").val(GetDateStr(0));
+        $("#m_carType").dropdown({ uiLibrary: "materialdesign" });
+        $("#m_law").dropdown({ uiLibrary: "materialdesign" });
+        // #endregion 日期格式化
+
+        // #region 取得table資料
+        createFunc();
+        filterData();
+        // #endregion 取得table資料
+      });
+
+      function createFunc() {
+        grid = $("#table1").grid({
+          dataSource: [],
+          fontSize: "16px",
+          headerFilter: false,
+          columns: [
+            {
+              field: "RowNo",
+              title: "ID",
+              align: "center",
+              sortable: false,
+              filterable: false,
+              width: 30,
+              hidden: false,
+            },
+            {
+              field: "Datetime",
+              title: "日期時間",
+              align: "center",
+              sortable: true,
+              type: "date",
+              format: "yyyy-mm-dd HH:MM:ss",
+              filterable: false,
+              width: 100,
+            },
+            {
+              field: "CarNumber",
+              title: "車牌號碼",
+              align: "center",
+              sortable: true,
+              filterable: false,
+              width: 70,
+            },
+            {
+              field: "Location",
+              title: "停放位置",
+              align: "center",
+              sortable: true,
+              filterable: false,
+              width: 70,
+            },
+            {
+              field: "DetectLocation",
+              title: "偵測地點名稱",
+              align: "center",
+              sortable: true,
+              filterable: false,
+              width: 70,
+            },
+            {
+              field: "status",
+              title: "狀態",
+              align: "center",
+              sortable: true,
+              filterable: false,
+              width: 50,
+            },
+            {
+              title: "審核",
+              width: 64,
+              tmpl:
+                '<span class="material-icons gj-cursor-pointer">edit</span>',
+              align: "center",
+              events: { click: Edit },
+            },
+          ],
+          pager: { limit: 25, sizes: [25, 50, 100, 200] },
+        });
+      }
+
+      //篩選
+      $("#btn_search").on("click", function () {
+        $("#table1").grid("destroy", true, true);
+        createFunc();
+        filterData();
+      });
+
+      //清除
+      $("#btn_reset").on("click", function () {
+        $("#txt_date1").val(GetDateStr(0));
+        $("#txt_date2").val(GetDateStr(0));
+        $("#txt_num").val("");
+
+        $("#table1").grid("destroy", true, true);
+        createFunc();
+        filterData();
+      });
+
+      //送出開單
+      $("#btn_checked").on("click", function () {
+        if (
+          $("#m_carType").dropdown().value() === null ||
+          $("#m_carType").dropdown().value() === "0"
+        ) {
+          alert("請選擇車種");
+        } else if (
+          $("#m_law").dropdown().value() === null ||
+          $("#m_law").dropdown().value() === "0"
+        ) {
+          alert("請選擇違規法條");
+        } else {
+          SubmitChecked(grid);
+        }
+      });
+
+      //送出不開單
+      $("#btn_unchecked").on("click", function () {
+        if (
+          $("#m_carType").dropdown().value() === null ||
+          $("#m_carType").dropdown().value() === "0"
+        ) {
+          alert("請選擇車種");
+        } else {
+          SubmitUnChecked(grid);
+        }
+      });
+
+      function filterData() {
+        var postdata = {
+          txt_date1: emptyStrToUndefined($("#txt_date1").val()),
+          txt_date2: emptyStrToUndefined($("#txt_date2").val()),
+          txt_num: emptyStrToUndefined($("#txt_num").val()),
+          status: "1",
+        };
+
+        $.ajax({
+          url: "./php/GetCarList.php",
+          type: "POST",
+          dataType: "json",
+          data: JSON.stringify(postdata),
+          contentType: "application/json",
+          success: function (msg) {
+            if (msg.messageType == "OK") {
+              for (var i = 0; i < msg.data.length; i++) {
+                grid.addRow(msg.data[i]);
+              }
+            }
+          },
+          error: function (XMLHttpRequest, textStatus, errorThrown) {
+            console.log(XMLHttpRequest.responseText);
+          },
+        });
+      }
+
+      //pop對話視窗
+      dialog = $("#dialog").dialog({
+        autoOpen: false,
+        resizable: false,
+        modal: true,
+        // minWidth: 1350,
+        // minHeight: 755,
+        height: "90%",
+        width: "90%",
+        // width: window.screen.availWidth - window.screen.availWidth * 0.2,
+        // height: window.screen.availHeight - window.screen.availHeight * 0.1,
+        // height: $(window).height() - 50,
+      });
+
+      //審核
+      function Edit(e) {
+        dataIndex = e.data.id; //記錄當前index
+        $("#m_id").val(e.data.record.RowNo);
+        $("#m_carNumber").val(e.data.record.CarNumber);
+        $("#m_photoURL").attr("src", e.data.record.PhotoURL);
+        $("#m_videoURL").attr("src", e.data.record.VideoURL);
+        $("#m_detectLocation").text(e.data.record.DetectLocation);
+        $("#m_datetime").text(e.data.record.Datetime);
+        $("#m_location").text(e.data.record.Location);
+        $("#m_carType").dropdown().value("0");
+        $("#m_law").dropdown().value("0");
+
+        dialog.open("");
+      }
+
+      //送出開單
+      function SubmitChecked(grid) {
+        var postdata = {
+          RowNo: $("#m_id").val(),
+          carNumber: $("#m_carNumber").val(),
+          carType: $("#m_carType").val(),
+          Law: $("#m_law").val(),
+          status: "2",
+        };
+
+        $.ajax({
+          url: "./php/EditCar.php",
+          type: "POST",
+          dataType: "json",
+          data: JSON.stringify(postdata),
+          contentType: "application/json",
+          success: function (msg) {
+            if (msg.messageType == "OK") {
+              //開單成功
+              M.toast({ html: "開單成功" });
+
+              //帶入下一筆
+              var next = grid.getById(dataIndex + 1);
+              if (next != undefined) {
+                $("#m_id").val(next.RowNo);
+                $("#m_carNumber").val(next.CarNumber);
+                $("#m_photoURL").attr("src", next.PhotoURL);
+                $("#m_videoURL").attr("src", next.VideoURL);
+                $("#m_detectLocation").text(next.DetectLocation);
+                $("#m_datetime").text(next.Datetime);
+                $("#m_location").text(next.Location);
+                $("#m_carType").dropdown().value("0");
+                $("#m_law").dropdown().value("0");
+                dataIndex = dataIndex + 1; //更新
+              } else {
+                dialog.close();
+              }
+
+              //更新table資料
+              $("#table1").grid("destroy", true, true);
+              createFunc();
+              filterData();
+            }
+          },
+          error: function (XMLHttpRequest, textStatus, errorThrown) {
+            console.log(XMLHttpRequest.responseText);
+
+            dialog.close();
+
+            //開單失敗
+            swal.fire({
+              title: "開單錯誤",
+              icon: "error",
+              showConfirmButton: true,
+            });
+          },
+        });
+      }
+
+      //送出不開單
+      function SubmitUnChecked(grid) {
+        var postdata = {
+          RowNo: $("#m_id").val(),
+          carNumber: $("#m_carNumber").val(),
+          carType: $("#m_carType").val(),
+          status: "3",
+        };
+
+        $.ajax({
+          url: "./php/EditCar.php",
+          type: "POST",
+          dataType: "json",
+          data: JSON.stringify(postdata),
+          contentType: "application/json",
+          success: function (msg) {
+            if (msg.messageType == "OK") {
+              //開單成功
+              M.toast({ html: "更新成功" });
+
+              //帶入下一筆
+              var next = grid.getById(dataIndex + 1);
+              if (next != undefined) {
+                $("#m_id").val(next.RowNo);
+                $("#m_carNumber").val(next.CarNumber);
+                $("#m_photoURL").attr("src", next.PhotoURL);
+                $("#m_videoURL").attr("src", next.VideoURL);
+                $("#m_detectLocation").text(next.DetectLocation);
+                $("#m_datetime").text(next.Datetime);
+                $("#m_location").text(next.Location);
+                $("#m_carType").dropdown().value("0");
+                $("#m_law").dropdown().value("0");
+                dataIndex = dataIndex + 1; //更新
+              } else {
+                dialog.close();
+              }
+
+              //更新table資料
+              $("#table1").grid("destroy", true, true);
+              createFunc();
+              filterData();
+            }
+          },
+          error: function (XMLHttpRequest, textStatus, errorThrown) {
+            console.log(XMLHttpRequest.responseText);
+
+            dialog.close();
+
+            //開單失敗
+            swal.fire({
+              title: "開單錯誤",
+              icon: "error",
+              showConfirmButton: true,
+            });
+          },
+        });
+      }
+
+      //上一筆
+      function Previous_id() {
+        var postdata = {
+          txt_date1: emptyStrToUndefined($("#txt_date1").val()),
+          txt_date2: emptyStrToUndefined($("#txt_date2").val()),
+          txt_num: emptyStrToUndefined($("#txt_num").val()),
+          status: "1",
+        };
+        $.ajax({
+          url: "./php/GetCarList.php",
+          type: "POST",
+          dataType: "json",
+          data: JSON.stringify(postdata),
+          contentType: "application/json",
+          success: function (msg) {
+            if (msg.data.length > 0) {
+              var next = msg.data[dataIndex - 2];
+              if (next != undefined) {
+                $("#m_id").val(next.RowNo);
+                $("#m_carNumber").val(next.CarNumber);
+                $("#m_photoURL").attr("src", next.PhotoURL);
+                $("#m_videoURL").attr("src", next.VideoURL);
+                $("#m_detectLocation").text(next.DetectLocation);
+                $("#m_datetime").text(next.Datetime);
+                $("#m_location").text(next.Location);
+                dataIndex = dataIndex - 1; //更新
+              } else {
+                M.toast({ html: "已到第一筆" });
+              }
+            }
+          },
+          error: function (XMLHttpRequest, textStatus, errorThrown) {
+            console.log(XMLHttpRequest.responseText);
+
+            dialog.close();
+
+            //查詢上一筆失敗
+            swal.fire({
+              title: "查詢上一筆失敗",
+              icon: "error",
+              showConfirmButton: true,
+            });
+          },
+        });
+      }
+
+      //下一筆
+      function Next_id() {
+        var postdata = {
+          txt_date1: emptyStrToUndefined($("#txt_date1").val()),
+          txt_date2: emptyStrToUndefined($("#txt_date2").val()),
+          txt_num: emptyStrToUndefined($("#txt_num").val()),
+          status: "1",
+        };
+
+        $.ajax({
+          url: "./php/GetCarList.php",
+          type: "POST",
+          dataType: "json",
+          data: JSON.stringify(postdata),
+          contentType: "application/json",
+          success: function (msg) {
+            if (msg.data.length > 0) {
+              var next = msg.data[dataIndex];
+              if (next != undefined) {
+                $("#m_id").val(next.RowNo);
+                $("#m_carNumber").val(next.CarNumber);
+                $("#m_photoURL").attr("src", next.PhotoURL);
+                $("#m_videoURL").attr("src", next.VideoURL);
+                $("#m_detectLocation").text(next.DetectLocation);
+                $("#m_datetime").text(next.Datetime);
+                $("#m_location").text(next.Location);
+                dataIndex = dataIndex + 1; //更新
+              } else {
+                M.toast({ html: "已到最後一筆" });
+              }
+            }
+          },
+          error: function (XMLHttpRequest, textStatus, errorThrown) {
+            console.log(XMLHttpRequest.responseText);
+
+            dialog.close();
+
+            //查詢下一筆失敗
+            swal.fire({
+              title: "查詢下一筆失敗",
+              icon: "error",
+              showConfirmButton: true,
+            });
+          },
+        });
+      }
+
+      //查無圖片
+      function newsImgLoadError() {
+        $("#m_photoURL").attr("src", "./img/no_img.png");
+      }
+    </script>
+  </body>
+</html>
