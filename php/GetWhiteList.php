@@ -41,11 +41,11 @@ if ($result->num_rows > 0) {
         $data_t->endTime = $record['endTime'];
         $data_t->statusVol = $record['status'];
         switch ($record['status']) {
-            case 0:
-                $data_t->status = '不啟用';
-                break;
             case 1:
                 $data_t->status = '啟用';
+                break;
+            case 2:
+                $data_t->status = '不啟用';
                 break;
         }
 

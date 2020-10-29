@@ -14,6 +14,8 @@ $str_json = json_decode($str);
 $txt_date1 = $str_json->{'txt_date1'};
 $txt_date2 = $str_json->{'txt_date2'};
 $txt_num = $str_json->{'txt_num'};
+$txt_cartype = $str_json->{'txt_cartype'};
+$txt_law = $str_json->{'txt_law'};
 $status = $str_json->{'status'};
 
 $conn = mysqli_connect($dbhost, $dbuser, $dbpass) or die('Error with MySQL connection'.mysql_error());
@@ -26,6 +28,12 @@ $jSon['data'] = [];
 $sql = "SELECT * FROM `violation` WHERE `status`='$status'";
 if ($txt_num != null && $txt_num != 'undefined') {
     $sql = $sql." AND `CarNumber` = '$txt_num'";
+}
+if ($txt_cartype != null && $txt_cartype != 'undefined') {
+    $sql = $sql." AND `carType` = '$txt_cartype'";
+}
+if ($txt_law != null && $txt_law != 'undefined') {
+    $sql = $sql." AND `Law` = '$txt_law'";
 }
 if ($txt_date1 != null && $txt_date1 != 'undefined') {
     $sql = $sql." AND `Datetime` BETWEEN '$txt_date1' AND '$txt_date2'";

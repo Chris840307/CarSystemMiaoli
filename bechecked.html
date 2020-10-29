@@ -100,6 +100,12 @@
         font-weight: 700;
         font-size: 22px;
       }
+      .gijgo-search-select .gj-dropdown [role="presenter"] {
+        color: #9e9e9e;
+        font-weight: 700;
+        font-size: 15px;
+        padding-bottom: 5px;
+      }
 
       .card {
         top: 15px !important;
@@ -190,7 +196,24 @@
 
             <div class="contain-field input-field col s6">
               <input type="text" name="txt_num" id="txt_num" class="validate" />
-              <label for="txt_num">車牌號碼：</label>
+              <label for="txt_num">車牌號碼</label>
+            </div>
+            <div class="contain-field input-field col s6 gijgo-search-select">
+              <select id="txt_cartype" width="180">
+                <!-- <select multiple id="txt_cartype"> -->
+                <option value="" disabled="disabled" selected>車種</option>
+                <option value="1">機車</option>
+                <option value="2">汽車</option>
+              </select>
+            </div>
+            <div class="contain-field input-field col s6 gijgo-search-select">
+              <select id="txt_law" width="250">
+                <option value="" disabled="disabled" selected>法規</option>
+                <option value="5610102">在禁止臨時停車處所停車</option>
+                <option value="5610402">在設有禁止停車標線之處所停車</option>
+                <option value="5620002">併排停車</option>
+                <option value="5510404">併排臨時停車</option>
+              </select>
             </div>
 
             <div class="contain-field">
@@ -281,13 +304,13 @@
                             請選擇
                           </option>
                           <option value="5610102">
-                            在禁止臨時停車處所停車
+                            5610102-在禁止臨時停車處所停車
                           </option>
                           <option value="5610402">
-                            在設有禁止停車標線之處所停車
+                            5610402-在設有禁止停車標線之處所停車
                           </option>
-                          <option value="5620002">併排停車</option>
-                          <option value="5510404">併排臨時停車</option>
+                          <option value="5620002">5620002-併排停車</option>
+                          <option value="5510404">5510404-併排臨時停車</option>
                         </select>
                         <select id="m_carType" width="100%">
                           <option value="0" disabled="disabled" selected>
@@ -352,6 +375,9 @@
         $("#txt_date2").val(GetDateStr(0) + " 23:59");
         $("#m_carType").dropdown({ uiLibrary: "materialdesign" });
         $("#m_law").dropdown({ uiLibrary: "materialdesign" });
+        // $("#txt_cartype").formSelect();
+        $("#txt_cartype").dropdown({ uiLibrary: "materialdesign" });
+        $("#txt_law").dropdown({ uiLibrary: "materialdesign" });
         // #endregion 日期格式化
 
         // #region 取得table資料
@@ -380,8 +406,8 @@
               title: "日期時間",
               align: "center",
               sortable: true,
-              type: "date",
-              format: "yyyy-mm-dd HH:MM:ss",
+              //   type: "date",
+              //   format: "yyyy-mm-dd HH:MM:ss",
               filterable: false,
               width: 100,
             },
@@ -458,6 +484,8 @@
         $("#txt_date1").val(GetDateStr(0));
         $("#txt_date2").val(GetDateStr(0));
         $("#txt_num").val("");
+        $("#txt_cartype").dropdown().value("");
+        $("#txt_law").dropdown().value("");
 
         $("#table1").grid("destroy", true, true);
         createFunc();
@@ -481,6 +509,10 @@
           txt_date1: emptyStrToUndefined($("#txt_date1").val()),
           txt_date2: emptyStrToUndefined($("#txt_date2").val()),
           txt_num: emptyStrToUndefined($("#txt_num").val()),
+          txt_cartype: emptyStrToUndefined(
+            $("#txt_cartype").dropdown().value()
+          ),
+          txt_cartype: emptyStrToUndefined($("#txt_law").dropdown().value()),
           status: "2",
         };
 
