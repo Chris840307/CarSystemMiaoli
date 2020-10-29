@@ -51,13 +51,6 @@
         top: 7rem !important;
       }
     </style>
-    <style>
-      .d-flex {
-        display: -webkit-box !important;
-        display: -ms-flexbox !important;
-        display: flex !important;
-      }
-    </style>
 
     <!-- JavaScript-->
     <script src="js/jquery.min.js"></script>
@@ -276,6 +269,7 @@
       var grid;
 
       $(document).ready(function () {
+        //#region 日期格式化
         $("#d_startTime").timepicker({
           showOtherMonths: true,
         });
@@ -284,6 +278,7 @@
         });
         $("#d_status").dropdown({ uiLibrary: "materialdesign" });
         $("#txt_carType").dropdown({ uiLibrary: "materialdesign" });
+        // #endregion 日期格式化
 
         // #region 取得table資料
         createFunc();

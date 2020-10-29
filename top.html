@@ -335,10 +335,18 @@
 
       $(document).ready(function () {
         //#region 日期格式化
-        $("#txt_date1").datepicker({ format: "yyyy-mm-dd" });
-        $("#txt_date1").val(GetDateStr(0));
-        $("#txt_date2").datepicker({ format: "yyyy-mm-dd" });
-        $("#txt_date2").val(GetDateStr(0));
+        $("#txt_date1").datetimepicker({
+          footer: true,
+          uiLibrary: "materialdesign",
+          format: "yyyy-mm-dd HH:MM",
+        });
+        $("#txt_date1").val(GetDateStr(0) + " 00:00");
+        $("#txt_date2").datetimepicker({
+          footer: true,
+          uiLibrary: "materialdesign",
+          format: "yyyy-mm-dd HH:MM",
+        });
+        $("#txt_date2").val(GetDateStr(0) + " 23:59");
         $("#m_carType").dropdown({ uiLibrary: "materialdesign" });
         $("#m_law").dropdown({ uiLibrary: "materialdesign" });
         // #endregion 日期格式化
@@ -468,8 +476,8 @@
 
       function filterData() {
         var postdata = {
-          txt_date1: emptyStrToUndefined($("#txt_date1").val()),
-          txt_date2: emptyStrToUndefined($("#txt_date2").val()),
+          txt_date1: emptyStrToUndefined($("#txt_date1").val() + ":00"),
+          txt_date2: emptyStrToUndefined($("#txt_date2").val() + ":59"),
           txt_num: emptyStrToUndefined($("#txt_num").val()),
           status: "1",
         };

@@ -28,7 +28,7 @@ if ($txt_num != null && $txt_num != 'undefined') {
     $sql = $sql." AND `CarNumber` = '$txt_num'";
 }
 if ($txt_date1 != null && $txt_date1 != 'undefined') {
-    $sql = $sql." AND `Datetime` BETWEEN '$txt_date1 00:00:00' AND '$txt_date2 23:59:59'";
+    $sql = $sql." AND `Datetime` BETWEEN '$txt_date1' AND '$txt_date2'";
 }
 $sql = $sql.' ORDER BY CAST(`RowNo` AS UNSIGNED INTEGER) ASC';
 // echo $sql;

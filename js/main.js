@@ -417,6 +417,20 @@ function GetDateStr(AddDayCount) {
   return y + "-" + m + "-" + d;
 }
 
+//日期時間
+function GetDateTimeStr(AddHourCount) {
+  var dd = new Date();
+  dd.setHours(dd.getHours() + AddHourCount); //取AddHourCount時後的時間
+  var y = dd.getFullYear();
+  var m =
+    dd.getMonth() + 1 < 10 ? "0" + (dd.getMonth() + 1) : dd.getMonth() + 1; //取當月份的日期
+  var d = dd.getDate() < 10 ? "0" + dd.getDate() : dd.getDate();
+  var hh = dd.getHours() < 10 ? "0" + dd.getHours() : dd.getHours();
+  var mm = dd.getMinutes() < 10 ? "0" + dd.getMinutes() : dd.getMinutes();
+  var ss = dd.getSeconds() < 10 ? "0" + dd.getSeconds() : dd.getSeconds();
+  return y + "-" + m + "-" + d + " " + hh + ":" + mm + ":" + ss;
+}
+
 //年月
 function GetYearStr(AddDayCount) {
   var dd = new Date();
