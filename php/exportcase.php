@@ -43,7 +43,11 @@ while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 
 
         //寫入txt檔
-        $file = fopen("../export/" . $name[sizeof($name) - 2] . ".txt ", "w"); //開啟檔案
+        $file = fopen("../export/" . $name[sizeof($name) - 2] . ".txt ", "w"); //開啟txt檔案
+        $file_ini = fopen("../export/" . $name[sizeof($name) - 2] . ".ini ", "w"); //開啟ini檔案
+
+
+        //txt寫檔
         fwrite($file, "證號=" . "\n");
         fwrite($file, "主機=" . "\n");
         fwrite($file, "地點=$row[Location]" . "\n");
@@ -65,6 +69,29 @@ while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         fwrite($file, "車牌=$row[CarNumber]" . "\n");
         fwrite($file, "處理時間=$row[LogDate]" . "\n");
         fclose($file);
+
+        //ini寫檔
+        fwrite($file_ini, "證號=" . "\n");
+        fwrite($file_ini, "主機=" . "\n");
+        fwrite($file_ini, "地點=$row[Location]" . "\n");
+        fwrite($file_ini, "地點=$row[DetectLocation]" . "\n");
+        fwrite($file_ini, "速限=" . "\n");
+        fwrite($file_ini, "路口=" . "\n");
+        fwrite($file_ini, "編號=" . "\n");
+        fwrite($file_ini, "類型=" . "\n");
+        fwrite($file_ini, "日期=$row[Datetime]" . "\n");
+        fwrite($file_ini, "時間=$row[Datetime]" . "\n");
+        fwrite($file_ini, "車速=" . "\n");
+        fwrite($file_ini, "方向=" . "\n");
+        fwrite($file_ini, "車道=" . "\n");
+        fwrite($file_ini, "操作者姓名=" . "\n");
+        fwrite($file_ini, "Title_1=" . "\n");
+        fwrite($file_ini, "Title_2=" . "\n");
+        fwrite($file_ini, "Title_3=" . "\n");
+        fwrite($file_ini, "編號=$row[RowNo]" . "\n");
+        fwrite($file_ini, "車牌=$row[CarNumber]" . "\n");
+        fwrite($file_ini, "處理時間=$row[LogDate]" . "\n");
+        fclose($file_ini);
 
         $i++;
     }
