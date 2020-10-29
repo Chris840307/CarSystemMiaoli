@@ -36,8 +36,8 @@ while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         $file = fopen('../export/'.$name[sizeof($name) - 2].'.txt ', 'w'); //開啟txt檔案
         $file_ini = fopen('../export/'.$name[sizeof($name) - 2].'.ini ', 'w'); //開啟ini檔案
 
-        //txt寫檔
-        fwrite($file, '證號2='."\n");
+        //txt寫檔2
+        fwrite($file, '證號='."\n");
         fwrite($file, '主機='."\n");
         fwrite($file, "地點=$row[Location]"."\n");
         fwrite($file, "地點=$row[DetectLocation]"."\n");
