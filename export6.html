@@ -129,7 +129,7 @@
           <div class="contain-field input-field col s6">
             <input
               type="text"
-              name="txt_date"
+              name="txt_date1"
               id="txt_date1"
               class="validate"
               placeholder="查詢起始日期："
@@ -138,23 +138,11 @@
           <div class="contain-field input-field col s6">
             <input
               type="text"
-              name="txt_date"
+              name="txt_date2"
               id="txt_date2"
               class="validate"
               placeholder="查詢結束日期："
             />
-          </div>
-          <div class="contain-field input-field col s6" name="car" id="car">
-            <select multiple name="txt_type" id="txt_type">
-              <option value="0" selected="selected" disabled="disabled">
-                車種類型：
-              </option>
-              <option value="1">小客車</option>
-              <option value="2">中型車</option>
-              <option value="3">大貨車</option>
-              <option value="4">普通重型機車</option>
-              <option value="5">大型重型機車</option>
-            </select>
           </div>
 
           <div class="contain-field">
@@ -180,6 +168,17 @@
         <div class="contain-body">
           <table id="table1"></table>
         </div>
+
+        <!-- <div class="contain-body">
+          <div class="chart-div">
+            <div class="chart-header">
+              <span>車種違規統計表</span>
+            </div>
+            <div class="chart-body">
+              <canvas id="Chart_bar"></canvas>
+            </div>
+          </div>
+        </div> -->
       </main>
 
       <!-- ### $App Screen Footer ### -->
@@ -205,6 +204,19 @@
         // #endregion 取得table資料
       });
 
+      // #region 長條圖
+      /*
+      var ctx_bar = document.getElementById("Chart_bar");
+      var myChart_bar = new Chart(ctx_bar, {
+        type: "bar",
+        data: {
+          labels: [],
+          datasets: [],
+        },
+      });
+      */
+      // #endregion 長條圖
+
       function createFunc() {
         grid = $("#table1").grid({
           dataSource: [],
@@ -212,49 +224,23 @@
           headerFilter: false,
           columns: [
             {
-              field: "RowNo",
-              align: "center",
-              sortable: false,
-              filterable: false,
-              width: 65,
-              hidden: true,
-            },
-            {
-              field: "Datetime",
-              title: "日期",
-              align: "center",
-              sortable: true,
-              type: "date",
-              format: "yyyy-mm-dd HH:MM:ss",
-              filterable: false,
-              width: 90,
-            },
-            {
-              field: "CarNumber",
-              title: "車牌號碼",
+              field: "carType",
+              title: "車種",
               align: "center",
               sortable: true,
               filterable: false,
               width: 70,
             },
             {
-              field: "Location",
-              title: "停放位置",
-              align: "center",
-              sortable: true,
-              filterable: false,
-              width: 70,
-            },
-            {
-              field: "DetectLocation",
-              title: "偵測地點名稱",
+              field: "count",
+              title: "次數",
               align: "center",
               sortable: true,
               filterable: false,
               width: 70,
             },
           ],
-          pager: { limit: 25, sizes: [25, 50, 100, 200] },
+          pager: { limit: 5, sizes: [5, 50, 100, 200] },
         });
       }
 
@@ -279,21 +265,89 @@
         var postdata = {
           txt_date1: $("#txt_date1").val(),
           txt_date2: $("#txt_date2").val(),
-          txt_account: emptyStrToUndefined($("#txt_account").val()),
         };
+
         $.ajax({
-          url: "./php/GetExport5.php",
+          url: "./php/GetExport6.php",
           type: "POST",
           dataType: "json",
           data: JSON.stringify(postdata),
           contentType: "application/json",
           success: function (msg) {
+            // (chartLabel = []), (chartData = []);
             for (var i = 0; i < msg.data.length; i++) {
               grid.addRow(msg.data[i]);
+              //   chartLabel.push(msg.data[i].date);
             }
+            // if (myChart_bar.data.datasets.length !== 0) {
+            //   for (var i = 0; i < msg.location.length; i++) {
+            //     myChart_bar.data.datasets[i].data.shift();
+            //   }
+            // }
+            // for (var i = 0; i < msg.location.length; i++) {
+            //   temp = [];
+            //   for (var j = 0; j < msg.data.length; j++) {
+            //     temp.push(msg.data[j][msg.location[i].Location]);
+            //   }
+            //   chartData.push(temp);
+            // }
+            // godisplay_Chart(chartLabel, chartData, msg.location);
           },
           error: function (XMLHttpRequest, textStatus, errorThrown) {
             console.log(XMLHttpRequest.responseText);
+          },
+        });
+      }
+
+      //長條圖
+      function godisplay_Chart(chartLabel, chartData, location) {
+        var backgroundColor = [
+          "#f17e5d",
+          "#4acccd",
+          "#fcc468",
+          "#8d6e63",
+          "#66615c",
+        ];
+        var dataSets = [];
+        for (var i = 0; i < location.length; i++) {
+          dataSets.push({
+            label: location[i].Location,
+            backgroundColor: backgroundColor[i],
+            data: chartData[i],
+          });
+        }
+
+        myChart_bar = new Chart(ctx_bar, {
+          type: "bar",
+          data: {
+            labels: chartLabel,
+            datasets: dataSets,
+          },
+          options: {
+            scales: {
+              yAxes: [
+                {
+                  ticks: {
+                    beginAtZero: true,
+                    fontSize: 12,
+                    display: true,
+                    callback: function (value, index, values) {
+                      return value.toLocaleString();
+                    },
+                  },
+                },
+              ],
+              xAxes: [
+                {
+                  ticks: {
+                    display: true,
+                  },
+                },
+              ],
+            },
+            title: {
+              maintainAsppectRadio: true,
+            },
           },
         });
       }
@@ -302,7 +356,7 @@
       function csv_btn() {
         var filename = GetDateStr(0) + "車種違規統計表.csv";
         var url =
-          "./php/GetExportCSV5.php?" +
+          "./php/GetExportCSV6.php?" +
           "txt_date1=" +
           $("#txt_date1").val() +
           "&txt_date2=" +
