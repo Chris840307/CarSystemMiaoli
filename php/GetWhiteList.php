@@ -11,6 +11,8 @@ $dbname = 'car';
 
 $str = file_get_contents('php://input');
 $str_json = json_decode($str);
+$txt_num = $str_json->{'txt_num'};
+$status = $str_json->{'status'};
 
 $conn = mysqli_connect($dbhost, $dbuser, $dbpass) or die('Error with MySQL connection'.mysql_error());
 
@@ -19,7 +21,14 @@ mysqli_select_db($conn, $dbname);
 
 $jSon['data'] = [];
 
-$sql = 'SELECT * FROM `white_list`';
+$sql = "SELECT * FROM `white_list` WHERE `CarNumber` != ''";
+if ($txt_num != null && $txt_num != 'undefined') {
+    $sql = $sql." AND `CarNumber` = '$txt_num'";
+}
+if ($status != null && $status != 'undefined') {
+    $sql = $sql." AND `status` = '$status'";
+}
+$sql = $sql.' ORDER BY CAST(`id` AS UNSIGNED INTEGER) ASC';
 $result = mysqli_query($conn, $sql) or die('MySQL select error'.mysqli_error($conn));
 
 if ($result->num_rows > 0) {

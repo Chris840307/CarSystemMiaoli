@@ -166,7 +166,6 @@
                     id="txt_status1"
                     type="radio"
                     value="1"
-                    checked
                   />
                   <span>啟用</span>
                 </label>
@@ -482,10 +481,29 @@
         });
       }
 
+      //篩選
+      $("#btn_search").on("click", function () {
+        $("#table1").grid("destroy", true, true);
+        createFunc();
+        filterData();
+      });
+
+      //清除
+      $("#btn_reset").on("click", function () {
+        $("#txt_num").val("");
+        document.getElementById("txt_status0").checked = true;
+
+        $("#table1").grid("destroy", true, true);
+        createFunc();
+        filterData();
+      });
+
       function filterData() {
         var postdata = {
           txt_num: emptyStrToUndefined($("#txt_num").val()),
-          status: "1",
+          status: emptyStrToUndefined(
+            document.querySelector('input[name="txt_status"]:checked').value
+          ),
         };
 
         $.ajax({
