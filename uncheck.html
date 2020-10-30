@@ -479,8 +479,8 @@
 
       //清除
       $("#btn_reset").on("click", function () {
-        $("#txt_date1").val(GetDateStr(0));
-        $("#txt_date2").val(GetDateStr(0));
+        $("#txt_date1").val(GetDateStr(0) + " 00:00");
+        $("#txt_date2").val(GetDateStr(0) + " 23:59");
         $("#txt_num").val("");
         $("#txt_cartype").dropdown().value("");
 

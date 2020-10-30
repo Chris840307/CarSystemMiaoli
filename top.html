@@ -267,8 +267,8 @@
                     <div class="row">
                       <div class="data-left">
                         <div class="text-title">時間日期</div>
-                        <div class="text-title">停放位置</div>
                         <div class="text-title">偵測地點</div>
+                        <div class="text-title">停放位置</div>
                         <div class="text-title">違規法條</div>
                         <div class="text-title">車種</div>
                         <div class="text-title">車牌號碼</div>
@@ -471,8 +471,8 @@
 
       //清除
       $("#btn_reset").on("click", function () {
-        $("#txt_date1").val(GetDateStr(0));
-        $("#txt_date2").val(GetDateStr(0));
+        $("#txt_date1").val(GetDateStr(0) + " 00:00");
+        $("#txt_date2").val(GetDateStr(0) + " 23:59");
         $("#txt_num").val("");
 
         $("#table1").grid("destroy", true, true);
