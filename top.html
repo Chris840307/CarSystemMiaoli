@@ -109,6 +109,12 @@
         font-weight: 700;
         font-size: 22px;
       }
+      .gijgo-search-select .gj-dropdown [role="presenter"] {
+        color: #9e9e9e;
+        font-weight: 700;
+        font-size: 15px;
+        padding-bottom: 5px;
+      }
 
       .card {
         top: 15px !important;
@@ -182,6 +188,11 @@
           <div class="contain-field input-field col s6">
             <input type="text" name="txt_num" id="txt_num" class="validate" />
             <label for="txt_num">車牌號碼</label>
+          </div>
+          <div class="contain-field input-field col s6 gijgo-search-select">
+            <select id="txt_detectLocation" width="250">
+              <option value="" disabled="disabled" selected>偵測地點</option>
+            </select>
           </div>
 
           <div class="contain-field">
@@ -334,7 +345,7 @@
       var dataIndex = 0; //記錄當前Index
 
       $(document).ready(function () {
-        //#region 日期格式化
+        //#region 日期、選單格式化
         $("#txt_date1").datetimepicker({
           footer: true,
           uiLibrary: "materialdesign",
@@ -349,7 +360,31 @@
         $("#txt_date2").val(GetDateStr(0) + " 23:59");
         $("#m_carType").dropdown({ uiLibrary: "materialdesign" });
         $("#m_law").dropdown({ uiLibrary: "materialdesign" });
-        // #endregion 日期格式化
+        $.ajax({
+          url: "./php/GetDetectLocationList.php",
+          type: "GET",
+          dataType: "json",
+          contentType: "application/json",
+          async: false,
+          success: function (msg) {
+            if (msg.messageType == "OK") {
+              for (i = 0; i < msg.data.length; i++) {
+                var option = document.createElement("option");
+                option.text = msg.data[i].DetectLocation;
+                option.value = msg.data[i].DetectLocation;
+                var select = document.getElementById("txt_detectLocation");
+                select.appendChild(option);
+              }
+              $("#txt_detectLocation").dropdown({
+                uiLibrary: "materialdesign",
+              });
+            }
+          },
+          error: function (XMLHttpRequest, textStatus, errorThrown) {
+            console.log(XMLHttpRequest.responseText);
+          },
+        });
+        // #endregion 日期、選單格式化
 
         // #region 取得table資料
         createFunc();
@@ -479,6 +514,9 @@
           txt_date1: emptyStrToUndefined($("#txt_date1").val() + ":00"),
           txt_date2: emptyStrToUndefined($("#txt_date2").val() + ":59"),
           txt_num: emptyStrToUndefined($("#txt_num").val()),
+          txt_detectLocation: emptyStrToUndefined(
+            $("#txt_detectLocation").dropdown().value()
+          ),
           status: "1",
         };
 
@@ -654,6 +692,9 @@
           txt_date1: emptyStrToUndefined($("#txt_date1").val()),
           txt_date2: emptyStrToUndefined($("#txt_date2").val()),
           txt_num: emptyStrToUndefined($("#txt_num").val()),
+          txt_detectLocation: emptyStrToUndefined(
+            $("#txt_detectLocation").dropdown().value()
+          ),
           status: "1",
         };
         $.ajax({
@@ -700,6 +741,9 @@
           txt_date1: emptyStrToUndefined($("#txt_date1").val()),
           txt_date2: emptyStrToUndefined($("#txt_date2").val()),
           txt_num: emptyStrToUndefined($("#txt_num").val()),
+          txt_detectLocation: emptyStrToUndefined(
+            $("#txt_detectLocation").dropdown().value()
+          ),
           status: "1",
         };
 
