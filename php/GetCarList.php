@@ -16,7 +16,7 @@ $txt_date2 = $str_json->{'txt_date2'};
 $txt_num = $str_json->{'txt_num'};
 $txt_cartype = $str_json->{'txt_cartype'};
 $txt_law = $str_json->{'txt_law'};
-$txt_detectLocation = $str_json->{'txt_detectLocation'};
+$txt_addr = $str_json->{'txt_addr'};
 $status = $str_json->{'status'};
 
 $conn = mysqli_connect($dbhost, $dbuser, $dbpass) or die('Error with MySQL connection'.mysql_error());
@@ -36,8 +36,8 @@ if ($txt_cartype != null && $txt_cartype != 'undefined') {
 if ($txt_law != null && $txt_law != 'undefined') {
     $sql = $sql." AND `Law` = '$txt_law'";
 }
-if ($txt_detectLocation != null && $txt_detectLocation != 'undefined') {
-    $sql = $sql." AND `DetectLocation` = '$txt_detectLocation'";
+if ($txt_addr != null && $txt_addr != 'undefined') {
+    $sql = $sql." AND `DetectLocation` = '$txt_addr'";
 }
 if ($txt_date1 != null && $txt_date1 != 'undefined') {
     $sql = $sql." AND `Datetime` BETWEEN '$txt_date1' AND '$txt_date2'";

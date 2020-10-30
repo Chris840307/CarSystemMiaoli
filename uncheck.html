@@ -192,8 +192,8 @@
             </select>
           </div>
           <div class="contain-field input-field col s6 gijgo-search-select">
-            <select id="txt_detectLocation" width="250">
-              <option value="" disabled="disabled" selected>偵測地點</option>
+            <select id="txt_addr" width="250">
+              <option value="" disabled="disabled" selected>停放位置</option>
             </select>
           </div>
 
@@ -269,8 +269,8 @@
                     <div class="row">
                       <div class="data-left">
                         <div class="text-title">時間日期</div>
-                        <div class="text-title">停放位置</div>
                         <div class="text-title">偵測地點</div>
+                        <div class="text-title">停放位置</div>
                         <div class="text-title">違規法條</div>
                         <div class="text-title">車種</div>
                         <div class="text-title">車牌號碼</div>
@@ -372,10 +372,10 @@
                 var option = document.createElement("option");
                 option.text = msg.data[i].DetectLocation;
                 option.value = msg.data[i].DetectLocation;
-                var select = document.getElementById("txt_detectLocation");
+                var select = document.getElementById("txt_addr");
                 select.appendChild(option);
               }
-              $("#txt_detectLocation").dropdown({
+              $("#txt_addr").dropdown({
                 uiLibrary: "materialdesign",
               });
             }
@@ -427,7 +427,7 @@
             },
             {
               field: "Location",
-              title: "停放位置",
+              title: "偵測地點名稱",
               align: "center",
               sortable: true,
               filterable: false,
@@ -435,7 +435,7 @@
             },
             {
               field: "DetectLocation",
-              title: "偵測地點名稱",
+              title: "停放位置",
               align: "center",
               sortable: true,
               filterable: false,
@@ -514,9 +514,7 @@
           txt_cartype: emptyStrToUndefined(
             $("#txt_cartype").dropdown().value()
           ),
-          txt_detectLocation: emptyStrToUndefined(
-            $("#txt_detectLocation").dropdown().value()
-          ),
+          txt_addr: emptyStrToUndefined($("#txt_addr").dropdown().value()),
           status: "3",
         };
 
@@ -632,9 +630,7 @@
           txt_cartype: emptyStrToUndefined(
             $("#txt_cartype").dropdown().value()
           ),
-          txt_detectLocation: emptyStrToUndefined(
-            $("#txt_detectLocation").dropdown().value()
-          ),
+          txt_addr: emptyStrToUndefined($("#txt_addr").dropdown().value()),
           status: "3",
         };
 
@@ -687,9 +683,7 @@
           txt_cartype: emptyStrToUndefined(
             $("#txt_cartype").dropdown().value()
           ),
-          txt_detectLocation: emptyStrToUndefined(
-            $("#txt_detectLocation").dropdown().value()
-          ),
+          txt_addr: emptyStrToUndefined($("#txt_addr").dropdown().value()),
           status: "3",
         };
 
