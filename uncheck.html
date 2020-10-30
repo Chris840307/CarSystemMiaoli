@@ -250,6 +250,7 @@
                   style="margin-bottom: 0.8%; max-width: 800px"
                   id="m_photoURL"
                   onerror="newsImgLoadError()"
+                  onclick="onClickImage('m_photoURL')"
                 />
               </div>
             </div>
@@ -730,6 +731,19 @@
       //查無圖片
       function newsImgLoadError() {
         $("#m_photoURL").attr("src", "./img/no_img.png");
+      }
+
+      //放大圖片
+      function onClickImage(name) {
+        if ($(`#${name}`)[0].currentSrc != undefined) {
+          window.open($(`#${name}`)[0].currentSrc, "");
+        } else {
+          swal.fire({
+            title: "無此圖片",
+            icon: "info",
+            showConfirmButton: true,
+          });
+        }
       }
     </script>
   </body>
