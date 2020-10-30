@@ -56,7 +56,7 @@ while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         fwrite($file, 'Title_3='."\n");
         fwrite($file, "編號=$row[RowNo]"."\n");
         fwrite($file, "車牌=$row[CarNumber]"."\n");
-        fwrite($file, "處理時間=$row[LogDate]"."\n");
+        fwrite($file, "處理時間=$row[Datetime]"."\n");
         fclose($file);
 
         //ini寫檔
@@ -79,7 +79,7 @@ while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         fwrite($file_ini, 'Title_3='."\n");
         fwrite($file_ini, "編號=$row[RowNo]"."\n");
         fwrite($file_ini, "車牌=$row[CarNumber]"."\n");
-        fwrite($file_ini, "處理時間=$row[LogDate]"."\n");
+        fwrite($file_ini, "處理時間=$row[Datetime]"."\n");
         fclose($file_ini);
 
         ++$i;
