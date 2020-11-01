@@ -258,9 +258,9 @@
               class="data-contain-row"
               style="padding-left: 3px; width: 100%"
             >
-              <div>
+              <div id="div_video">
                 <video controls width="100%">
-                  <source src="" id="m_videoURL" type="video/mp4" />
+                  <source src="" id="m_videoURL" />
                 </video>
               </div>
 
@@ -543,7 +543,7 @@
         autoOpen: false,
         resizable: false,
         modal: true,
-        height: "95%",
+        height: "100%",
         width: "90%",
       });
 
@@ -554,6 +554,7 @@
         $("#m_carNumber").val(e.data.record.CarNumber);
         $("#m_photoURL").attr("src", e.data.record.PhotoURL);
         $("#m_videoURL").attr("src", e.data.record.VideoURL);
+        $("#div_video video")[0].load();
         $("#m_detectLocation").text(e.data.record.DetectLocation);
         $("#m_datetime").text(e.data.record.Datetime);
         $("#m_location").text(e.data.record.Location);
@@ -591,6 +592,7 @@
                 $("#m_carNumber").val(next.CarNumber);
                 $("#m_photoURL").attr("src", next.PhotoURL);
                 $("#m_videoURL").attr("src", next.VideoURL);
+                $("#div_video video")[0].load();
                 $("#m_detectLocation").text(next.DetectLocation);
                 $("#m_datetime").text(next.Datetime);
                 $("#m_location").text(next.Location);
@@ -649,6 +651,7 @@
                 $("#m_carNumber").val(next.CarNumber);
                 $("#m_photoURL").attr("src", next.PhotoURL);
                 $("#m_videoURL").attr("src", next.VideoURL);
+                $("#div_video video")[0].load();
                 $("#m_detectLocation").text(next.DetectLocation);
                 $("#m_datetime").text(next.Datetime);
                 $("#m_location").text(next.Location);
@@ -702,6 +705,7 @@
                 $("#m_carNumber").val(next.CarNumber);
                 $("#m_photoURL").attr("src", next.PhotoURL);
                 $("#m_videoURL").attr("src", next.VideoURL);
+                $("#div_video video")[0].load();
                 $("#m_detectLocation").text(next.DetectLocation);
                 $("#m_datetime").text(next.Datetime);
                 $("#m_location").text(next.Location);

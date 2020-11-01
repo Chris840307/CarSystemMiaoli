@@ -58,12 +58,12 @@ if ($result->num_rows > 0) {
             if (substr($record['VideoURL'], 0, 4) == '/var') {
                 $data_t->VideoURL = '.'.substr($record['VideoURL'], 23);
             } else {
-                $data_t->VideoURL = $record['VideoURL'];
+                $data_t->VideoURL = './'.str_replace('\\', '/', $record['VideoURL']);
             }
             if (substr($record['PhotoURL'], 0, 4) == '/var') {
                 $data_t->PhotoURL = '.'.substr($record['PhotoURL'], 23);
             } else {
-                $data_t->PhotoURL = $record['PhotoURL'];
+                $data_t->PhotoURL = './'.str_replace('\\', '/', $record['PhotoURL']);
             }
             $data_t->DetectLocation = $record['DetectLocation'];
             $data_t->Datetime = $record['Datetime'];
