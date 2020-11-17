@@ -26,7 +26,7 @@ $sql = "SELECT * FROM `sys_log` WHERE `datetime` BETWEEN '$txt_date1' AND '$txt_
 if ($txt_account != null && $txt_account != 'undefined') {
     $sql = $sql." AND `acc` = '$txt_account'";
 }
-$sql = $sql.' ORDER BY `id`';
+$sql = $sql.' ORDER BY `id` DESC';
 // echo $sql;
 $result = mysqli_query($conn, $sql) or die('MySQL select error'.mysqli_error($conn));
 
