@@ -28,7 +28,7 @@ if ($txt_ip != null && $txt_ip != 'undefined') {
 if ($txt_addr != null && $txt_addr != 'undefined') {
     $sql = $sql." AND `place` = '$txt_addr'";
 }
-$sql = $sql.' ORDER BY `ID`';
+$sql = $sql.' ORDER BY `ID` DESC';
 $result = mysqli_query($conn, $sql) or die('MySQL select error'.mysqli_error($conn));
 
 while ($record = mysqli_fetch_array($result)) {
