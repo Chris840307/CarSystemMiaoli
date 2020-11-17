@@ -188,9 +188,10 @@ if ($result->num_rows > 0) {
 
                     if ($car_datetime > $white_data_startime && $car_datetime < $white_data_endtime) {
                         //時段在白名單中不顯示
+                    } else {
+                        //時段不在白名單中可顯示
+                        array_push($jSon['data'], $data_t);
                     }
-                    //時段不在白名單中可顯示
-                    array_push($jSon['data'], $data_t);
                 }
             }
         }
