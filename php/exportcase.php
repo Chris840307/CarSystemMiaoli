@@ -2,6 +2,12 @@
 
 date_default_timezone_set('Asia/Taipei');
 
+//若export資料夾不存在則建立
+$dirPath = '../export';
+if (!file_exists($dirPath)) {
+    mkdir($dirPath, 0777, true);
+}
+
 $dbhost = 'localhost';
 $dbuser = 'root';
 $dbpass = '2u6u/ru8';
@@ -42,6 +48,12 @@ $i = 0;
 
 while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
     if ($result->num_rows > 0) {
+        //依照日期建立資料夾
+        $dirPath = '../export/'.date('Y-m-d', strtotime($row['Datetime']));
+        if (!file_exists($dirPath)) {
+            mkdir($dirPath, 0777, true);
+        }
+
         $Photo_arr[$i] = $row['PhotoURL']; //路徑名稱也許要改,放到copy裡面
         $Time_arr[$i] = $row['Datetime'];
         // echo $Photo_arr[$i];
@@ -50,24 +62,23 @@ while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         $name_Datetime_temp = str_replace(':', '', $name_Datetime_temp);
         $name_Datetime = str_replace(' ', '', $name_Datetime_temp);
         // copy("../" . $Photo_arr[$i], "../export/" . $name_Datetime."_". $name_carID[sizeof($name_carID) - 3] . ".jpg"); //複製到開創的資料夾
-        copy($Photo_arr[$i], '../export/'.$name_Datetime.'_'.$name_carID[sizeof($name_carID) - 3].'.jpg'); //苗栗路徑不一樣
-        //    echo $name_Datetime;
+        copy($Photo_arr[$i], '../export/'.$dirPath.'/'.$name_Datetime.'_'.$name_carID[sizeof($name_carID) - 3].'.jpg'); //苗栗路徑不一樣
 
         //寫入txt檔
-        $file = fopen('../export/'.$name_Datetime.'_'.$name_carID[sizeof($name_carID) - 3].'.txt ', 'w'); //開啟txt檔案
-        $file_ini = fopen('../export/'.$name_Datetime.'_'.$name_carID[sizeof($name_carID) - 3].'.ini ', 'w'); //開啟ini檔案
+        $file = fopen('../export/'.$dirPath.'/'.$name_Datetime.'_'.$name_carID[sizeof($name_carID) - 3].'.txt ', 'w'); //開啟txt檔案
+        $file_ini = fopen('../export/'.$dirPath.'/'.$name_Datetime.'_'.$name_carID[sizeof($name_carID) - 3].'.ini ', 'w'); //開啟ini檔案
 
         //txt寫檔
         fwrite($file, '證號='."\n");
         fwrite($file, '主機='."\n");
-        fwrite($file, "地點=$row[Location]"."\n");
-        fwrite($file, "地點=$row[DetectLocation]"."\n");
+        fwrite($file, '地點='.$row['Location']."\n");
+        fwrite($file, '地點='.$row['DetectLocation']."\n");
         fwrite($file, '速限='."\n");
         fwrite($file, '路口='."\n");
         fwrite($file, '編號='."\n");
         fwrite($file, '類型='."\n");
-        fwrite($file, "日期=$row[Datetime]"."\n");
-        fwrite($file, "時間=$row[Datetime]"."\n");
+        fwrite($file, '日期='.date('Y/m/d', strtotime($row['Datetime']))."\n");
+        fwrite($file, '時間='.date('H:i:s', strtotime($row['Datetime']))."\n");
         fwrite($file, '車速='."\n");
         fwrite($file, '方向='."\n");
         fwrite($file, '車道='."\n");
@@ -75,22 +86,22 @@ while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         fwrite($file, 'Title_1='."\n");
         fwrite($file, 'Title_2='."\n");
         fwrite($file, 'Title_3='."\n");
-        fwrite($file, "編號=$row[RowNo]"."\n");
-        fwrite($file, "車牌=$row[CarNumber]"."\n");
-        fwrite($file, "處理時間=$row[Datetime]"."\n");
+        fwrite($file, '編號='.$row['RowNo']."\n");
+        fwrite($file, '車牌='.$row['CarNumber']."\n");
+        fwrite($file, '處理時間='.$row['Datetime']."\n");
         fclose($file);
 
         //ini寫檔
         fwrite($file_ini, '證號='."\n");
         fwrite($file_ini, '主機='."\n");
-        fwrite($file_ini, "地點=$row[Location]"."\n");
-        fwrite($file_ini, "地點=$row[DetectLocation]"."\n");
+        fwrite($file_ini, '地點='.$row['Location']."\n");
+        fwrite($file_ini, '地點='.$row['DetectLocation']."\n");
         fwrite($file_ini, '速限='."\n");
         fwrite($file_ini, '路口='."\n");
         fwrite($file_ini, '編號='."\n");
         fwrite($file_ini, '類型='."\n");
-        fwrite($file_ini, "日期=$row[Datetime]"."\n");
-        fwrite($file_ini, "時間=$row[Datetime]"."\n");
+        fwrite($file_ini, '日期='.date('Y/m/d', strtotime($row['Datetime']))."\n");
+        fwrite($file_ini, '時間='.date('H:i:s', strtotime($row['Datetime']))."\n");
         fwrite($file_ini, '車速='."\n");
         fwrite($file_ini, '方向='."\n");
         fwrite($file_ini, '車道='."\n");
@@ -98,9 +109,9 @@ while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         fwrite($file_ini, 'Title_1='."\n");
         fwrite($file_ini, 'Title_2='."\n");
         fwrite($file_ini, 'Title_3='."\n");
-        fwrite($file_ini, "編號=$row[RowNo]"."\n");
-        fwrite($file_ini, "車牌=$row[CarNumber]"."\n");
-        fwrite($file_ini, "處理時間=$row[Datetime]"."\n");
+        fwrite($file_ini, '編號='.$row['RowNo']."\n");
+        fwrite($file_ini, '車牌='.$row['CarNumber']."\n");
+        fwrite($file_ini, '處理時間='.$row['Datetime']."\n");
         fclose($file_ini);
 
         ++$i;

@@ -2,6 +2,12 @@
 
 date_default_timezone_set('Asia/Taipei');
 
+//若export資料夾不存在則建立
+$dirPath = '../export';
+if (!file_exists($dirPath)) {
+    mkdir($dirPath, 0777, true);
+}
+
 $dbhost = 'localhost';
 $dbuser = 'root';
 $dbpass = '2u6u/ru8';
@@ -18,6 +24,9 @@ $conn = mysqli_connect($dbhost, $dbuser, $dbpass) or die('Error with MySQL conne
 
 mysqli_query($conn, 'SET NAMES utf8');
 mysqli_select_db($conn, $dbname);
+
+//判斷日期是否不一樣
+// $sql="SELECT DATE_FORMAT(`Datetime`, '%Y%m%d') AS `Datetime` FROM `violation` WHERE `Datetime` BETWEEN '$txt_date1' AND '$txt_date2' AND `status`='2' GROUP BY DATE_FORMAT(`Datetime`, '%Y%m%d')";
 
 $sql = "SELECT * FROM `violation` WHERE `Datetime` BETWEEN '$txt_date1' AND '$txt_date2'";
 if ($txt_num != null && $txt_num != 'undefined') {
@@ -42,6 +51,12 @@ $i = 0;
 
 while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
     if ($result->num_rows > 0) {
+        //依照日期建立資料夾
+        $dirPath = '../export/'.date('Y-m-d', strtotime($row['Datetime']));
+        if (!file_exists($dirPath)) {
+            mkdir($dirPath, 0777, true);
+        }
+
         $Photo_arr[$i] = $row['PhotoURL']; //路徑名稱也許要改,放到copy裡面
         $Time_arr[$i] = $row['Datetime'];
         // echo $Photo_arr[$i];
@@ -50,8 +65,7 @@ while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         $name_Datetime_temp = str_replace(':', '', $name_Datetime_temp);
         $name_Datetime = str_replace(' ', '', $name_Datetime_temp);
         // copy("../" . $Photo_arr[$i], "../export/" . $name_Datetime."_". $name_carID[sizeof($name_carID) - 3] . ".jpg"); //複製到開創的資料夾
-        copy($Photo_arr[$i], '../export/'.$name_Datetime.'_'.$name_carID[sizeof($name_carID) - 3].'.jpg'); //苗栗路徑不一樣
-        //    echo $name_Datetime;
+        copy($Photo_arr[$i], '../export/'.$dirPath.'/'.$name_Datetime.'_'.$name_carID[sizeof($name_carID) - 3].'.jpg'); //苗栗路徑不一樣
 
         ++$i;
     }
