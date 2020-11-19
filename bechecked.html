@@ -151,12 +151,7 @@
 
       <!-- ### $App Screen Content ### -->
       <main class="main-content bgc-grey-100 p-3">
-        <form
-          name="form"
-          action="php/exportcase.php"
-          method="post"
-          id="getdata"
-        >
+        <form name="myform" method="post" id="getDownloadData">
           <div class="guided-tour-menu">
             <span><a href="main.html">首頁</a></span>
             <span>&nbsp;>&nbsp;</span>
@@ -170,6 +165,12 @@
                 id="submit"
               >
                 <i class="ti-download"></i>
+              </a>
+              <a
+                class="btn-floating waves-effect waves-light modal-trigger"
+                id="submit_img"
+              >
+                <i class="ti-image"></i>
               </a>
             </div>
           </div>
@@ -781,8 +782,16 @@
         }
       }
 
+      //下載ini及照片
       document.getElementById("submit").onclick = function () {
-        document.getElementById("getdata").submit();
+        document.myform.action = "php/exportcase.php";
+        document.getElementById("getDownloadData").submit();
+      };
+
+      //下載照片
+      document.getElementById("submit_img").onclick = function () {
+        document.myform.action = "php/exportcaseImg.php";
+        document.getElementById("getDownloadData").submit();
       };
     </script>
   </body>

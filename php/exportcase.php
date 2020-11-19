@@ -7,22 +7,41 @@ $dbuser = 'root';
 $dbpass = '2u6u/ru8';
 $dbname = 'car';
 
+$txt_date1 = $_POST['txt_date1'];
+$txt_date2 = $_POST['txt_date2'];
+$txt_num = $_POST['txt_num'];
+$txt_cartype = $_POST['txt_cartype'];
+$txt_law = $_POST['txt_law'];
+$txt_addr = $_POST['txt_addr'];
+
 $conn = mysqli_connect($dbhost, $dbuser, $dbpass) or die('Error with MySQL connection'.mysql_error());
 
 mysqli_query($conn, 'SET NAMES utf8');
 mysqli_select_db($conn, $dbname);
 
-$sql = 'SELECT `RowNo`, `Datetime`,`CarNumber`,`Location`,`PhotoURL`,`DetectLocation`,`LogDate` FROM `violation` WHERE `status`=2 ';
+$sql = "SELECT * FROM `violation` WHERE `Datetime` BETWEEN '$txt_date1' AND '$txt_date2'";
+if ($txt_num != null && $txt_num != 'undefined') {
+    $sql = $sql." AND `CarNumber` = '$txt_num'";
+}
+if ($txt_cartype != null && $txt_cartype != 'undefined') {
+    $sql = $sql." AND `carType` = '$txt_cartype'";
+}
+if ($txt_law != null && $txt_law != 'undefined') {
+    $sql = $sql." AND `Law` = '$txt_law'";
+}
+if ($txt_addr != null && $txt_addr != 'undefined') {
+    $sql = $sql." AND `DetectLocation` = '$txt_addr'";
+}
+$sql = $sql." AND `status` = '2'";
 $result = mysqli_query($conn, $sql) or die('MySQL select error'.mysqli_error($conn));
 
 //圖片處理
-
 $Photo_arr = [];
 $Time_arr = [];
 $i = 0;
 
 while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-    if (strtotime($row[LogDate]) >= strtotime($_POST['txt_date1']) && strtotime($row[LogDate]) <= strtotime($_POST['txt_date2'])) {
+    if ($result->num_rows > 0) {
         $Photo_arr[$i] = $row['PhotoURL']; //路徑名稱也許要改,放到copy裡面
         $Time_arr[$i] = $row['Datetime'];
         // echo $Photo_arr[$i];
