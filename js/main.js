@@ -447,7 +447,7 @@ function GetYearStr(AddDayCount) {
 function GetDayOneOfPreviousMonthStr() {
   var dd = new Date();
   var y = dd.getFullYear();
-  var m = dd.getMonth() < 10 ? "0" + dd.getMonth() : dd.getMonth(); //取當月份的日期
+  var m = dd.getMonth() + 1 < 10 ? "0" + dd.getMonth() + 1 : dd.getMonth() + 1; //取當月份的日期
   return y + "-" + m + "-01";
 }
 
