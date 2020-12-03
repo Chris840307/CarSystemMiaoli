@@ -208,15 +208,6 @@
               </select>
             </div>
             <div class="contain-field input-field col s6 gijgo-search-select">
-              <select id="txt_law" width="250">
-                <option value="" disabled="disabled" selected>法規</option>
-                <option value="5610102">在禁止臨時停車處所停車</option>
-                <option value="5610402">在設有禁止停車標線之處所停車</option>
-                <option value="5620002">併排停車</option>
-                <option value="5510404">併排臨時停車</option>
-              </select>
-            </div>
-            <div class="contain-field input-field col s6 gijgo-search-select">
               <select id="txt_addr" width="250">
                 <option value="" disabled="disabled" selected>停放位置</option>
               </select>
@@ -300,19 +291,7 @@
                         <div class="text-body" id="m_datetime"></div>
                         <div class="text-body" id="m_location"></div>
                         <div class="text-body" id="m_detectLocation"></div>
-                        <select id="m_law" width="100%">
-                          <option value="0" disabled="disabled" selected>
-                            請選擇
-                          </option>
-                          <option value="5610102">
-                            5610102-在禁止臨時停車處所停車
-                          </option>
-                          <option value="5610402">
-                            5610402-在設有禁止停車標線之處所停車
-                          </option>
-                          <option value="5620002">5620002-併排停車</option>
-                          <option value="5510404">5510404-併排臨時停車</option>
-                        </select>
+                        <div class="text-body" id="m_law"></div>
                         <select id="m_carType" width="100%">
                           <option value="0" disabled="disabled" selected>
                             請選擇
@@ -384,10 +363,9 @@
         });
         $("#txt_date2").val(GetDateStr(0) + " 23:59");
         $("#m_carType").dropdown({ uiLibrary: "materialdesign" });
-        $("#m_law").dropdown({ uiLibrary: "materialdesign" });
         // $("#txt_cartype").formSelect();
         $("#txt_cartype").dropdown({ uiLibrary: "materialdesign" });
-        $("#txt_law").dropdown({ uiLibrary: "materialdesign" });
+
         $.ajax({
           url: "./php/GetDetectLocationList.php",
           type: "GET",
@@ -444,7 +422,7 @@
               //   type: "date",
               //   format: "yyyy-mm-dd HH:MM:ss",
               filterable: false,
-              width: 100,
+              width: 60,
             },
             {
               field: "CarNumber",
@@ -476,15 +454,15 @@
               align: "center",
               sortable: true,
               filterable: false,
-              width: 70,
+              width: 45,
             },
             {
               field: "Law",
-              title: "法規",
+              title: "違規法條",
               align: "center",
               sortable: true,
               filterable: false,
-              width: 70,
+              width: 50,
             },
             {
               field: "status",
@@ -496,7 +474,7 @@
             },
             {
               title: "審核",
-              width: 64,
+              width: 60,
               tmpl:
                 '<span class="material-icons gj-cursor-pointer">edit</span>',
               align: "center",
@@ -520,7 +498,6 @@
         $("#txt_date2").val(GetDateStr(0) + " 23:59");
         $("#txt_num").val("");
         $("#txt_cartype").dropdown().value("");
-        $("#txt_law").dropdown().value("");
 
         $("#table1").grid("destroy", true, true);
         createFunc();
@@ -547,7 +524,6 @@
           txt_cartype: emptyStrToUndefined(
             $("#txt_cartype").dropdown().value()
           ),
-          txt_law: emptyStrToUndefined($("#txt_law").dropdown().value()),
           txt_addr: emptyStrToUndefined($("#txt_addr").dropdown().value()),
           status: "2",
         };
@@ -592,7 +568,7 @@
         $("#m_datetime").text(e.data.record.Datetime);
         $("#m_location").text(e.data.record.Location);
         $("#m_carType").dropdown().value(e.data.record.carTypeValue);
-        $("#m_law").dropdown().value(e.data.record.LawValue);
+        $("#m_law").text("違規停車");
 
         dialog.open("");
       }
@@ -628,7 +604,7 @@
                 $("#m_datetime").text(next.Datetime);
                 $("#m_location").text(next.Location);
                 $("#m_carType").dropdown().value(next.carTypeValue);
-                $("#m_law").dropdown().value(next.LawValue);
+                $("#m_law").text("違規停車");
                 dataIndex = dataIndex + 1; //更新
               } else {
                 $("#table1").grid("destroy", true, true);
@@ -663,7 +639,7 @@
           txt_cartype: emptyStrToUndefined(
             $("#txt_cartype").dropdown().value()
           ),
-          txt_law: emptyStrToUndefined($("#txt_law").dropdown().value()),
+
           txt_addr: emptyStrToUndefined($("#txt_addr").dropdown().value()),
           status: "2",
         };
@@ -687,7 +663,7 @@
                 $("#m_datetime").text(next.Datetime);
                 $("#m_location").text(next.Location);
                 $("#m_carType").dropdown().value(next.carTypeValue);
-                $("#m_law").dropdown().value(next.LawValue);
+                $("#m_law").text("違規停車");
                 dataIndex = dataIndex - 1; //更新
               } else {
                 M.toast({ html: "已到第一筆" });
@@ -718,7 +694,7 @@
           txt_cartype: emptyStrToUndefined(
             $("#txt_cartype").dropdown().value()
           ),
-          txt_law: emptyStrToUndefined($("#txt_law").dropdown().value()),
+
           txt_addr: emptyStrToUndefined($("#txt_addr").dropdown().value()),
           status: "2",
         };
@@ -742,7 +718,7 @@
                 $("#m_datetime").text(next.Datetime);
                 $("#m_location").text(next.Location);
                 $("#m_carType").dropdown().value(next.carTypeValue);
-                $("#m_law").dropdown().value(next.LawValue);
+                $("#m_law").text("違規停車");
                 dataIndex = dataIndex + 1; //更新
               } else {
                 M.toast({ html: "已到最後一筆" });

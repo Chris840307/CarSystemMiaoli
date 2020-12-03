@@ -14,7 +14,6 @@ $str_json = json_decode($str);
 $RowNo = $str_json->{'RowNo'};
 $carNumber = $str_json->{'carNumber'};
 $carType = $str_json->{'carType'};
-$Law = $str_json->{'Law'};
 $status = $str_json->{'status'};
 
 $conn = mysqli_connect($dbhost, $dbuser, $dbpass) or die('Error with MySQL connection'.mysql_error());
@@ -22,11 +21,8 @@ $conn = mysqli_connect($dbhost, $dbuser, $dbpass) or die('Error with MySQL conne
 mysqli_query($conn, 'SET NAMES utf8');
 mysqli_select_db($conn, $dbname);
 
-$sql = "UPDATE `violation` SET `CarNumber`='$carNumber',`status`='$status',`carType`='$carType'";
-if ($Law != null && $Law != '') {
-    $sql = $sql.",`Law`='$Law'";
-}
- $sql = $sql." WHERE `RowNo` = '$RowNo'";
+$sql = "UPDATE `violation` SET `CarNumber`='$carNumber',`status`='$status',`carType`='$carType',`Law`='違規停車'";
+$sql = $sql." WHERE `RowNo` = '$RowNo'";
 // echo $sql;
 $result = mysqli_query($conn, $sql) or die('MySQL select error'.mysqli_error($conn));
 

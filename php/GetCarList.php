@@ -15,7 +15,6 @@ $txt_date1 = $str_json->{'txt_date1'};
 $txt_date2 = $str_json->{'txt_date2'};
 $txt_num = $str_json->{'txt_num'};
 $txt_cartype = $str_json->{'txt_cartype'};
-$txt_law = $str_json->{'txt_law'};
 $txt_addr = $str_json->{'txt_addr'};
 $status = $str_json->{'status'};
 
@@ -93,9 +92,6 @@ if ($txt_num != null && $txt_num != 'undefined') {
 if ($txt_cartype != null && $txt_cartype != 'undefined') {
     $sql = $sql." AND `carType` = '$txt_cartype'";
 }
-if ($txt_law != null && $txt_law != 'undefined') {
-    $sql = $sql." AND `Law` = '$txt_law'";
-}
 if ($txt_addr != null && $txt_addr != 'undefined') {
     $sql = $sql." AND `DetectLocation` = '$txt_addr'";
 }
@@ -136,21 +132,22 @@ if ($result->num_rows > 0) {
                             $data_t->carType = '汽車';
                             break;
                     }
-            $data_t->LawValue = $record['Law'];
-            switch ($record['Law']) {
-                        case '5610102':
-                            $data_t->Law = '在禁止臨時停車處所停車';
-                            break;
-                        case '5610402':
-                            $data_t->Law = '在設有禁止停車標線之處所停車';
-                            break;
-                        case '5620002':
-                            $data_t->Law = '併排停車';
-                            break;
-                        case '5510404':
-                            $data_t->Law = '併排臨時停車';
-                            break;
-                    }
+            // $data_t->LawValue = $record['Law'];
+            // switch ($record['Law']) {
+            //             case '5610102':
+            //                 $data_t->Law = '在禁止臨時停車處所停車';
+            //                 break;
+            //             case '5610402':
+            //                 $data_t->Law = '在設有禁止停車標線之處所停車';
+            //                 break;
+            //             case '5620002':
+            //                 $data_t->Law = '併排停車';
+            //                 break;
+            //             case '5510404':
+            //                 $data_t->Law = '併排臨時停車';
+            //                 break;
+            //         }
+            $data_t->Law = $record['Law'];
             $data_t->statusValue = $record['status'];
             switch ($record['status']) {
                         case 1:
