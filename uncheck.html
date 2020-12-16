@@ -258,8 +258,6 @@
               class="data-contain-row"
               style="padding-left: 3px; width: 100%"
             >
-            
-
               <div>
                 <div class="dark-card">
                   <div class="dark-card-body">
@@ -271,24 +269,13 @@
                         <div class="text-title">違規法條</div>
                         <div class="text-title">車種</div>
                         <div class="text-title">車牌號碼</div>
+                        <div class="text-title">其他</div>
                       </div>
                       <div class="data-right">
                         <div class="text-body" id="m_datetime"></div>
                         <div class="text-body" id="m_location"></div>
                         <div class="text-body" id="m_detectLocation"></div>
-                        <select id="m_law" width="100%">
-                          <option value="0" disabled="disabled" selected>
-                            請選擇
-                          </option>
-                          <option value="5610102">
-                            5610102-在禁止臨時停車處所停車
-                          </option>
-                          <option value="5610402">
-                            5610402-在設有禁止停車標線之處所停車
-                          </option>
-                          <option value="5620002">5620002-併排停車</option>
-                          <option value="5510404">5510404-併排臨時停車</option>
-                        </select>
+                        <div class="text-body" id="m_law"></div>
                         <select id="m_carType" width="100%">
                           <option value="0" disabled="disabled" selected>
                             請選擇
@@ -305,12 +292,15 @@
                             style="font-size: 25px"
                           />
                         </div>
+                        <div>
+                          <input type="text" id="m_remark" />
+                        </div>
                         <input type="hidden" id="m_id" name="m_id" />
                       </div>
                     </div>
 
                     <div style="text-align: center">
-                          <a
+                      <a
                         class="btn-floating waves-effect waves-light modal-trigger"
                         href=""
                         id="m_videoURL"
@@ -364,7 +354,6 @@
         });
         $("#txt_date2").val(GetDateStr(0) + " 23:59");
         $("#m_carType").dropdown({ uiLibrary: "materialdesign" });
-        $("#m_law").dropdown({ uiLibrary: "materialdesign" });
         $("#txt_cartype").dropdown({ uiLibrary: "materialdesign" });
         $.ajax({
           url: "./php/GetDetectLocationList.php",
@@ -464,6 +453,15 @@
               width: 50,
             },
             {
+              field: "remark",
+              title: "其他",
+              align: "center",
+              sortable: true,
+              filterable: false,
+              hidden: true,
+              width: 50,
+            },
+            {
               title: "審核",
               width: 64,
               tmpl:
@@ -502,11 +500,6 @@
           $("#m_carType").dropdown().value() === "0"
         ) {
           alert("請選擇車種");
-        } else if (
-          $("#m_law").dropdown().value() === null ||
-          $("#m_law").dropdown().value() === "0"
-        ) {
-          alert("請選擇違規法條");
         } else {
           SubmitChecked(grid);
         }
@@ -564,7 +557,8 @@
         $("#m_datetime").text(e.data.record.Datetime);
         $("#m_location").text(e.data.record.Location);
         $("#m_carType").dropdown().value(e.data.record.carTypeValue);
-        $("#m_law").dropdown().value("0");
+        $("#m_law").text("違規停車");
+        $("#m_remark").val(e.data.record.remark);
 
         dialog.open("");
       }
@@ -575,8 +569,8 @@
           RowNo: $("#m_id").val(),
           carNumber: $("#m_carNumber").val(),
           carType: $("#m_carType").val(),
-          Law: $("#m_law").val(),
           status: "2",
+          remark: $("#m_remark").val(),
         };
 
         $.ajax({
@@ -602,7 +596,8 @@
                 $("#m_datetime").text(next.Datetime);
                 $("#m_location").text(next.Location);
                 $("#m_carType").dropdown().value(next.carTypeValue);
-                $("#m_law").dropdown().value("0");
+                $("#m_law").text("違規停車");
+                $("#m_remark").val(next.remark);
                 dataIndex = dataIndex + 1; //更新
               } else {
                 dialog.close();
@@ -640,6 +635,7 @@
           ),
           txt_addr: emptyStrToUndefined($("#txt_addr").dropdown().value()),
           status: "3",
+          remark: $("#m_remark").val(),
         };
 
         $.ajax({
@@ -661,7 +657,8 @@
                 $("#m_datetime").text(next.Datetime);
                 $("#m_location").text(next.Location);
                 $("#m_carType").dropdown().value(next.carTypeValue);
-                $("#m_law").dropdown().value("0");
+                $("#m_law").text("違規停車");
+                $("#m_remark").val(next.remark);
                 dataIndex = dataIndex - 1; //更新
               } else {
                 M.toast({ html: "已到第一筆" });
@@ -715,7 +712,8 @@
                 $("#m_datetime").text(next.Datetime);
                 $("#m_location").text(next.Location);
                 $("#m_carType").dropdown().value(next.carTypeValue);
-                $("#m_law").dropdown().value("0");
+                $("#m_law").text("違規停車");
+                $("#m_remark").val(next.remark);
                 dataIndex = dataIndex + 1; //更新
               } else {
                 M.toast({ html: "已到最後一筆" });

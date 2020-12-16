@@ -160,6 +160,7 @@ if ($result->num_rows > 0) {
                             $data_t->status = '未開單';
                             break;
                     }
+              $data_t->remark = $record['remark'];
 
             //連續兩小時不舉發
             $continuous_data_index = array_search($record['RowNo'], array_column($jSon['continuous_data'], 'RowNo'));

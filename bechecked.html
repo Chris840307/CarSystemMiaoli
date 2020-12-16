@@ -286,6 +286,7 @@
                         <div class="text-title">違規法條</div>
                         <div class="text-title">車種</div>
                         <div class="text-title">車牌號碼</div>
+                        <div class="text-title">其他</div>
                       </div>
                       <div class="data-right">
                         <div class="text-body" id="m_datetime"></div>
@@ -307,6 +308,9 @@
                             class="validate"
                             style="font-size: 25px"
                           />
+                        </div>
+                        <div>
+                          <input type="text" id="m_remark" />
                         </div>
                         <input type="hidden" id="m_id" name="m_id" />
                       </div>
@@ -473,6 +477,15 @@
               width: 50,
             },
             {
+              field: "remark",
+              title: "其他",
+              align: "center",
+              sortable: true,
+              filterable: false,
+              hidden: true,
+              width: 50,
+            },
+            {
               title: "審核",
               width: 60,
               tmpl:
@@ -569,6 +582,7 @@
         $("#m_location").text(e.data.record.Location);
         $("#m_carType").dropdown().value(e.data.record.carTypeValue);
         $("#m_law").text("違規停車");
+        $("#m_remark").val(e.data.record.remark);
 
         dialog.open("");
       }
@@ -578,7 +592,9 @@
         var postdata = {
           RowNo: $("#m_id").val(),
           carNumber: $("#m_carNumber").val(),
+          carType: $("#m_carType").val(),
           status: "3",
+          remark: $("#m_remark").val(),
         };
 
         $.ajax({
@@ -605,6 +621,7 @@
                 $("#m_location").text(next.Location);
                 $("#m_carType").dropdown().value(next.carTypeValue);
                 $("#m_law").text("違規停車");
+                $("#m_remark").val(next.remark);
                 dataIndex = dataIndex + 1; //更新
               } else {
                 $("#table1").grid("destroy", true, true);
@@ -664,6 +681,7 @@
                 $("#m_location").text(next.Location);
                 $("#m_carType").dropdown().value(next.carTypeValue);
                 $("#m_law").text("違規停車");
+                $("#m_remark").val(next.remark);
                 dataIndex = dataIndex - 1; //更新
               } else {
                 M.toast({ html: "已到第一筆" });
@@ -694,7 +712,6 @@
           txt_cartype: emptyStrToUndefined(
             $("#txt_cartype").dropdown().value()
           ),
-
           txt_addr: emptyStrToUndefined($("#txt_addr").dropdown().value()),
           status: "2",
         };
@@ -719,6 +736,7 @@
                 $("#m_location").text(next.Location);
                 $("#m_carType").dropdown().value(next.carTypeValue);
                 $("#m_law").text("違規停車");
+                $("#m_remark").val(next.remark);
                 dataIndex = dataIndex + 1; //更新
               } else {
                 M.toast({ html: "已到最後一筆" });
