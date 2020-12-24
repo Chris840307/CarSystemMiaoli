@@ -72,47 +72,47 @@ while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         copy($Photo_arr[$i], '../export/'.$dirPath.'/'.$name_Datetime.'_'.$name_carID.'.jpg'); //苗栗路徑不一樣
 
         //寫入txt檔
-        $file = fopen('../export/'.$dirPath.'/'.$name_Datetime.'_'.$name_carID.'.txt ', 'w'); //開啟txt檔案
-        $file_ini = fopen('../export/'.$dirPath.'/'.$name_Datetime.'_'.$name_carID.'.ini ', 'w'); //開啟ini檔案
+        $file = fopen('../export/'.$dirPath.'/'.$name_Datetime.'_'.$name_carID.'.txt', 'w'); //開啟txt檔案
+        $file_ini = fopen('../export/'.$dirPath.'/'.$name_Datetime.'_'.$name_carID.'.ini', 'w'); //開啟ini檔案
 
         //txt寫檔
-        fwrite($file, '證號='."\n");
-        fwrite($file, '主機='."\n");
-        fwrite($file, '地點='.$row['DetectLocation']."\n");
-        fwrite($file, '速限='."\n");
-        fwrite($file, '路口='."\n");
-        fwrite($file, '編號='.$row['SerialNo']."\n");
-        fwrite($file, '類型=違規停車'."\n");
-        fwrite($file, '日期='.date('Y/m/d', strtotime($row['Datetime']))."\n");
-        fwrite($file, '時間='.date('H:i:s', strtotime($row['Datetime']))."\n");
-        fwrite($file, '車速='."\n");
-        fwrite($file, '方向='."\n");
-        fwrite($file, '車道='."\n");
-        fwrite($file, '操作者姓名=交通員警'."\n");
-        fwrite($file, 'Title_1='."\n");
-        fwrite($file, 'Title_2='."\n");
-        fwrite($file, 'Title_3='."\n");
-        // fwrite($file, '車牌='.$row['CarNumber']."\n");
+        fwrite($file, '證號='."\r\n");
+        fwrite($file, '主機='."\r\n");
+        fwrite($file, '地點='.$row['DetectLocation']."\r\n");
+        fwrite($file, '速限='."\r\n");
+        fwrite($file, '路口='."\r\n");
+        fwrite($file, '編號='.$row['SerialNo']."\r\n");
+        fwrite($file, '類型=違規停車'."\r\n");
+        fwrite($file, '日期='.date('Y/m/d', strtotime($row['Datetime']))."\r\n");
+        fwrite($file, '時間='.date('H:i:s', strtotime($row['Datetime']))."\r\n");
+        fwrite($file, '車速='."\r\n");
+        fwrite($file, '方向='."\r\n");
+        fwrite($file, '車道='."\r\n");
+        fwrite($file, '操作者姓名=交通員警'."\r\n");
+        fwrite($file, 'Title_1='."\r\n");
+        fwrite($file, 'Title_2='."\r\n");
+        fwrite($file, 'Title_3='."\r\n");
+        // fwrite($file, '車牌='.$row['CarNumber']."\r\n");
         fclose($file);
 
         //ini寫檔
-        fwrite($file_ini, '證號='."\n");
-        fwrite($file_ini, '主機='."\n");
-        fwrite($file_ini, '地點='.$row['DetectLocation']."\n");
-        fwrite($file_ini, '速限='."\n");
-        fwrite($file_ini, '路口='."\n");
-        fwrite($file_ini, '編號='.$row['SerialNo']."\n");
-        fwrite($file_ini, '類型=違規停車'."\n");
-        fwrite($file_ini, '日期='.date('Y/m/d', strtotime($row['Datetime']))."\n");
-        fwrite($file_ini, '時間='.date('H:i:s', strtotime($row['Datetime']))."\n");
-        fwrite($file_ini, '車速='."\n");
-        fwrite($file_ini, '方向='."\n");
-        fwrite($file_ini, '車道='."\n");
-        fwrite($file_ini, '操作者姓名=交通員警'."\n");
-        fwrite($file_ini, 'Title_1='."\n");
-        fwrite($file_ini, 'Title_2='."\n");
-        fwrite($file_ini, 'Title_3='."\n");
-        // fwrite($file_ini, '車牌='.$row['CarNumber']."\n");
+        fwrite($file_ini, '證號='."\r\n");
+        fwrite($file_ini, '主機='."\r\n");
+        fwrite($file_ini, '地點='.$row['DetectLocation']."\r\n");
+        fwrite($file_ini, '速限='."\r\n");
+        fwrite($file_ini, '路口='."\r\n");
+        fwrite($file_ini, '編號='.$row['SerialNo']."\r\n");
+        fwrite($file_ini, '類型=違規停車'."\r\n");
+        fwrite($file_ini, '日期='.date('Y/m/d', strtotime($row['Datetime']))."\r\n");
+        fwrite($file_ini, '時間='.date('H:i:s', strtotime($row['Datetime']))."\r\n");
+        fwrite($file_ini, '車速='."\r\n");
+        fwrite($file_ini, '方向='."\r\n");
+        fwrite($file_ini, '車道='."\r\n");
+        fwrite($file_ini, '操作者姓名=交通員警'."\r\n");
+        fwrite($file_ini, 'Title_1='."\r\n");
+        fwrite($file_ini, 'Title_2='."\r\n");
+        fwrite($file_ini, 'Title_3='."\r\n");
+        // fwrite($file_ini, '車牌='.$row['CarNumber']."\r\n");
         fclose($file_ini);
 
         ++$i;
