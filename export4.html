@@ -248,8 +248,8 @@
             );
             for (var i = 0; i < msg.data.length; i++) {
               Columns.push({
-                field: msg.data[i].Location,
-                title: msg.data[i].Location,
+                field: msg.data[i].DetectLocation,
+                title: msg.data[i].DetectLocation,
                 align: "center",
                 sortable: true,
                 filterable: false,
@@ -322,7 +322,7 @@
             for (var i = 0; i < msg.location.length; i++) {
               temp = [];
               for (var j = 0; j < msg.data.length; j++) {
-                temp.push(msg.data[j][msg.location[i].Location]);
+                temp.push(msg.data[j][msg.location[i].DetectLocation]);
               }
               chartData.push(temp);
             }
@@ -347,7 +347,7 @@
         var dataSets = [];
         for (var i = 0; i < location.length; i++) {
           dataSets.push({
-            label: location[i].Location,
+            label: location[i].DetectLocation,
             backgroundColor: backgroundColor[i],
             data: chartData[i],
           });

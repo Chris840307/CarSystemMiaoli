@@ -19,11 +19,11 @@ mysqli_select_db($conn, $dbname);
 //標題
 $csv_export = '日期,';
 //取得總共有幾個Location
-$sql = 'SELECT `Location` FROM `violation` GROUP BY `Location`';
+$sql = 'SELECT `DetectLocation` FROM `violation` GROUP BY `DetectLocation`';
 $result = mysqli_query($conn, $sql) or die('MySQL select error'.mysqli_error($conn));
 if ($result->num_rows > 0) {
     while ($record = mysqli_fetch_array($result)) {
-        $csv_export .= $record['Location'].',';
+        $csv_export .= $record['DetectLocation'].',';
     }
 }
 $csv_export .= "總數\n";
@@ -32,7 +32,7 @@ $csv_export .= '';
 while (true) {
     if ($txt_date1 != $txt_date2) {
         //取得總共有幾個Location
-        $sql2 = 'SELECT `Location` FROM `violation` GROUP BY `Location`';
+        $sql2 = 'SELECT `DetectLocation` FROM `violation` GROUP BY `DetectLocation`';
         $result2 = mysqli_query($conn, $sql2) or die('MySQL select error'.mysqli_error($conn));
         if ($result2->num_rows > 0) {
             //塞資料
@@ -41,8 +41,8 @@ while (true) {
             $sum = 0;
             while ($record2 = mysqli_fetch_array($result2)) {
                 //取得該Location數量
-                $Location = $record2['Location'];
-                $sql = "SELECT count(*) AS count FROM `violation` WHERE `Datetime` BETWEEN '$txt_date1 00:00:00' AND '$txt_date1 23:59:59' AND `Location`='$Location'";
+                $DetectLocation = $record2['DetectLocation'];
+                $sql = "SELECT count(*) AS count FROM `violation` WHERE `Datetime` BETWEEN '$txt_date1 00:00:00' AND '$txt_date1 23:59:59' AND `DetectLocation`='$DetectLocation'";
                 // echo $sql;
                 $result = mysqli_query($conn, $sql) or die('MySQL select error'.mysqli_error($conn));
                 if ($result->num_rows > 0) {

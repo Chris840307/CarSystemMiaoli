@@ -29,7 +29,7 @@ $result = mysqli_query($conn, $sql) or die('MySQL select error'.mysqli_error($co
 if ($result->num_rows > 0) {
     while ($record = mysqli_fetch_array($result)) {
         //塞資料
-        $csv_export .= $record['RowNo'].','.$record['Datetime'].','.$record['CarNumber'].','.$record['Location'].','.$record['DetectLocation']."\n";
+        $csv_export .= $record['RowNo'].','.$record['Datetime'].','.$record['CarNumber'].','.$record['DetectLocation'].','.$record['DetectLocation']."\n";
     }
     $csv_export .= '';
 }

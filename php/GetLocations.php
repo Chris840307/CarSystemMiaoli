@@ -17,13 +17,13 @@ mysqli_select_db($conn, $dbname);
 $jSon['data'] = [];
 
 //取得總共有幾個Location
-$sql = 'SELECT `Location` FROM `violation` GROUP BY `Location`';
+$sql = 'SELECT `DetectLocation` FROM `violation` GROUP BY `DetectLocation`';
 $result = mysqli_query($conn, $sql) or die('MySQL select error'.mysqli_error($conn));
 if ($result->num_rows > 0) {
     while ($record = mysqli_fetch_array($result)) {
         $data_t = new stdClass();
 
-        $data_t->Location = $record['Location'];
+        $data_t->DetectLocation = $record['DetectLocation'];
 
         array_push($jSon['data'], $data_t);
     }

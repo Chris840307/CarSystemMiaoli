@@ -287,7 +287,7 @@
             // for (var i = 0; i < msg.location.length; i++) {
             //   temp = [];
             //   for (var j = 0; j < msg.data.length; j++) {
-            //     temp.push(msg.data[j][msg.location[i].Location]);
+            //     temp.push(msg.data[j][msg.location[i].DetectLocation]);
             //   }
             //   chartData.push(temp);
             // }
@@ -311,7 +311,7 @@
         var dataSets = [];
         for (var i = 0; i < location.length; i++) {
           dataSets.push({
-            label: location[i].Location,
+            label: location[i].DetectLocation,
             backgroundColor: backgroundColor[i],
             data: chartData[i],
           });
