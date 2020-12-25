@@ -542,14 +542,7 @@
 
       //送出不開單
       $("#btn_unchecked").on("click", function () {
-        if (
-          $("#m_carType").dropdown().value() === null ||
-          $("#m_carType").dropdown().value() === "0"
-        ) {
-          alert("請選擇車種");
-        } else {
-          SubmitUnChecked(grid);
-        }
+        SubmitUnChecked(grid);
       });
 
       function filterData() {
