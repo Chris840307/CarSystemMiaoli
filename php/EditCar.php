@@ -16,13 +16,14 @@ $carNumber = $str_json->{'carNumber'};
 $carType = $str_json->{'carType'};
 $status = $str_json->{'status'};
 $remark = $str_json->{'remark'};
+$result = $str_json->{'result'};
 
 $conn = mysqli_connect($dbhost, $dbuser, $dbpass) or die('Error with MySQL connection'.mysql_error());
 
 mysqli_query($conn, 'SET NAMES utf8');
 mysqli_select_db($conn, $dbname);
 
-$sql = "UPDATE `violation` SET `CarNumber`='$carNumber',`status`='$status',`Law`='違規停車',`remark`='$remark'";
+$sql = "UPDATE `violation` SET `CarNumber`='$carNumber',`status`='$status',`Law`='違規停車',`remark`='$remark',`result`='$result'";
 if ($carType != null && $carType != '') {
     $sql = $sql.",`carType`='$carType'";
 }

@@ -267,7 +267,8 @@
                         <div class="text-title">違規法條</div>
                         <div class="text-title">車種</div>
                         <div class="text-title">車牌號碼</div>
-                        <div class="text-title">其他</div>
+                        <div class="text-title">原因</div>
+                        <div class="text-title">備註</div>
                       </div>
                       <div class="data-right">
                         <div class="text-body" id="m_datetime"></div>
@@ -289,6 +290,17 @@
                             class="validate"
                             style="font-size: 25px"
                           />
+                        </div>
+                        <div>
+                          <select id="m_result" width="100%">
+                            <option value="0" disabled="disabled" selected>
+                              請選擇
+                            </option>
+                            <option value="1">判別車號不完整</option>
+                            <option value="2">車號模糊無法辨識</option>
+                            <option value="3">特種車輛執行公務</option>
+                            <option value="4">其他:(自行輸入)</option>
+                          </select>
                         </div>
                         <div>
                           <input type="text" id="m_remark" />
@@ -355,6 +367,7 @@
         });
         $("#txt_date2").val(GetDateStr(0) + " 23:59");
         $("#m_carType").dropdown({ uiLibrary: "materialdesign" });
+        $("#m_result").dropdown({ uiLibrary: "materialdesign" });
 
         $.ajax({
           url: "./php/GetDetectLocationList.php",
@@ -443,6 +456,15 @@
               align: "center",
               sortable: true,
               filterable: false,
+              width: 50,
+            },
+            {
+              field: "result",
+              title: "開單原因",
+              align: "center",
+              sortable: true,
+              filterable: false,
+              hidden: true,
               width: 50,
             },
             {
@@ -564,6 +586,7 @@
         $("#m_location").text(e.data.record.Location);
         $("#m_carType").dropdown().value("0");
         $("#m_law").text("違規停車");
+        $("#m_result").dropdown().value(e.data.record.result);
         $("#m_remark").val(e.data.record.remark);
 
         dialog.open("");
@@ -576,6 +599,7 @@
           carNumber: $("#m_carNumber").val(),
           carType: $("#m_carType").val(),
           status: "2",
+          result: $("#m_result").val(),
           remark: $("#m_remark").val(),
         };
 
@@ -603,7 +627,9 @@
                 $("#m_location").text(next.Location);
                 $("#m_carType").dropdown().value("0");
                 $("#m_law").text("違規停車");
+                $("#m_result").dropdown().value("0");
                 $("#m_remark").val(next.remark);
+
                 dataIndex = dataIndex + 1; //更新
               } else {
                 dialog.close();
@@ -637,6 +663,7 @@
           carNumber: $("#m_carNumber").val(),
           carType: $("#m_carType").val(),
           status: "3",
+          result: 0,
           remark: $("#m_remark").val(),
         };
 
@@ -664,7 +691,9 @@
                 $("#m_location").text(next.Location);
                 $("#m_carType").dropdown().value("0");
                 $("#m_law").text("違規停車");
+                $("#m_result").dropdown().value("0");
                 $("#m_remark").val(next.remark);
+
                 dataIndex = dataIndex + 1; //更新
               } else {
                 dialog.close();
@@ -718,7 +747,9 @@
                 $("#m_detectLocation").text(next.DetectLocation);
                 $("#m_datetime").text(next.Datetime);
                 $("#m_location").text(next.Location);
+                $("#m_result").dropdown().value("0");
                 $("#m_remark").val(next.remark);
+
                 dataIndex = dataIndex - 1; //更新
               } else {
                 M.toast({ html: "已到第一筆" });
@@ -768,7 +799,9 @@
                 $("#m_detectLocation").text(next.DetectLocation);
                 $("#m_datetime").text(next.Datetime);
                 $("#m_location").text(next.Location);
+                $("#m_result").dropdown().value("0");
                 $("#m_remark").val(next.remark);
+
                 dataIndex = dataIndex + 1; //更新
               } else {
                 M.toast({ html: "已到最後一筆" });

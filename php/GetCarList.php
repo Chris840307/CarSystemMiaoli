@@ -150,17 +150,19 @@ if ($result->num_rows > 0) {
             $data_t->Law = $record['Law'];
             $data_t->statusValue = $record['status'];
             switch ($record['status']) {
-                        case 1:
-                            $data_t->status = '未處理';
-                            break;
-                        case 2:
-                            $data_t->status = '已開單';
-                            break;
-                        case 3:
-                            $data_t->status = '未開單';
-                            break;
-                    }
-              $data_t->remark = $record['remark'];
+                case 1:
+                    $data_t->status = '未處理';
+                    break;
+                case 2:
+                    $data_t->status = '已開單';
+                    break;
+                case 3:
+                    $data_t->status = '未開單';
+                    break;
+            }
+            
+            $data_t->result = $record['result'];
+            $data_t->remark = $record['remark'];
 
             //連續兩小時不舉發
             $continuous_data_index = array_search($record['RowNo'], array_column($jSon['continuous_data'], 'RowNo'));
