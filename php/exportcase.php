@@ -1,5 +1,6 @@
 <?php
 
+
 date_default_timezone_set('Asia/Taipei');
 
 //若export資料夾不存在則建立
@@ -75,44 +76,50 @@ while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         $file = fopen('../export/'.$dirPath.'/'.$name_Datetime.'_'.$name_carID.'.txt', 'w'); //開啟txt檔案
         $file_ini = fopen('../export/'.$dirPath.'/'.$name_Datetime.'_'.$name_carID.'.ini', 'w'); //開啟ini檔案
 
-        //txt寫檔
-        fwrite($file, '證號='."\r\n");
-        fwrite($file, '主機='."\r\n");
-        fwrite($file, '地點='.$row['DetectLocation']."\r\n");
-        fwrite($file, '速限='."\r\n");
-        fwrite($file, '路口='."\r\n");
-        fwrite($file, '編號='.$row['SerialNo']."\r\n");
-        fwrite($file, '類型=違規停車'."\r\n");
-        fwrite($file, '日期='.date('Y/m/d', strtotime($row['Datetime']))."\r\n");
-        fwrite($file, '時間='.date('H:i:s', strtotime($row['Datetime']))."\r\n");
-        fwrite($file, '車速='."\r\n");
-        fwrite($file, '方向='."\r\n");
-        fwrite($file, '車道='."\r\n");
-        fwrite($file, '操作者姓名=交通員警'."\r\n");
-        fwrite($file, 'Title_1='."\r\n");
-        fwrite($file, 'Title_2='."\r\n");
-        fwrite($file, 'Title_3='."\r\n");
-        // fwrite($file, '車牌='.$row['CarNumber']."\r\n");
+        //txt寫檔(ANSI編碼)
+        fwrite($file, mb_convert_encoding('證號='."\r\n","big5","utf-8"));
+        fwrite($file, mb_convert_encoding('主機='."\r\n","big5","utf-8"));
+        fwrite($file, mb_convert_encoding('地點='.$row['DetectLocation']."\r\n","big5","utf-8"));
+        fwrite($file, mb_convert_encoding('速限=0km'."\r\n","big5","utf-8"));
+        fwrite($file, mb_convert_encoding('違法編號=1'."\r\n","big5","utf-8"));
+        fwrite($file, mb_convert_encoding('類型=違規停車'."\r\n","big5","utf-8"));
+        fwrite($file, mb_convert_encoding('車道=車道1'."\r\n","big5","utf-8"));
+        fwrite($file, mb_convert_encoding('編號='.$row['SerialNo']."\r\n","big5","utf-8"));
+        fwrite($file, mb_convert_encoding('日期='.date('Y/m/d', strtotime($row['Datetime']))."\r\n","big5","utf-8"));
+        fwrite($file, mb_convert_encoding('時間='.date('H:i:s', strtotime($row['Datetime']))."\r\n","big5","utf-8"));
+        fwrite($file, mb_convert_encoding('紅燈=0.0秒'."\r\n","big5","utf-8"));
+        fwrite($file, mb_convert_encoding('黃燈=0.0秒'."\r\n","big5","utf-8"));
+        fwrite($file, mb_convert_encoding('間隔=0.0秒'."\r\n","big5","utf-8"));
+        fwrite($file, mb_convert_encoding('線圈=0cm'."\r\n","big5","utf-8"));
+        fwrite($file, mb_convert_encoding('範圍=1'."\r\n","big5","utf-8"));
+        fwrite($file, mb_convert_encoding('車牌='.$row['CarNumber']."\r\n","big5","utf-8"));
+        fwrite($file, mb_convert_encoding('操作者姓名=系統管理員'."\r\n","big5","utf-8"));
+        fwrite($file, mb_convert_encoding('Title_1=test1'."\r\n","big5","utf-8"));
+        fwrite($file, mb_convert_encoding('Title_2=test2'."\r\n","big5","utf-8"));
+        fwrite($file, mb_convert_encoding('Title_3=test3'."\r\n","big5","utf-8"));
         fclose($file);
 
-        //ini寫檔
-        fwrite($file_ini, '證號='."\r\n");
-        fwrite($file_ini, '主機='."\r\n");
-        fwrite($file_ini, '地點='.$row['DetectLocation']."\r\n");
-        fwrite($file_ini, '速限='."\r\n");
-        fwrite($file_ini, '路口='."\r\n");
-        fwrite($file_ini, '編號='.$row['SerialNo']."\r\n");
-        fwrite($file_ini, '類型=違規停車'."\r\n");
-        fwrite($file_ini, '日期='.date('Y/m/d', strtotime($row['Datetime']))."\r\n");
-        fwrite($file_ini, '時間='.date('H:i:s', strtotime($row['Datetime']))."\r\n");
-        fwrite($file_ini, '車速='."\r\n");
-        fwrite($file_ini, '方向='."\r\n");
-        fwrite($file_ini, '車道='."\r\n");
-        fwrite($file_ini, '操作者姓名=交通員警'."\r\n");
-        fwrite($file_ini, 'Title_1='."\r\n");
-        fwrite($file_ini, 'Title_2='."\r\n");
-        fwrite($file_ini, 'Title_3='."\r\n");
-        // fwrite($file_ini, '車牌='.$row['CarNumber']."\r\n");
+        //ini寫檔(ANSI編碼)
+        fwrite($file_ini, mb_convert_encoding('證號='."\r\n","big5","utf-8"));
+        fwrite($file_ini, mb_convert_encoding('主機='."\r\n","big5","utf-8"));
+        fwrite($file_ini, mb_convert_encoding('地點='.$row['DetectLocation']."\r\n","big5","utf-8"));
+        fwrite($file_ini, mb_convert_encoding('速限=0km'."\r\n","big5","utf-8"));
+        fwrite($file_ini, mb_convert_encoding('違法編號=1'."\r\n","big5","utf-8"));
+        fwrite($file_ini, mb_convert_encoding('類型=違規停車'."\r\n","big5","utf-8"));
+        fwrite($file_ini, mb_convert_encoding('車道=車道1'."\r\n","big5","utf-8"));
+        fwrite($file_ini, mb_convert_encoding('編號='.$row['SerialNo']."\r\n","big5","utf-8"));
+        fwrite($file_ini, mb_convert_encoding('日期='.date('Y/m/d', strtotime($row['Datetime']))."\r\n","big5","utf-8"));
+        fwrite($file_ini, mb_convert_encoding('時間='.date('H:i:s', strtotime($row['Datetime']))."\r\n","big5","utf-8"));
+        fwrite($file_ini, mb_convert_encoding('紅燈=0.0秒'."\r\n","big5","utf-8"));
+        fwrite($file_ini, mb_convert_encoding('黃燈=0.0秒'."\r\n","big5","utf-8"));
+        fwrite($file_ini, mb_convert_encoding('間隔=0.0秒'."\r\n","big5","utf-8"));
+        fwrite($file_ini, mb_convert_encoding('線圈=0cm'."\r\n","big5","utf-8"));
+        fwrite($file_ini, mb_convert_encoding('範圍=1'."\r\n","big5","utf-8"));
+        fwrite($file_ini, mb_convert_encoding('車牌='.$row['CarNumber']."\r\n","big5","utf-8"));
+        fwrite($file_ini, mb_convert_encoding('操作者姓名=系統管理員'."\r\n","big5","utf-8"));
+        fwrite($file_ini, mb_convert_encoding('Title_1=test1'."\r\n","big5","utf-8"));
+        fwrite($file_ini, mb_convert_encoding('Title_2=test2'."\r\n","big5","utf-8"));
+        fwrite($file_ini, mb_convert_encoding('Title_3=test3'."\r\n","big5","utf-8"));
         fclose($file_ini);
 
         ++$i;
@@ -156,6 +163,10 @@ $r = $zip->close();
 
 echo $i;
 if ($i != 0) {
+    header('Content-type: application/txt');
+header('Content-Transfer-Encoding: binary');
+header('Content-Description: File Transfer');
+header('Cache-Control: must-revalidate');
     header('Location:download.php');
 } else {
     header('Location:../bechecked.html');

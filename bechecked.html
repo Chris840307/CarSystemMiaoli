@@ -286,7 +286,7 @@
                         <div class="text-title">違規法條</div>
                         <div class="text-title">車種</div>
                         <div class="text-title">車牌號碼</div>
-                        <div class="text-title">原因</div>
+                        <div class="text-title">不開單原因</div>
                         <div class="text-title">備註</div>
                       </div>
                       <div class="data-right">
@@ -318,7 +318,7 @@
                             <option value="1">判別車號不完整</option>
                             <option value="2">車號模糊無法辨識</option>
                             <option value="3">特種車輛執行公務</option>
-                            <option value="4">其他:(自行輸入)</option>
+                            <option value="4">其他:</option>
                           </select>
                         </div>
                         <div>
@@ -381,7 +381,7 @@
         $("#m_carType").dropdown({ uiLibrary: "materialdesign" });
         $("#txt_cartype").dropdown({ uiLibrary: "materialdesign" });
         $("#m_result").dropdown({ uiLibrary: "materialdesign" });
-
+        setDisable();
         // $("#txt_cartype").formSelect();
 
         $.ajax({
@@ -492,7 +492,7 @@
             },
             {
               field: "result",
-              title: "開單原因",
+              title: "不開單原因",
               align: "center",
               sortable: true,
               filterable: false,
@@ -601,6 +601,8 @@
         $("#m_result").dropdown().value(e.data.record.result);
         $("#m_remark").val(e.data.record.remark);
 
+        setDisable();
+
         dialog.open("");
       }
 
@@ -611,7 +613,7 @@
           carNumber: $("#m_carNumber").val(),
           carType: $("#m_carType").val(),
           status: "3",
-          result: 0,
+          result: $("#m_result").val(),
           remark: $("#m_remark").val(),
         };
 
@@ -811,6 +813,23 @@
         document.myform.action = "php/exportcaseImg.php";
         document.getElementById("getDownloadData").submit();
       };
+
+      function setDisable() {
+        //   修改功能只能管理者可以做，一般權限不能變更只能查詢
+        if (getCookieByName("auth") === "1") {
+          //使用者
+          document.getElementById("m_result").disabled = true;
+          document.getElementById("m_result").style.display = "block";
+          document.getElementById("m_result").style.margin = "-3px";
+          document.getElementsByTagName("button")[7].style.display = "none"; //固定第七個做隱藏
+          document.getElementById("m_remark").disabled = true;
+          $("#btn_unchecked").css("display", "none");
+        } else {
+          //管理者
+          document.getElementById("m_result").disabled = false;
+          document.getElementById("m_remark").disabled = false;
+        }
+      }
     </script>
   </body>
 </html>
