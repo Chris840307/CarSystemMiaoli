@@ -72,11 +72,9 @@ while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         $name_Datetime = str_replace(' ', '', $name_Datetime_temp);
         copy($Photo_arr[$i], '../export/'.$dirPath.'/'.$name_Datetime.'_'.$name_carID.'.jpg'); //苗栗路徑不一樣
 
-        //寫入txt檔
-        $file = fopen('../export/'.$dirPath.'/'.$name_Datetime.'_'.$name_carID.'.txt', 'w'); //開啟txt檔案
-        $file_ini = fopen('../export/'.$dirPath.'/'.$name_Datetime.'_'.$name_carID.'.ini', 'w'); //開啟ini檔案
-
+        /* //txt檔案暫不出現
         //txt寫檔(ANSI編碼)
+        $file = fopen('../export/'.$dirPath.'/'.$name_Datetime.'_'.$name_carID.'.txt', 'w'); //開啟txt檔案
         fwrite($file, mb_convert_encoding('證號='."\r\n","big5","utf-8"));
         fwrite($file, mb_convert_encoding('主機='."\r\n","big5","utf-8"));
         fwrite($file, mb_convert_encoding('地點='.$row['DetectLocation']."\r\n","big5","utf-8"));
@@ -98,8 +96,10 @@ while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         fwrite($file, mb_convert_encoding('Title_2=test2'."\r\n","big5","utf-8"));
         fwrite($file, mb_convert_encoding('Title_3=test3'."\r\n","big5","utf-8"));
         fclose($file);
+        */
 
         //ini寫檔(ANSI編碼)
+        $file_ini = fopen('../export/'.$dirPath.'/'.$name_Datetime.'_'.$name_carID.'.ini', 'w'); //開啟ini檔案
         fwrite($file_ini, mb_convert_encoding('證號='."\r\n","big5","utf-8"));
         fwrite($file_ini, mb_convert_encoding('主機='."\r\n","big5","utf-8"));
         fwrite($file_ini, mb_convert_encoding('地點='.$row['DetectLocation']."\r\n","big5","utf-8"));
@@ -144,6 +144,7 @@ $files = new RecursiveIteratorIterator(
 );
 // print_r($files);
 
+
 foreach ($files as $name => $file) {
     // Skip directories (they would be added automatically)
     if (!$file->isDir()) {
@@ -156,6 +157,7 @@ foreach ($files as $name => $file) {
         //    var_dump($r);
     }
 }
+
 
 // Zip archive will be created only after closing object
 $r = $zip->close();

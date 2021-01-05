@@ -51,7 +51,7 @@ while (true) {
             while ($record2 = mysqli_fetch_array($result2)) {
                 //取得該Location數量
                 $DetectLocation = $record2['DetectLocation'];
-                $sql = "SELECT count(*) AS count FROM `violation` WHERE `Datetime` BETWEEN '$txt_date1 00:00:00' AND '$txt_date1 23:59:59' AND `DetectLocation`='$DetectLocation'";
+                $sql = "SELECT count(*) AS count FROM `violation` WHERE `Datetime` BETWEEN '$txt_date1 00:00:00' AND '$txt_date1 23:59:59' AND `DetectLocation`='$DetectLocation' AND `status`='2'";
                 // echo $sql;
                 $result = mysqli_query($conn, $sql) or die('MySQL select error'.mysqli_error($conn));
 
