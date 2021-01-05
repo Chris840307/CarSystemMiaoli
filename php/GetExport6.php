@@ -23,7 +23,7 @@ mysqli_select_db($conn, $dbname);
 
 $jSon['data'] = [];
 
-    $sql = "SELECT `carType`,COUNT(`carType`) AS count FROM `violation` WHERE `Datetime` BETWEEN '$txt_date1' AND '$txt_date2' AND `status`!='1' GROUP BY `carType`";
+    $sql = "SELECT `carType`,COUNT(`carType`) AS count FROM `violation` WHERE `Datetime` BETWEEN '$txt_date1' AND '$txt_date2' AND `status`='2' GROUP BY `carType`";
     // echo $sql;
     $result = mysqli_query($conn, $sql) or die('MySQL select error'.mysqli_error($conn));
 

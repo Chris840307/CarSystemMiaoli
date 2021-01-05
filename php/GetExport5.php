@@ -23,7 +23,7 @@ mysqli_select_db($conn, $dbname);
 
 $jSon['data'] = [];
 
-    $sql = "SELECT * FROM `violation` WHERE `Datetime` BETWEEN '$txt_date1' AND '$txt_date2'";
+    $sql = "SELECT * FROM `violation` WHERE `Datetime` BETWEEN '$txt_date1' AND '$txt_date2' AND `status`='2'";
     // echo $sql;
     $result = mysqli_query($conn, $sql) or die('MySQL select error'.mysqli_error($conn));
 

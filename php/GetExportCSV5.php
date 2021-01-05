@@ -21,7 +21,7 @@ mysqli_select_db($conn, $dbname);
 $csv_export = 'id,日期,車牌號碼,停放位置,偵測地點名稱'."\n";
 $csv_export .= '';
 
-$sql = "SELECT * FROM `violation` WHERE `Datetime` BETWEEN '$txt_date1' AND '$txt_date2'";
+$sql = "SELECT * FROM `violation` WHERE `Datetime` BETWEEN '$txt_date1' AND '$txt_date2' AND `status`='2'";
 // echo $sql;
 $result = mysqli_query($conn, $sql) or die('MySQL select error'.mysqli_error($conn));
 

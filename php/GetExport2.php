@@ -45,7 +45,7 @@ for ($i = 0; $i < $diff_hour; ++$i) {
     $txt_date_hour_end = date('Y-m-d H:59:59', strtotime('+'.$i.' hour', strtotime($txt_date1)));
 
     //取得總共有幾個Location
-    $sql2 = 'SELECT `DetectLocation` FROM `violation` GROUP BY `DetectLocation`';
+    $sql2 = "SELECT `DetectLocation` FROM `violation` WHERE `status`='2' GROUP BY `DetectLocation`";
     $result2 = mysqli_query($conn, $sql2) or die('MySQL select error'.mysqli_error($conn));
     if ($result2->num_rows > 0) {
         $data_t = new stdClass();
@@ -57,7 +57,7 @@ for ($i = 0; $i < $diff_hour; ++$i) {
         while ($record2 = mysqli_fetch_array($result2)) {
             //取得該Location數量
             $DetectLocation = $record2['DetectLocation'];
-            $sql = "SELECT count(*) AS count FROM `violation` WHERE `Datetime` BETWEEN '$txt_date_hour' AND '$txt_date_hour_end' AND `DetectLocation`='$DetectLocation'";
+            $sql = "SELECT count(*) AS count FROM `violation` WHERE `Datetime` BETWEEN '$txt_date_hour' AND '$txt_date_hour_end' AND `DetectLocation`='$DetectLocation' AND `status`='2'";
             // echo $sql;
             $result = mysqli_query($conn, $sql) or die('MySQL select error'.mysqli_error($conn));
 

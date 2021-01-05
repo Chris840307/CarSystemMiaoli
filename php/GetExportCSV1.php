@@ -32,7 +32,7 @@ $csv_export .= '';
 while (true) {
     if ($txt_date1 != $txt_date2) {
         //取得總共有幾個Location
-        $sql2 = 'SELECT `DetectLocation` FROM `violation` GROUP BY `DetectLocation`';
+        $sql2 = "SELECT `DetectLocation` FROM `violation` WHERE `status`='2' GROUP BY `DetectLocation`";
         $result2 = mysqli_query($conn, $sql2) or die('MySQL select error'.mysqli_error($conn));
         if ($result2->num_rows > 0) {
             //塞資料
