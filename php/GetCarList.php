@@ -48,6 +48,7 @@ $sql = 'SELECT `CarNumber`,COUNT(`CarNumber`) AS CarCount FROM `violation`';
 if ($txt_date1 != null && $txt_date1 != 'undefined') {
     $sql = $sql." WHERE `Datetime` BETWEEN '$txt_date1' AND '$txt_date2'";
 }
+$sql = $sql.' AND `CarNumber` != NULL';
 $sql = $sql.' GROUP BY `CarNumber`';
 $result = mysqli_query($conn, $sql) or die('MySQL select error'.mysqli_error($conn));
 if ($result->num_rows > 0) {

@@ -139,8 +139,9 @@ if ($result->num_rows > 0) {
     $record = mysqli_fetch_array($result);
     $toNoHandled = $record['count'];   //未開單
 
-    //未處理
+    //扣除未處理
     $toDayNotHandle = $dayCount - $toDayHandled - $toNoHandled;
+    $dayCount =  $dayCount - $toNoHandled;
 }
 
 //本月案件(總)
@@ -197,10 +198,11 @@ $sql = "SELECT count(*) AS count FROM `violation` WHERE `Datetime` BETWEEN '$toF
 $result = mysqli_query($conn, $sql) or die('MySQL select error'.mysqli_error($conn));
 if ($result->num_rows > 0) {
     $record = mysqli_fetch_array($result);
-    $toNoHandled = $record['count']; //未開單
+    $toMonthNoHandled = $record['count']; //未開單
 
-    //未處理
-    $toMonthNotHandle = $monthCount - $toMonthHandled-$toNoHandled;
+    //扣除未處理
+    $toMonthNotHandle = $monthCount - $toMonthHandled - $toMonthNoHandled;
+    $monthCount = $monthCount - $toMonthNoHandled;
 }
 
     echo json_encode([
