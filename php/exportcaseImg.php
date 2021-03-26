@@ -110,5 +110,5 @@ echo $i;
 if ($i != 0) {
     header('Location:download.php');
 } else {
-    header('Location:../bechecked.html');
+    header('Location:../noData.html');
 }

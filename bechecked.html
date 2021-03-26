@@ -100,6 +100,7 @@
         font-weight: 700;
         font-size: 22px;
       }
+
       .gijgo-search-select .gj-dropdown [role="presenter"] {
         color: #9e9e9e;
         font-weight: 700;
@@ -200,7 +201,7 @@
               <label for="txt_num">車牌號碼</label>
             </div>
             <div class="contain-field input-field col s6 gijgo-search-select">
-              <select id="txt_cartype" width="180">
+              <select name="txt_cartype" id="txt_cartype" width="180">
                 <!-- <select multiple id="txt_cartype"> -->
                 <option value="" disabled="disabled" selected>車種</option>
                 <option value="1">機車</option>
@@ -208,7 +209,7 @@
               </select>
             </div>
             <div class="contain-field input-field col s6 gijgo-search-select">
-              <select id="txt_addr" width="250">
+              <select name="txt_addr" id="txt_addr" width="250">
                 <option value="" disabled="disabled" selected>停放位置</option>
               </select>
             </div>
@@ -431,7 +432,7 @@
               align: "center",
               sortable: false,
               filterable: false,
-              width: 30,
+              width: 45,
               hidden: false,
             },
             {

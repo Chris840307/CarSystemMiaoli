@@ -31,6 +31,7 @@ if ($result->num_rows > 0) {
             $data_t = new stdClass();
 
             $data_t->DetectLocation = $record['DetectLocation'];
+            $data_t->DetectLocation = $record['DetectLocation'];
 
             array_push($jSon['data'], $data_t);
         }

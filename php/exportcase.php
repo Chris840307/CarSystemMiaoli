@@ -1,6 +1,5 @@
 <?php
 
-
 date_default_timezone_set('Asia/Taipei');
 
 //若export資料夾不存在則建立
@@ -21,13 +20,14 @@ $txt_cartype = $_POST['txt_cartype'];
 $txt_law = $_POST['txt_law'];
 $txt_addr = $_POST['txt_addr'];
 
+
 $conn = mysqli_connect($dbhost, $dbuser, $dbpass) or die('Error with MySQL connection'.mysql_error());
 
 mysqli_query($conn, 'SET NAMES utf8');
 mysqli_select_db($conn, $dbname);
 
 //取得下載資料
-$sql = "SELECT A.* ,B.SerialNo FROM violation A JOIN parameter_list B ON B.addr = A.DetectLocation WHERE A.Datetime BETWEEN '$txt_date1' AND '$txt_date2'";
+$sql = "SELECT A.* ,B.SerialNo FROM violation A JOIN parameter_list B ON B.SerialNo = A.SerialNo WHERE A.Datetime BETWEEN '$txt_date1' AND '$txt_date2'";
 if ($txt_num != null && $txt_num != 'undefined') {
     $sql = $sql." AND A.CarNumber = '$txt_num'";
 }
@@ -163,13 +163,13 @@ foreach ($files as $name => $file) {
 $r = $zip->close();
 // var_dump($r);//檢查用
 
-echo $i;
+// echo $i;
 if ($i != 0) {
     header('Content-type: application/txt');
-header('Content-Transfer-Encoding: binary');
-header('Content-Description: File Transfer');
-header('Cache-Control: must-revalidate');
+    header('Content-Transfer-Encoding: binary');
+    header('Content-Description: File Transfer');
+    header('Cache-Control: must-revalidate');
     header('Location:download.php');
 } else {
-    header('Location:../bechecked.html');
+    header('Location:../noData.html');
 }
