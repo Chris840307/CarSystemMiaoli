@@ -129,7 +129,7 @@
               placeholder="查詢起始日期："
             />
           </div>
-          <!-- <div class="contain-field input-field col s6">
+          <div class="contain-field input-field col s6">
             <input
               type="text"
               name="txt_date2"
@@ -137,7 +137,7 @@
               class="validate"
               placeholder="查詢結束日期："
             />
-          </div> -->
+          </div>
 
           <div class="contain-field">
             <a
@@ -190,8 +190,8 @@
         //#region 日期格式化
         $("#txt_date1").datepicker({ format: "yyyy-mm-dd" });
         $("#txt_date1").val(GetDateStr(0));
-        // $("#txt_date2").datepicker({ format: "yyyy-mm-dd" });
-        // $("#txt_date2").val(GetDateStr(0));
+        $("#txt_date2").datepicker({ format: "yyyy-mm-dd" });
+        $("#txt_date2").val(GetDateStr(0));
         // #endregion 日期格式化
 
         // #region 取得table資料
@@ -231,11 +231,11 @@
               },
               {
                 field: "date",
-                title: "時間",
+                title: "日期",
                 align: "center",
                 sortable: true,
-                type: "date",
-                format: "HH:MM:ss",
+                // type: "date", 
+                // format: "HH:MM:ss",
                 filterable: false,
                 width: 90,
               }
@@ -282,7 +282,7 @@
       //清除
       $("#btn_reset").on("click", function () {
         $("#txt_date1").val(GetDateStr(0));
-        // $("#txt_date2").val(GetDateStr(0));
+        $("#txt_date2").val(GetDateStr(0));
 
         $("#table1").grid("destroy", true, true);
         createFunc();
@@ -292,7 +292,7 @@
       function filterData() {
         var postdata = {
           txt_date1: $("#txt_date1").val(),
-          //   txt_date2: $("#txt_date2").val(),
+          txt_date2: $("#txt_date2").val(),
           txt_account: emptyStrToUndefined($("#txt_account").val()),
         };
         $.ajax({
@@ -310,7 +310,9 @@
             }
             if (myChart_bar.data.datasets.length !== 0) {
               for (var i = 0; i < msg.location.length; i++) {
-                myChart_bar.data.datasets[i].data.shift();
+                  for (var j = 0; j < msg.data.length; j++) {
+                    myChart_bar.data.datasets[i].data.shift();
+                  }
               }
             }
             for (var i = 0; i < msg.location.length; i++) {
@@ -335,6 +337,10 @@
           "#fcc468",
           "#8d6e63",
           "#66615c",
+          "#477998",
+          "#A9BCD0",
+          "#DAA49A",
+          "#373F51",
         ];
         var dataSets = [];
         for (var i = 0; i < location.length; i++) {
@@ -382,9 +388,9 @@
 
       //匯出csv
       function csv_btn() {
-        var filename = GetDateStr(0) + "違規熱時分析.csv";
+        var filename =$("#txt_date1").val() + "~" + $("#txt_date2").val() + "違規熱時分析.csv";
         var url =
-          "./php/GetExportCSV2.php?" + "txt_date1=" + $("#txt_date1").val();
+          "./php/GetExportCSV2.php?" + "txt_date1=" + $("#txt_date1").val()+ "&txt_date2=" + $("#txt_date2").val();
         var downloadLink = document.createElement("a");
 
         document.body.appendChild(downloadLink);

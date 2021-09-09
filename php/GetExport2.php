@@ -12,10 +12,9 @@ $dbname = 'car';
 $str = file_get_contents('php://input');
 $str_json = json_decode($str);
 $txt_date1 = $str_json->{'txt_date1'};
-// $txt_date2 = $str_json->{'txt_date2'};
+$txt_date2 = $str_json->{'txt_date2'};
 $txt_date1 = date('Y-m-d 00:00:00', strtotime($txt_date1));
-// $txt_date2 = date('Y-m-d 23:59:59', strtotime($txt_date2));
-$txt_date2 = date('Y-m-d 23:59:59', strtotime($txt_date1));
+$txt_date2 = date('Y-m-d 23:59:59', strtotime($txt_date2));
 $txt_date_hour = '';
 $diff_hour = (strtotime($txt_date2) - strtotime($txt_date1)) / (60 * 60); //計算相差之小時數
 
@@ -42,7 +41,7 @@ if ($result->num_rows > 0) {
 
 for ($i = 0; $i < $diff_hour; ++$i) {
     $txt_date_hour = date('Y-m-d H:i:s', strtotime('+'.$i.' hour', strtotime($txt_date1)));
-    $txt_date_hour_end = date('Y-m-d H:59:59', strtotime('+'.$i.' hour', strtotime($txt_date1)));
+    $txt_date_hour_end = date('Y-m-d H:59:59', strtotime('+'.$i.' hour', strtotime($txt_date2)));
 
     //取得總共有幾個Location
     $sql2 = "SELECT `DetectLocation` FROM `violation` WHERE `status`='2' GROUP BY `DetectLocation`";
@@ -50,8 +49,8 @@ for ($i = 0; $i < $diff_hour; ++$i) {
     if ($result2->num_rows > 0) {
         $data_t = new stdClass();
         $data_t->date = $txt_date1;
-        $data_t->date = date('H:i:s', strtotime($txt_date_hour));
-        $data_t->day = date('Y-m-d', strtotime($txt_date_hour));
+        $data_t->date = date('Y-m-d H:i:s', strtotime($txt_date_hour));
+        // $data_t->day = date('Y-m-d', strtotime($txt_date_hour));
 
         $sum = 0;
         while ($record2 = mysqli_fetch_array($result2)) {

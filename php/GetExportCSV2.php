@@ -8,10 +8,9 @@ $dbpass = '2u6u/ru8';
 $dbname = 'car';
 
 $txt_date1 = $_GET['txt_date1'];
-// $txt_date2 = $_GET['txt_date2'];
+$txt_date2 = $_GET['txt_date2'];
 $txt_date1 = date('Y-m-d 00:00:00', strtotime($txt_date1));
-// $txt_date2 = date('Y-m-d 23:59:59', strtotime($txt_date2));
-$txt_date2 = date('Y-m-d 23:59:59', strtotime($txt_date1));
+$txt_date2 = date('Y-m-d 23:59:59', strtotime($txt_date2));
 $txt_date_hour = '';
 $diff_hour = (strtotime($txt_date2) - strtotime($txt_date1)) / (60 * 60); //計算相差之小時數
 
@@ -35,14 +34,14 @@ $csv_export .= '';
 
 for ($i = 0; $i < $diff_hour; ++$i) {
     $txt_date_hour = date('Y-m-d H:i:s', strtotime('+'.$i.' hour', strtotime($txt_date1)));
-    $txt_date_hour_end = date('Y-m-d H:59:59', strtotime('+'.$i.' hour', strtotime($txt_date1)));
+    $txt_date_hour_end = date('Y-m-d H:59:59', strtotime('+'.$i.' hour', strtotime($txt_date2)));
 
     //取得總共有幾個Location
     $sql2 = "SELECT `DetectLocation` FROM `violation` WHERE `status`='2' GROUP BY `DetectLocation`";
     $result2 = mysqli_query($conn, $sql2) or die('MySQL select error'.mysqli_error($conn));
     if ($result2->num_rows > 0) {
         //塞資料
-        $csv_export .= date('H:i:s', strtotime($txt_date_hour)).',';
+        $csv_export .= date('Y-m-d H:i:s', strtotime($txt_date_hour)).',';
 
         $sum = 0;
         while ($record2 = mysqli_fetch_array($result2)) {
