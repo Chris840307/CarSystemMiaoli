@@ -368,7 +368,7 @@
           format: "yyyy-mm-dd HH:MM",
         });
         $("#txt_date2").val(GetDateStr(0) + " 23:59");
-        $("#m_carType").dropdown({ uiLibrary: "materialdesign" });
+        $("#m_carType").dropdown({ uiLibrary: "materialdesign" }).value("2");
         $("#m_result").dropdown({ uiLibrary: "materialdesign" });
 
         $.ajax({
@@ -481,8 +481,7 @@
             {
               title: "審核",
               width: 64,
-              tmpl:
-                '<span class="material-icons gj-cursor-pointer">edit</span>',
+              tmpl: '<span class="material-icons gj-cursor-pointer">edit</span>',
               align: "center",
               events: { click: Edit },
             },
