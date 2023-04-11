@@ -368,7 +368,7 @@
           format: "yyyy-mm-dd HH:MM",
         });
         $("#txt_date2").val(GetDateStr(0) + " 23:59");
-        $("#m_carType").dropdown({ uiLibrary: "materialdesign" }).value("2");
+        $("#m_carType").dropdown({ uiLibrary: "materialdesign" });
         $("#m_result").dropdown({ uiLibrary: "materialdesign" });
 
         $.ajax({
@@ -578,7 +578,7 @@
         $("#m_detectLocation").text(e.data.record.DetectLocation);
         $("#m_datetime").text(e.data.record.Datetime);
         $("#m_location").text(e.data.record.Location);
-        $("#m_carType").dropdown().value("0");
+        $("#m_carType").dropdown().value("2"); //預設為汽車
         $("#m_law").text("違規停車");
         $("#m_result").dropdown().value(e.data.record.result);
         $("#m_remark").val(e.data.record.remark);
@@ -619,7 +619,7 @@
                 $("#m_detectLocation").text(next.DetectLocation);
                 $("#m_datetime").text(next.Datetime);
                 $("#m_location").text(next.Location);
-                $("#m_carType").dropdown().value("0");
+                $("#m_carType").dropdown().value("2"); //預設為汽車
                 $("#m_law").text("違規停車");
                 $("#m_result").dropdown().value("0");
                 $("#m_remark").val(next.remark);
@@ -683,7 +683,7 @@
                 $("#m_detectLocation").text(next.DetectLocation);
                 $("#m_datetime").text(next.Datetime);
                 $("#m_location").text(next.Location);
-                $("#m_carType").dropdown().value("0");
+                $("#m_carType").dropdown().value("2");  //預設為汽車
                 $("#m_law").text("違規停車");
                 $("#m_result").dropdown().value("0");
                 $("#m_remark").val(next.remark);
