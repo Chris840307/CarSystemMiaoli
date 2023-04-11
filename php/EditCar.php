@@ -18,7 +18,7 @@ $status = $str_json->{'status'};
 $remark = $str_json->{'remark'};
 $result = $str_json->{'result'};
 
-$conn = mysqli_connect($dbhost, $dbuser, $dbpass) or die('Error with MySQL connection'.mysql_error());
+$conn = mysqli_connect($dbhost, $dbuser, $dbpass) or die('Error with MySQL connection');
 
 mysqli_query($conn, 'SET NAMES utf8');
 mysqli_select_db($conn, $dbname);

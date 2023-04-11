@@ -14,7 +14,7 @@ $str_json = json_decode($str);
 $txt_ip = $str_json->{'txt_ip'};
 $txt_addr = $str_json->{'txt_addr'};
 
-$conn = mysqli_connect($dbhost, $dbuser, $dbpass) or die('Error with MySQL connection'.mysql_error());
+$conn = mysqli_connect($dbhost, $dbuser, $dbpass) or die('Error with MySQL connection');
 
 mysqli_query($conn, 'SET NAMES utf8');
 mysqli_select_db($conn, $dbname);

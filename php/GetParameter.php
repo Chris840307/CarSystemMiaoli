@@ -12,7 +12,7 @@ $dbname = 'car';
 $str = file_get_contents('php://input');
 $str_json = json_decode($str);
 
-$conn = mysqli_connect($dbhost, $dbuser, $dbpass) or die('Error with MySQL connection'.mysql_error());
+$conn = mysqli_connect($dbhost, $dbuser, $dbpass) or die('Error with MySQL connection');
 
 mysqli_query($conn, 'SET NAMES utf8');
 mysqli_select_db($conn, $dbname);

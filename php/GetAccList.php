@@ -15,7 +15,7 @@ $auth = $str_json->{'auth'};
 $txt_acc = $str_json->{'txt_acc'};
 $txt_status = $str_json->{'txt_status'};
 
-$conn = mysqli_connect($dbhost, $dbuser, $dbpass) or die('Error with MySQL connection'.mysql_error());
+$conn = mysqli_connect($dbhost, $dbuser, $dbpass) or die('Error with MySQL connection');
 
 mysqli_query($conn, 'SET NAMES utf8');
 mysqli_select_db($conn, $dbname);

@@ -15,7 +15,7 @@ $dbname = 'car';
 // $txt_date2 = $str_json->{'txt_date2'};
 // $txt_num = $str_json->{'txt_num'};
 
-$conn = mysqli_connect($dbhost, $dbuser, $dbpass) or die('Error with MySQL connection'.mysql_error());
+$conn = mysqli_connect($dbhost, $dbuser, $dbpass) or die('Error with MySQL connection');
 
 mysqli_query($conn, 'SET NAMES utf8');
 mysqli_select_db($conn, $dbname);

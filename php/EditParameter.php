@@ -15,7 +15,7 @@ $id = $str_json->{'id'};
 $d_edit_s = $str_json->{'d_edit_s'};
 $d_edit_addr = $str_json->{'d_edit_addr'};
 
-$conn = mysqli_connect($dbhost, $dbuser, $dbpass) or die('Error with MySQL connection'.mysql_error());
+$conn = mysqli_connect($dbhost, $dbuser, $dbpass) or die('Error with MySQL connection');
 
 mysqli_query($conn, 'SET NAMES utf8');
 mysqli_select_db($conn, $dbname);

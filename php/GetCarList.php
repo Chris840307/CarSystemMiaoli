@@ -18,7 +18,7 @@ $txt_cartype = $str_json->{'txt_cartype'};
 $txt_addr = $str_json->{'txt_addr'};
 $status = $str_json->{'status'};
 
-$conn = mysqli_connect($dbhost, $dbuser, $dbpass) or die('Error with MySQL connection'.mysql_error());
+$conn = mysqli_connect($dbhost, $dbuser, $dbpass) or die('Error with MySQL connection');
 
 mysqli_query($conn, 'SET NAMES utf8');
 mysqli_select_db($conn, $dbname);

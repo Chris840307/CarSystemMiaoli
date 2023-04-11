@@ -18,7 +18,7 @@ $d_edit_pwd = $str_json->{'d_edit_pwd'};
 $d_edit_auth = $str_json->{'d_edit_auth'};
 $d_edit_status = $str_json->{'d_edit_status'};
 
-$conn = mysqli_connect($dbhost, $dbuser, $dbpass) or die('Error with MySQL connection'.mysql_error());
+$conn = mysqli_connect($dbhost, $dbuser, $dbpass) or die('Error with MySQL connection');
 
 mysqli_query($conn, 'SET NAMES utf8');
 mysqli_select_db($conn, $dbname);

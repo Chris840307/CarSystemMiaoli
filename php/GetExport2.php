@@ -18,7 +18,7 @@ $txt_date2 = date('Y-m-d 23:59:59', strtotime($txt_date2));
 $txt_date_hour = '';
 $diff_hour = (strtotime($txt_date2) - strtotime($txt_date1)) / (60 * 60); //計算相差之小時數
 
-$conn = mysqli_connect($dbhost, $dbuser, $dbpass) or die('Error with MySQL connection'.mysql_error());
+$conn = mysqli_connect($dbhost, $dbuser, $dbpass) or die('Error with MySQL connection');
 
 mysqli_query($conn, 'SET NAMES utf8');
 mysqli_select_db($conn, $dbname);

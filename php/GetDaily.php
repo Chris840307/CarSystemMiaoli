@@ -15,7 +15,7 @@ $txt_date1 = $str_json->{'txt_date1'}.' 00:00:00';
 $txt_date2 = $str_json->{'txt_date2'}.' 23:23:23';
 $txt_account = $str_json->{'txt_account'};
 
-$conn = mysqli_connect($dbhost, $dbuser, $dbpass) or die('Error with MySQL connection'.mysql_error());
+$conn = mysqli_connect($dbhost, $dbuser, $dbpass) or die('Error with MySQL connection');
 
 mysqli_query($conn, 'SET NAMES utf8');
 mysqli_select_db($conn, $dbname);

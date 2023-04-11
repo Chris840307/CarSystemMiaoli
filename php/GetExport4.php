@@ -16,7 +16,7 @@ $txt_date2 = $str_json->{'txt_date2'};
 $txt_date1 = date('Y-m-01', strtotime($txt_date1));
 $txt_date2 = date('Y-m-01', strtotime('+1 month', strtotime($txt_date2)));
 
-$conn = mysqli_connect($dbhost, $dbuser, $dbpass) or die('Error with MySQL connection'.mysql_error());
+$conn = mysqli_connect($dbhost, $dbuser, $dbpass) or die('Error with MySQL connection');
 
 mysqli_query($conn, 'SET NAMES utf8');
 mysqli_select_db($conn, $dbname);

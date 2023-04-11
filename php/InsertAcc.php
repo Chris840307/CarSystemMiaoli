@@ -17,7 +17,7 @@ $d_add_pwd = $str_json->{'d_add_pwd'};
 $d_add_auth = $str_json->{'d_add_auth'};
 $d_add_status = $str_json->{'d_add_status'};
 
-$conn = mysqli_connect($dbhost, $dbuser, $dbpass) or die('Error with MySQL connection'.mysql_error());
+$conn = mysqli_connect($dbhost, $dbuser, $dbpass) or die('Error with MySQL connection');
 
 mysqli_query($conn, 'SET NAMES utf8');
 mysqli_select_db($conn, $dbname);

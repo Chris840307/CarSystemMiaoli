@@ -17,7 +17,7 @@ $txt_date2 = $str_json->{'txt_date2'};
 $txt_date2 = date('Y-m-d', strtotime('+1 day', strtotime($txt_date2)));
 // echo(strtotime($time1) - strtotime($time2)) / (60 * 60 * 24); //計算相差之天數
 
-$conn = mysqli_connect($dbhost, $dbuser, $dbpass) or die('Error with MySQL connection'.mysql_error());
+$conn = mysqli_connect($dbhost, $dbuser, $dbpass) or die('Error with MySQL connection');
 
 mysqli_query($conn, 'SET NAMES utf8');
 mysqli_select_db($conn, $dbname);

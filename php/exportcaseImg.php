@@ -20,7 +20,7 @@ $txt_cartype = $_POST['txt_cartype'];
 $txt_law = $_POST['txt_law'];
 $txt_addr = $_POST['txt_addr'];
 
-$conn = mysqli_connect($dbhost, $dbuser, $dbpass) or die('Error with MySQL connection'.mysql_error());
+$conn = mysqli_connect($dbhost, $dbuser, $dbpass) or die('Error with MySQL connection');
 
 mysqli_query($conn, 'SET NAMES utf8');
 mysqli_select_db($conn, $dbname);

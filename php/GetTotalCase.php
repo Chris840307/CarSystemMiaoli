@@ -22,7 +22,7 @@ $jSon['white_data'] = [];
 $jSon['continuous_data'] = []; //存不舉發資料
 $jSon['continuous_data_all'] = []; //存複數資料
 
-$conn = mysqli_connect($dbhost, $dbuser, $dbpass) or die('Error with MySQL connection'.mysql_error());
+$conn = mysqli_connect($dbhost, $dbuser, $dbpass) or die('Error with MySQL connection');
 
 mysqli_query($conn, 'SET NAMES utf8');
 mysqli_select_db($conn, $dbname);
