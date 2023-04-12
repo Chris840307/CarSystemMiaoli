@@ -30,11 +30,20 @@ if ($result->num_rows > 0) {
     while ($record = mysqli_fetch_array($result)) {
         //塞資料
         switch ($record['carType']) {
-            case 1:
-                $carType = '機車';
+            case '1':
+                $data_t->carType = '汽車';
                 break;
-            case 2:
-                $carType = '汽車';
+            case '2':
+                $data_t->carType = '拖車';
+                break;
+            case '3':
+                $data_t->carType = '重機';
+                break;
+            case '4':
+                $data_t->carType = '輕機';
+                break;
+            case '99':
+                $data_t->carType = '微型電動二輪';
                 break;
         }
         $csv_export .= $carType.','.$record['count']."\n";

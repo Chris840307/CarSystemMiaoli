@@ -125,13 +125,22 @@ if ($result->num_rows > 0) {
             $data_t->Datetime = $record['Datetime'];
             $data_t->carTypeValue = $record['carType'];
             switch ($record['carType']) {
-                        case '1':
-                            $data_t->carType = '機車';
-                            break;
-                        case '2':
-                            $data_t->carType = '汽車';
-                            break;
-                    }
+                case '1':
+                    $data_t->carType = '汽車';
+                    break;
+                case '2':
+                    $data_t->carType = '拖車';
+                    break;
+                case '3':
+                    $data_t->carType = '重機';
+                    break;
+                case '4':
+                    $data_t->carType = '輕機';
+                    break;
+                case '99':
+                    $data_t->carType = '微型電動二輪';
+                    break;
+            }
             // $data_t->LawValue = $record['Law'];
             // switch ($record['Law']) {
             //             case '5610102':

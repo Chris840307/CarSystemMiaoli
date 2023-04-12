@@ -33,11 +33,20 @@ $jSon['data'] = [];
 
             $data_t->carTypeVol = $record['carType'];
             switch ($record['carType']) {
-                case 1:
-                    $data_t->carType = '機車';
-                    break;
-                case 2:
+                case '1':
                     $data_t->carType = '汽車';
+                    break;
+                case '2':
+                    $data_t->carType = '拖車';
+                    break;
+                case '3':
+                    $data_t->carType = '重機';
+                    break;
+                case '4':
+                    $data_t->carType = '輕機';
+                    break;
+                case '99':
+                    $data_t->carType = '微型電動二輪';
                     break;
             }
             $data_t->count = $record['count'];

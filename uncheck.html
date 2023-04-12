@@ -187,8 +187,11 @@
           <div class="contain-field input-field col s6 gijgo-search-select">
             <select id="txt_cartype" width="180">
               <option value="" disabled="disabled" selected>車種</option>
-              <option value="1">機車</option>
-              <option value="2">汽車</option>
+              <option value="1">汽車</option>
+              <option value="3">重機</option>
+              <option value="4">輕機</option>
+              <option value="2">拖車</option>
+              <option value="99">微型電動二輪</option>
             </select>
           </div>
           <div class="contain-field input-field col s6 gijgo-search-select">
@@ -281,8 +284,11 @@
                           <option value="0" disabled="disabled" selected>
                             請選擇
                           </option>
-                          <option value="1">機車</option>
-                          <option value="2">汽車</option>
+                          <option value="1">汽車</option>
+                          <option value="3">重機</option>
+                          <option value="4">輕機</option>
+                          <option value="2">拖車</option>
+                          <option value="99">微型電動二輪</option>
                         </select>
 
                         <div style="color: #e65100">
@@ -481,8 +487,7 @@
             {
               title: "審核",
               width: 64,
-              tmpl:
-                '<span class="material-icons gj-cursor-pointer">edit</span>',
+              tmpl: '<span class="material-icons gj-cursor-pointer">edit</span>',
               align: "center",
               events: { click: Edit },
             },
