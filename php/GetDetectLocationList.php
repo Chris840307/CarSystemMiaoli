@@ -27,14 +27,9 @@ $result = mysqli_query($conn, $sql) or die('MySQL select error'.mysqli_error($co
 
 if ($result->num_rows > 0) {
     while ($record = mysqli_fetch_array($result)) {
-        if ($record['CarNumber'] != 'Unknown-1') {
             $data_t = new stdClass();
-
             $data_t->DetectLocation = $record['DetectLocation'];
-            $data_t->DetectLocation = $record['DetectLocation'];
-
             array_push($jSon['data'], $data_t);
-        }
     }
 
     echo json_encode(['messageType' => 'OK', 'data' => $jSon['data']]);
