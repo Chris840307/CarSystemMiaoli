@@ -296,7 +296,28 @@
                         <div class="text-body" id="m_datetime"></div>
                         <div class="text-body" id="m_location"></div>
                         <div class="text-body" id="m_detectLocation"></div>
-                        <div class="text-body" id="m_law"></div>
+                        <select id="m_law" width="100%">
+                          <option value="5610102">
+                            在禁止臨時停車處所停車
+                          </option>
+                          <option value="5610103">
+                            在公共汽車招呼站十公尺內停車
+                          </option>
+                          <option value="5610204">在槽化線停車</option>
+                          <option value="5610501">
+                            在顯有妨礙他車通行處所停車
+                          </option>
+                          <option value="5610904">停車車種不依規定</option>
+                          <option value="5620002">
+                            併排停車（104年7月1日以後適用）
+                          </option>
+                          <option value="7410402">
+                            微型電動二輪車，不依規定停放車輛
+                          </option>
+                          <option value="違規停車">
+                            違規停車
+                          </option>
+                        </select>
                         <select id="m_carType" width="100%">
                           <option value="0" disabled="disabled" selected>
                             請選擇
@@ -349,6 +370,9 @@
                       <button type="button" id="btn_unchecked" class="btn">
                         變更為不開單
                       </button>
+                      <button type="button" id="btn_edit" class="btn blue">
+                        確認修改
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -386,6 +410,7 @@
           format: "yyyy-mm-dd HH:MM",
         });
         $("#txt_date2").val(GetDateStr(0) + " 23:59");
+        $("#m_law").dropdown({ uiLibrary: "materialdesign" });
         $("#m_carType").dropdown({ uiLibrary: "materialdesign" });
         $("#txt_cartype").dropdown({ uiLibrary: "materialdesign" });
         $("#m_result").dropdown({ uiLibrary: "materialdesign" });
@@ -552,6 +577,11 @@
         SubmitUnChecked(grid);
       });
 
+      //確認修改
+      $("#btn_edit").on("click", function () {
+        SubmitEdit(grid);
+      });
+
       function filterData() {
         var postdata = {
           txt_date1: emptyStrToUndefined($("#txt_date1").val()),
@@ -604,7 +634,7 @@
         $("#m_datetime").text(e.data.record.Datetime);
         $("#m_location").text(e.data.record.Location);
         $("#m_carType").dropdown().value(e.data.record.carTypeValue);
-        $("#m_law").text("違規停車");
+        $("#m_law").dropdown().value(e.data.record.Law);
         $("#m_result").dropdown().value(e.data.record.result);
         $("#m_remark").val(e.data.record.remark);
 
@@ -619,6 +649,7 @@
           RowNo: $("#m_id").val(),
           carNumber: $("#m_carNumber").val(),
           carType: $("#m_carType").val(),
+          law: $("#m_law").val(),
           status: "3",
           result: $("#m_result").val(),
           remark: $("#m_remark").val(),
@@ -647,7 +678,7 @@
                 $("#m_datetime").text(next.Datetime);
                 $("#m_location").text(next.Location);
                 $("#m_carType").dropdown().value(next.carTypeValue);
-                $("#m_law").text("違規停車");
+                $("#m_law").dropdown().value(next.Law);
                 $("#m_result").dropdown().value(next.result);
                 $("#m_remark").val(next.remark);
 
@@ -669,6 +700,70 @@
             //開單失敗
             swal.fire({
               title: "開單錯誤",
+              icon: "error",
+              showConfirmButton: true,
+            });
+          },
+        });
+      }
+
+      //確認修改
+      function SubmitEdit(grid) {
+        var postdata = {
+          RowNo: $("#m_id").val(),
+          carNumber: $("#m_carNumber").val(),
+          carType: $("#m_carType").val(),
+          law: $("#m_law").val(),
+          status: "2",
+          result: $("#m_result").val(),
+          remark: $("#m_remark").val(),
+        };
+
+        $.ajax({
+          url: "./php/EditCar.php",
+          type: "POST",
+          dataType: "json",
+          data: JSON.stringify(postdata),
+          contentType: "application/json",
+          success: function (msg) {
+            if (msg.messageType == "OK") {
+              //修改成功
+              M.toast({ html: "修改成功" });
+
+              //帶入下一筆
+              var next = grid.getById(dataIndex + 1);
+              if (next != undefined) {
+                $("#m_id").val(next.RowNo);
+                $("#m_carNumber").val(next.CarNumber);
+                $("#m_photoURL").attr("src", next.PhotoURL);
+                $("#m_videoURL").attr("href", next.VideoURL);
+                //$("#div_video video")[0].load();
+                $("#m_detectLocation").text(next.DetectLocation);
+                $("#m_datetime").text(next.Datetime);
+                $("#m_location").text(next.Location);
+                $("#m_carType").dropdown().value(next.carTypeValue);
+                $("#m_law").dropdown().value(next.Law);
+                $("#m_result").dropdown().value(next.result);
+                $("#m_remark").val(next.remark);
+
+                dataIndex = dataIndex + 1; //更新
+              } else {
+                $("#table1").grid("destroy", true, true);
+                createFunc();
+                filterData();
+
+                dialog.close();
+              }
+            }
+          },
+          error: function (XMLHttpRequest, textStatus, errorThrown) {
+            console.log(XMLHttpRequest.responseText);
+
+            dialog.close();
+
+            //修改失敗
+            swal.fire({
+              title: "修改失敗",
               icon: "error",
               showConfirmButton: true,
             });
@@ -709,7 +804,7 @@
                 $("#m_datetime").text(next.Datetime);
                 $("#m_location").text(next.Location);
                 $("#m_carType").dropdown().value(next.carTypeValue);
-                $("#m_law").text("違規停車");
+                $("#m_law").dropdown().value(next.Law);
                 $("#m_result").dropdown().value(next.result);
                 $("#m_remark").val(next.remark);
 
@@ -766,7 +861,7 @@
                 $("#m_datetime").text(next.Datetime);
                 $("#m_location").text(next.Location);
                 $("#m_carType").dropdown().value(next.carTypeValue);
-                $("#m_law").text("違規停車");
+                $("#m_law").dropdown().value(next.Law);
                 $("#m_result").dropdown().value(next.result);
                 $("#m_remark").val(next.remark);
 

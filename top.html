@@ -274,7 +274,28 @@
                         <div class="text-body" id="m_datetime"></div>
                         <div class="text-body" id="m_location"></div>
                         <div class="text-body" id="m_detectLocation"></div>
-                        <select id="m_law" width="100%"></select>
+                        <select id="m_law" width="100%">
+                          <option value="5610102">
+                            在禁止臨時停車處所停車
+                          </option>
+                          <option value="5610103">
+                            在公共汽車招呼站十公尺內停車
+                          </option>
+                          <option value="5610204">在槽化線停車</option>
+                          <option value="5610501">
+                            在顯有妨礙他車通行處所停車
+                          </option>
+                          <option value="5610904">停車車種不依規定</option>
+                          <option value="5620002">
+                            併排停車（104年7月1日以後適用）
+                          </option>
+                          <option value="7410402">
+                            微型電動二輪車，不依規定停放車輛
+                          </option>
+                          <option value="違規停車">
+                            違規停車
+                          </option>
+                        </select>
                         <select id="m_carType" width="100%">
                           <option value="0" disabled="disabled" selected>
                             請選擇
@@ -371,6 +392,7 @@
           format: "yyyy-mm-dd HH:MM",
         });
         $("#txt_date2").val(GetDateStr(0) + " 23:59");
+        $("#m_law").dropdown({ uiLibrary: "materialdesign" });
         $("#m_carType").dropdown({ uiLibrary: "materialdesign" });
         $("#m_result").dropdown({ uiLibrary: "materialdesign" });
 
@@ -852,63 +874,13 @@
         }
       }
 
-      function lawOption(place) {
-        var options;
-        if (place == "苗栗市中正路905號前周邊路段") {
-          options = [
-            { text: "在禁止臨時停車處所停車", value: "5610102" },
-            { text: "在公共汽車招呼站十公尺內停車", value: "5610103" },
-            { text: "在槽化線停車", value: "5610204" },
-            { text: "在顯有妨礙他車通行處所停車", value: "5610501" },
-            { text: "停車車種不依規定", value: "5610904" },
-            { text: "併排停車（104年7月1日以後適用）", value: "5620002" },
-            { text: "微型電動二輪車，不依規定停放車輛", value: "7410402" },
-          ];
-        } else if (place == "苗栗市光復路11號前周邊路段") {
-          options = [
-            { text: "在顯有妨礙他車通行處所停車", value: "5610501" },
-            { text: "停車車種不依規定", value: "5610904" },
-            { text: "併排停車（104年7月1日以後適用）", value: "5620002" },
-            { text: "微型電動二輪車，不依規定停放車輛", value: "7410402" },
-            { text: "在禁止臨時停車處所停車", value: "5610102" },
-          ];
-        } else {
-          //須注意違規停車的代號
-          options = [{ text: "違規停車", value: "違規停車" }];
-        }
-
-        return options;
-      }
-
-      //依照不同路段提供不同違規法條選項
-      function makeLawOption(place) {
-        $("#m_law").dropdown().destroy();
-
-        var options = lawOption(place);
-
-        for (i = 0; i < options.length; i++) {
-          var option = document.createElement("option");
-          option.text = options[i].text;
-          option.value = options[i].value;
-          var select = document.getElementById("m_law");
-          select.appendChild(option);
-        }
-        $("#m_law").dropdown({
-          uiLibrary: "materialdesign",
-        });
-      }
-
+      //依不同路段設定不同預設值
       function setLawOptionValue(place) {
-        makeLawOption(place);
-
-        var options = lawOption(place);
-        return options[0].value; //預設第一個
-
-        // $.each(options, function (i, v) {
-        //   if (v.value == place) {
-        //     return v.value;
-        //   }
-        // });
+        if (place == "苗栗市光復路11號前周邊路段") {
+          return "5610102";
+        } else if (place == "苗栗市中正路905號前周邊路段") {
+          return "5610501";
+        }
       }
     </script>
   </body>

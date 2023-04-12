@@ -141,22 +141,33 @@ if ($result->num_rows > 0) {
                     $data_t->carType = '微型電動二輪';
                     break;
             }
-            // $data_t->LawValue = $record['Law'];
-            // switch ($record['Law']) {
-            //             case '5610102':
-            //                 $data_t->Law = '在禁止臨時停車處所停車';
-            //                 break;
-            //             case '5610402':
-            //                 $data_t->Law = '在設有禁止停車標線之處所停車';
-            //                 break;
-            //             case '5620002':
-            //                 $data_t->Law = '併排停車';
-            //                 break;
-            //             case '5510404':
-            //                 $data_t->Law = '併排臨時停車';
-            //                 break;
-            //         }
-            $data_t->Law = $record['Law'];
+            $data_t->LawValue = $record['Law'];
+            switch ($record['Law']) {
+                case '5610102':
+                    $data_t->Law = '在禁止臨時停車處所停車';
+                    break;
+                case '5610103':
+                    $data_t->Law = '在公共汽車招呼站十公尺內停車';
+                    break;
+                case '5610204':
+                    $data_t->Law = '在槽化線停車';
+                    break;
+                case '5610501':
+                    $data_t->Law = '在顯有妨礙他車通行處所停車';
+                    break;
+                case '5610904':
+                    $data_t->Law = '停車車種不依規定';
+                    break;
+                case '5620002':
+                    $data_t->Law = '併排停車（104年7月1日以後適用）';
+                    break;
+                case '7410402':
+                    $data_t->Law = '微型電動二輪車，不依規定停放車輛';
+                    break;
+                case '違規停車':
+                    $data_t->Law = '違規停車';
+                    break;
+            }
             $data_t->statusValue = $record['status'];
             switch ($record['status']) {
                 case 1:
