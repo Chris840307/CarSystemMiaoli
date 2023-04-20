@@ -30,7 +30,7 @@ mysqli_query($conn, 'SET NAMES utf8');
 mysqli_select_db($conn, $dbname);
 
 $sql = "SELECT * FROM `user_list` WHERE `acc`='$acc' AND `pwd`='$pwd'";
-$result = mysqli_query($conn, $sql) or die('MySQL select error'.mysqli_error($conn));
+$result = mysqli_query($conn, $sql) or die('MySQL select error' . mysqli_error($conn));
 
 if ($result->num_rows > 0) {
     $record = mysqli_fetch_array($result);
@@ -39,13 +39,13 @@ if ($result->num_rows > 0) {
 
     //紀錄登入log
     $sql = "INSERT INTO `sys_log`(`acc`, `name`, `class`, `ip`, `content`) VALUES ('$acc','$name','系統登入','$ip','登入成功')";
-    $result = mysqli_query($conn, $sql) or die('MySQL select error'.mysqli_error($conn));
+    $result = mysqli_query($conn, $sql) or die('MySQL select error' . mysqli_error($conn));
 
-    echo json_encode(['messageType' => 'OK', 'auth' => $record['auth'], 'status' => $record['status'], 'acc' => $record['acc']]);
+    echo json_encode(['messageType' => 'OK', 'auth' => $record['auth'], 'status' => $record['status'], 'acc' => $record['acc'], 'name' => $record['name']]);
 } else {
     //紀錄登入log
     $sql = "INSERT INTO `sys_log`(`acc`, `name`, `class`, `ip`, `content`) VALUES ('$acc','$name','系統登入','$ip','登入失敗')";
-    $result = mysqli_query($conn, $sql) or die('MySQL select error'.mysqli_error($conn));
+    $result = mysqli_query($conn, $sql) or die('MySQL select error' . mysqli_error($conn));
 
     echo json_encode(['messageType' => 'ERROR']);
 }

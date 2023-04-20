@@ -452,6 +452,25 @@ function GetDayOneOfPreviousMonthStr() {
   return y + "-" + m + "-01";
 }
 
+//民國年月日
+function GetRepublicOfChinaStr() {
+  var dd = new Date();
+  var y = dd.getFullYear() - 1911;
+  var m =
+    dd.getMonth() + 1 < 10 ? "0" + (dd.getMonth() + 1) : dd.getMonth() + 1; //取當月份的日期
+  var d = dd.getDate() < 10 ? "0" + dd.getDate() : dd.getDate();
+  return y + m + d;
+}
+
+//時間
+function GetTimeStr() {
+  var dd = new Date();
+  var hh = dd.getHours() < 10 ? "0" + dd.getHours() : dd.getHours();
+  var mm = dd.getMinutes() < 10 ? "0" + dd.getMinutes() : dd.getMinutes();
+  var ss = dd.getSeconds() < 10 ? "0" + dd.getSeconds() : dd.getSeconds();
+  return hh + "" + mm + "" + ss;
+}
+
 // MENU下拉式的JS
 $(function () {
   $("#menu_slide").click(function () {

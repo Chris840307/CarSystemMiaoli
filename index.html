@@ -212,6 +212,7 @@
             if (msg.messageType == "OK") {
               if (msg.status === "1") {
                 setCookie("account", msg.acc, 1);
+                setCookie("name", msg.name, 1);
                 setCookie("status", msg.status, 1);
                 setCookie("auth", msg.auth, 1);
                 window.location.replace("./main.html");

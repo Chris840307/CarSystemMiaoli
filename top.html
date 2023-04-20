@@ -292,9 +292,7 @@
                           <option value="7410402">
                             微型電動二輪車，不依規定停放車輛
                           </option>
-                          <option value="違規停車">
-                            違規停車
-                          </option>
+                          <option value="違規停車">違規停車</option>
                         </select>
                         <select id="m_carType" width="100%">
                           <option value="0" disabled="disabled" selected>
@@ -601,6 +599,7 @@
         $("#m_videoURL").attr("href", e.data.record.VideoURL);
         //$("#div_video video")[0].load();
         $("#m_detectLocation").text(e.data.record.DetectLocation);
+        $("#m_detectLocation").val(e.data.record.DetectLocation);
         $("#m_datetime").text(e.data.record.Datetime);
         $("#m_location").text(e.data.record.Location);
         $("#m_carType").dropdown().value("1"); //預設為汽車
@@ -615,6 +614,9 @@
 
       //送出開單
       function SubmitChecked(grid) {
+        //入案，科技執法案件審核資料
+        postCaseVerify();
+
         var postdata = {
           RowNo: $("#m_id").val(),
           carNumber: $("#m_carNumber").val(),
@@ -624,7 +626,7 @@
           result: $("#m_result").val(),
           remark: $("#m_remark").val(),
         };
-
+        
         $.ajax({
           url: "./php/EditCar.php",
           type: "POST",
@@ -881,6 +883,42 @@
         } else if (place == "苗栗市中正路905號前周邊路段") {
           return "5610501";
         }
+      }
+
+      //入案，科技執法案件審核資料
+      function postCaseVerify() {
+        var postCaseData = {
+          SN: $("#m_id").val(),
+          ViolationDate: GetRepublicOfChinaStr(),
+          ViolationTime: GetTimeStr(),
+          UnitId: "03B7", //苗栗縣警察局交通隊
+          PoliceName: getCookieByName("name"),
+          LicensePlate: $("#m_carNumber").val(),
+          VehicleType: $("#m_carType").val(),
+          RuleId: $("#m_law").val(),
+          Road: $("#m_detectLocation").val(),
+        };
+        $.ajax({
+          url: "./php/postCaseVerify.php",
+          type: "POST",
+          dataType: "json",
+          data: JSON.stringify(postCaseData),
+          contentType: "application/json",
+          success: function (msg) {
+            if (msg.Message == "新增完成") {
+            }
+          },
+          error: function (XMLHttpRequest, textStatus, errorThrown) {
+            console.log(XMLHttpRequest.responseText);
+
+            //入案失敗
+            swal.fire({
+              title: "入案錯誤",
+              icon: "error",
+              showConfirmButton: true,
+            });
+          },
+        });
       }
     </script>
   </body>
