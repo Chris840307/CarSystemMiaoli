@@ -3,7 +3,7 @@
 // });
 
 window.addEventListener("load", () => {
-  $("#menuUserName").text("Hi, " + getCookieByName("account"));
+  $("#menuUserName").text("Hi, " + getCookieByName("name"));
 
   if (getCookieByName("auth") === "1") {
     //使用者

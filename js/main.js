@@ -268,6 +268,7 @@ function delCookie(name) {
 //登出
 function logout() {
   delCookie("account");
+  delCookie("name");
   delCookie("status");
   delCookie("auth");
   window.location.replace("./index.html");
@@ -275,7 +276,7 @@ function logout() {
 
 //檢查連線是否過期
 function checkConnect() {
-  $("#txt_name").text(getCookieByName("realname"));
+  $("#txt_name").text(getCookieByName("name"));
 
   if (getCookieByName("Authorization") == "") {
     location.result = "index.html";
