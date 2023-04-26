@@ -22,13 +22,13 @@ $conn = mysqli_connect($dbhost, $dbuser, $dbpass) or die('Error with MySQL conne
 mysqli_query($conn, 'SET NAMES utf8');
 mysqli_select_db($conn, $dbname);
 
-$sql = "SELECT * FROM `user_list` WHERE `acc` = '$acc'";
-$result = mysqli_query($conn, $sql) or die('MySQL select error'.mysqli_error($conn));
+$sql = "SELECT * FROM `user_list` WHERE `acc` = '$d_add_acc'";
+$result = mysqli_query($conn, $sql) or die('MySQL select error' . mysqli_error($conn));
 if ($result->num_rows > 0) {
     echo json_encode(['messageType' => 'Repeat']);
 } else {
     $sql = "INSERT INTO `user_list`(`name`, `acc`, `pwd`, `auth`, `status`) VALUES ('$d_add_name','$d_add_acc','$d_add_pwd','$d_add_auth','$d_add_status')";
-    $result = mysqli_query($conn, $sql) or die('MySQL select error'.mysqli_error($conn));
+    $result = mysqli_query($conn, $sql) or die('MySQL select error' . mysqli_error($conn));
 
     echo json_encode(['messageType' => 'OK']);
 }

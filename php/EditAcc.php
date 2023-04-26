@@ -23,13 +23,22 @@ $conn = mysqli_connect($dbhost, $dbuser, $dbpass) or die('Error with MySQL conne
 mysqli_query($conn, 'SET NAMES utf8');
 mysqli_select_db($conn, $dbname);
 
-$sql = "SELECT * FROM `user_list` WHERE `acc` = '$acc'";
-$result = mysqli_query($conn, $sql) or die('MySQL select error'.mysqli_error($conn));
-if ($result->num_rows > 0) {
+$sql = "SELECT * FROM `user_list` WHERE `acc` = '$d_edit_acc'";
+$result = mysqli_query($conn, $sql) or die('MySQL select error' . mysqli_error($conn));
+if ($result->num_rows > 1) {
     echo json_encode(['messageType' => 'Repeat']);
 } else {
-    $sql = "UPDATE `user_list` SET `name`='$d_edit_name',`acc`='$d_edit_acc',`pwd`='$$d_edit_pwd',`auth`='$d_edit_auth',`status`='$d_edit_status' WHERE id = '$id'";
-    $result = mysqli_query($conn, $sql) or die('MySQL select error'.mysqli_error($conn));
+    if ($d_edit_pwd != null && $d_edit_pwd != 'undefined') {
+        // 修改包含密碼的所有欄位
+        $sql = "UPDATE `user_list` SET `name`='$d_edit_name',`acc`='$d_edit_acc',`pwd`='$d_edit_pwd',`auth`='$d_edit_auth',`status`='$d_edit_status' WHERE id = '$id'";
+        $result = mysqli_query($conn, $sql) or die('MySQL select error' . mysqli_error($conn));
 
-    echo json_encode(['messageType' => 'OK']);
+        echo json_encode(['messageType' => 'OK']);
+    } else {
+        // 修改除了密碼之外的欄位
+        $sql = "UPDATE `user_list` SET `name`='$d_edit_name',`acc`='$d_edit_acc',`auth`='$d_edit_auth',`status`='$d_edit_status' WHERE id = '$id'";
+        $result = mysqli_query($conn, $sql) or die('MySQL select error' . mysqli_error($conn));
+
+        echo json_encode(['messageType' => 'OK']);
+    }
 }

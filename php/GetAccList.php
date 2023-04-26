@@ -24,24 +24,24 @@ $jSon['data'] = [];
 
 if ($auth == '1') {
     //使用者不可看到管理員帳號
-    $sql = "SELECT * FROM `user_list` WHERE `auth` != '0'";
+    $sql = "SELECT * FROM `user_list` WHERE`auth` != '0'";
 } else {
     $sql = "SELECT * FROM `user_list` WHERE `auth` != '3'";
 }
 
 if ($txt_acc != null && $txt_acc != 'undefined') {
-    $sql = $sql." AND `acc` = '$txt_acc'";
+    $sql = $sql . " AND `acc` = '$txt_acc'";
 }
 if ($txt_status != null && $txt_status != 'undefined') {
     if ($txt_status == '停權') {
-        $sql = $sql." AND `status` = '0'";
+        $sql = $sql . " AND `status` = '0'";
     } elseif ($txt_status == '使用中') {
-        $sql = $sql." AND `status` = '1'";
+        $sql = $sql . " AND `status` = '1'";
     }
 }
-$sql = $sql.' ORDER BY `id`';
+$sql = $sql . ' ORDER BY `id`';
 // echo $sql;
-$result = mysqli_query($conn, $sql) or die('MySQL select error'.mysqli_error($conn));
+$result = mysqli_query($conn, $sql) or die('MySQL select error' . mysqli_error($conn));
 
 if ($result->num_rows > 0) {
     while ($record = mysqli_fetch_array($result)) {
