@@ -393,17 +393,15 @@
           contentType: "application/json",
           data: JSON.stringify(postdata),
           success: function (msg) {
+            dialog.close();
             if (msg.messageType == "OK") {
               swal.fire({
-                title: "修改成功",
+                title: "修改成功，請重新登入",
                 icon: "success",
                 confirmButtonColor: "#3085d6",
                 confirmButtonText: "確定",
               });
-
-              $("#table1").grid("destroy", true, true);
-              createFunc();
-              filterData();
+              location.reload();
             } else if (msg.messageType == "Repeat") {
               swal.fire({
                 title: "此帳號已重覆",
@@ -419,16 +417,15 @@
                 confirmButtonText: "確定",
               });
             }
-            dialog.close();
           },
           error: function (jqXHR, textStatus, errorThrown) {
+            dialog.close();
             swal.fire({
               title: "修改失敗",
               icon: "error",
               confirmButtonColor: "#3085d6",
               confirmButtonText: "確定",
             });
-            dialog.close();
           },
         });
       }
@@ -473,7 +470,6 @@
                     confirmButtonText: "確定",
                   });
                 }
-                dialog.close();
               },
               error: function (jqXHR, textStatus, errorThrown) {
                 swal.fire({
@@ -517,6 +513,7 @@
             data: JSON.stringify(postdata),
             contentType: "application/json",
             success: function (msg) {
+              dialog_add.close();
               if (msg.messageType == "OK") {
                 swal.fire({
                   title: "新增成功",
@@ -528,8 +525,6 @@
                 $("#table1").grid("destroy", true, true);
                 createFunc();
                 filterData();
-
-                dialog_add.close();
               } else if (msg.messageType == "Repeat") {
                 swal.fire({
                   title: "此帳號已重覆",
@@ -547,13 +542,13 @@
               }
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
+              dialog.close();
               swal.fire({
                 title: "新增失敗",
                 icon: "error",
                 confirmButtonColor: "#3085d6",
                 confirmButtonText: "確定",
               });
-              dialog.close();
             },
           });
         } else {
@@ -614,16 +609,14 @@
             {
               title: "修改",
               width: 64,
-              tmpl:
-                '<span class="material-icons gj-cursor-pointer">edit</span>',
+              tmpl: '<span class="material-icons gj-cursor-pointer">edit</span>',
               align: "center",
               events: { click: Edit },
             },
             {
               title: "刪除",
               width: 64,
-              tmpl:
-                '<span class="material-icons gj-cursor-pointer">delete</span>',
+              tmpl: '<span class="material-icons gj-cursor-pointer">delete</span>',
               align: "center",
               events: { click: Delete },
             },
