@@ -201,6 +201,7 @@
             name="d_edit_acc"
             id="d_edit_acc"
             placeholder="請輸入帳號"
+            disabled
           />
         </div>
         <div class="form-row">
@@ -395,13 +396,33 @@
           success: function (msg) {
             dialog.close();
             if (msg.messageType == "OK") {
-              swal.fire({
-                title: "修改成功，請重新登入",
-                icon: "success",
-                confirmButtonColor: "#3085d6",
-                confirmButtonText: "確定",
-              });
-              location.reload();
+              if ($("#d_edit_acc").val() == getCookieByName("account")) {
+                swal
+                  .fire({
+                    title: "修改成功，請重新登入",
+                    icon: "success",
+                    confirmButtonColor: "#3085d6",
+                    confirmButtonText: "確定",
+                  })
+                  .then((result) => {
+                    if (result.isConfirmed) {
+                      logout();
+                    }
+                  });
+              } else {
+                swal
+                  .fire({
+                    title: "修改成功",
+                    icon: "success",
+                    confirmButtonColor: "#3085d6",
+                    confirmButtonText: "確定",
+                  })
+                  .then((result) => {
+                    if (result.isConfirmed) {
+                      location.reload();
+                    }
+                  });
+              }
             } else if (msg.messageType == "Repeat") {
               swal.fire({
                 title: "此帳號已重覆",
