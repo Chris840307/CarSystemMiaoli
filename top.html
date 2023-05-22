@@ -908,6 +908,27 @@
           contentType: "application/json",
           success: function (msg) {
             if (msg.Message == "新增完成") {
+              $.ajax({
+                url: "./php/postCaseImage.php",
+                type: "POST",
+                dataType: "json",
+                data: JSON.stringify({ SN: $("#m_id").val(), No: msg.No }),
+                contentType: "application/json",
+                success: function (msg) {
+                  if (msg.Message == "上傳成功") {
+                  }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                  console.log(XMLHttpRequest.responseText);
+
+                  //照片入案失敗
+                  swal.fire({
+                    title: "照片入案錯誤",
+                    icon: "error",
+                    showConfirmButton: true,
+                  });
+                },
+              });
             }
           },
           error: function (XMLHttpRequest, textStatus, errorThrown) {
