@@ -23,8 +23,11 @@ $Road = $str_json->{'Road'};
 
 $curl = curl_init();
 
+
+//http://api.mac.yh-tech.com.tw
+
 curl_setopt_array($curl, array(
-    CURLOPT_URL => 'http://api.mac.yh-tech.com.tw/X/bm',
+    CURLOPT_URL => 'http://223.200.44.147/X/bm',
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_ENCODING => '',
     CURLOPT_MAXREDIRS => 10,
