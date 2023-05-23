@@ -11,6 +11,7 @@ $dbname = 'car';
 
 $str = file_get_contents('php://input');
 $str_json = json_decode($str);
+$image_url = $str_json->{'image_url'};
 $SN = $str_json->{'SN'};
 $No = $str_json->{'No'};
 
@@ -21,15 +22,9 @@ mysqli_query($conn, 'SET NAMES utf8');
 mysqli_select_db($conn, $dbname);
 
 //jpg傳base64
-$sql = "SELECT * FROM `violation` WHERE `RowNo` = '$SN'";
-$result = mysqli_query($conn, $sql) or die('MySQL select error' . mysqli_error($conn));
-if ($result->num_rows > 0) {
-    while ($record = mysqli_fetch_array($result)) {
-        $path = $record['PhotoURL'];
-        $data = file_get_contents($path);
-        $base64 = base64_encode($data);
-    }
-}
+$path = '/var/www/html/CarSystem' . $image_url;
+$data = file_get_contents($path);
+$base64 = base64_encode($data);
 
 
 $curl = curl_init();
@@ -59,7 +54,7 @@ mysqli_select_db($conn, $dbname);
 $obj = json_decode($response);
 $Message = $obj->Message;
 
-$sql = "INSERT INTO `case_image`(`SN`, `No`, `Message`) VALUES ('$SN','$No','$Message')";
+$sql = "INSERT INTO `case_image`(`SN`, `No`, `PhotoURL`, `Message`) VALUES ('$SN','$No','$path','$Message')";
 $result = mysqli_query($conn, $sql) or die('MySQL select error' . mysqli_error($conn));
 
 

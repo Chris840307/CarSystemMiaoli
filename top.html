@@ -890,7 +890,7 @@
       //入案，科技執法案件審核資料
       function postCaseVerify() {
         var postCaseData = {
-          SN: $("#m_id").val(),
+          SN: $("#m_id").val() + "0" + new Date().getTime(), //避免SN重複
           ViolationDate: GetRepublicOfChinaStr(),
           ViolationTime: GetTimeStr(),
           UnitId: "03B7", //苗栗縣警察局交通隊
@@ -906,14 +906,20 @@
           dataType: "json",
           data: JSON.stringify(postCaseData),
           contentType: "application/json",
+          async: false,
           success: function (msg) {
             if (msg.Message == "新增完成") {
               $.ajax({
                 url: "./php/postCaseImage.php",
                 type: "POST",
                 dataType: "json",
-                data: JSON.stringify({ SN: $("#m_id").val(), No: msg.No }),
+                data: JSON.stringify({
+                  image_url: document.getElementById('m_photoURL').getAttribute('src').substr(1),
+                  SN: $("#m_id").val(),
+                  No: msg.No,
+                }),
                 contentType: "application/json",
+                async: false,
                 success: function (msg) {
                   if (msg.Message == "上傳成功") {
                   }
