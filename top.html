@@ -892,8 +892,8 @@
       function postCaseVerify() {
         var postCaseData = {
           SN: $("#m_id").val() + "0" + new Date().getTime(), //避免SN重複
-          ViolationDate: $('#m_datetime').val().substr(0,10),
-          ViolationTime: $('#m_datetime').val().substr(11),
+          ViolationDate: CoverRepublicOfChinaStr($('#m_datetime').val().substr(0,10)),
+          ViolationTime: ($('#m_datetime').val().substr(11)).replaceAll(':',''),
           UnitId: "03B7", //苗栗縣警察局交通隊
           PoliceName: getCookieByName("name"),
           LicensePlate: $("#m_carNumber").val(),

@@ -453,9 +453,9 @@ function GetDayOneOfPreviousMonthStr() {
   return y + "-" + m + "-01";
 }
 
-//民國年月日
-function GetRepublicOfChinaStr() {
-  var dd = new Date();
+//西元轉民國年月日
+function CoverRepublicOfChinaStr(date) {
+  var dd = new Date(date);
   var y = dd.getFullYear() - 1911;
   var m =
     dd.getMonth() + 1 < 10 ? "0" + (dd.getMonth() + 1) : dd.getMonth() + 1; //取當月份的日期
