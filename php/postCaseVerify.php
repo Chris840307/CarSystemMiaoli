@@ -23,9 +23,7 @@ $Road = $str_json->{'Road'};
 
 $curl = curl_init();
 
-
 //http://api.mac.yh-tech.com.tw
-
 curl_setopt_array($curl, array(
     CURLOPT_URL => 'http://223.200.44.147/X/bm',
     CURLOPT_RETURNTRANSFER => true,
@@ -53,12 +51,18 @@ $response = curl_exec($curl);
 curl_close($curl);
 
 
-//寫入DB留紀錄
 $conn = mysqli_connect($dbhost, $dbuser, $dbpass) or die('Error with MySQL connection');
 
 mysqli_query($conn, 'SET NAMES utf8');
 mysqli_select_db($conn, $dbname);
 
+
+// 寫入DB留紀錄(準備寫入資料)
+$sql = "INSERT INTO `case_verify_log`(`SN`, `ViolationDate`, `ViolationTime`, `UnitId`, `PoliceName`, `LicensePlate`, `VehicleType`, `RuleId`, `Road`) VALUES ('$SN', '$ViolationDate', '$ViolationTime', '$UnitId', '$PoliceName', '$LicensePlate', '$VehicleType', '$RuleId', '$Road')";
+$result = mysqli_query($conn, $sql) or die('MySQL select error' . mysqli_error($conn));
+
+
+// 寫入DB留紀錄(執行結果)
 $obj = json_decode($response);
 $No = $obj->No;
 $Message = $obj->Message;
