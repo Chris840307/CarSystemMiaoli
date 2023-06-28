@@ -276,10 +276,12 @@ function logout() {
 
 //檢查連線是否過期
 function checkConnect() {
-  $("#txt_name").text(getCookieByName("name"));
-
-  if (getCookieByName("Authorization") == "") {
-    location.result = "index.html";
+  if (
+    getCookieByName("name") == "" ||
+    getCookieByName("name") == undefined ||
+    getCookieByName("name") == null
+  ) {
+    logout();
   }
 }
 

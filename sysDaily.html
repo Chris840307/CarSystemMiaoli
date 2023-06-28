@@ -175,6 +175,9 @@
       var grid;
 
       $(document).ready(function () {
+        //確認cookie是否過期
+        checkConnect();
+
         //#region 日期格式化
         $("#txt_date1").datepicker({ format: "yyyy-mm-dd" });
         $("#txt_date1").val(GetDateStr(-1));

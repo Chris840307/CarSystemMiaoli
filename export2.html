@@ -187,6 +187,9 @@
         chartData = [];
 
       $(document).ready(function () {
+        //確認cookie是否過期
+        checkConnect();
+
         //#region 日期格式化
         $("#txt_date1").datepicker({ format: "yyyy-mm-dd" });
         $("#txt_date1").val(GetDateStr(0));
@@ -234,7 +237,7 @@
                 title: "日期",
                 align: "center",
                 sortable: true,
-                // type: "date", 
+                // type: "date",
                 // format: "HH:MM:ss",
                 filterable: false,
                 width: 90,
@@ -310,9 +313,9 @@
             }
             if (myChart_bar.data.datasets.length !== 0) {
               for (var i = 0; i < msg.location.length; i++) {
-                  for (var j = 0; j < msg.data.length; j++) {
-                    myChart_bar.data.datasets[i].data.shift();
-                  }
+                for (var j = 0; j < msg.data.length; j++) {
+                  myChart_bar.data.datasets[i].data.shift();
+                }
               }
             }
             for (var i = 0; i < msg.location.length; i++) {
@@ -388,9 +391,17 @@
 
       //匯出csv
       function csv_btn() {
-        var filename =$("#txt_date1").val() + "~" + $("#txt_date2").val() + "違規熱時分析.csv";
+        var filename =
+          $("#txt_date1").val() +
+          "~" +
+          $("#txt_date2").val() +
+          "違規熱時分析.csv";
         var url =
-          "./php/GetExportCSV2.php?" + "txt_date1=" + $("#txt_date1").val()+ "&txt_date2=" + $("#txt_date2").val();
+          "./php/GetExportCSV2.php?" +
+          "txt_date1=" +
+          $("#txt_date1").val() +
+          "&txt_date2=" +
+          $("#txt_date2").val();
         var downloadLink = document.createElement("a");
 
         document.body.appendChild(downloadLink);

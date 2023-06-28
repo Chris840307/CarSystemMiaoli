@@ -176,6 +176,9 @@
       var grid;
 
       $(document).ready(function () {
+        //確認cookie是否過期
+        checkConnect();
+
         // #region 取得table資料
         createFunc();
         filterData();
@@ -288,8 +291,7 @@
             {
               title: "修改",
               width: 64,
-              tmpl:
-                '<span class="material-icons gj-cursor-pointer">edit</span>',
+              tmpl: '<span class="material-icons gj-cursor-pointer">edit</span>',
               align: "center",
               events: { click: Edit },
             },

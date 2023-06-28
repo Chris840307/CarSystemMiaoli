@@ -151,6 +151,9 @@
       var grid;
 
       $(document).ready(function () {
+        //確認cookie是否過期
+        checkConnect();
+
         // #region 取得table資料
         createFunc();
         filterData();

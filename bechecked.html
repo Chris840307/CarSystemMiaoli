@@ -397,6 +397,9 @@
       var dataIndex = 0; //記錄當前Index
 
       $(document).ready(function () {
+        //確認cookie是否過期
+        checkConnect();
+
         //#region 日期、選單格式化
         $("#txt_date1").datetimepicker({
           footer: true,
