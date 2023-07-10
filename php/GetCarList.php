@@ -143,10 +143,10 @@ if ($result->num_rows > 0) {
             }
             $data_t->LawValue = $record['Law'];
             switch ($record['Law']) {
-                case '5610102':
+                case '5610104':
                     $data_t->Law = '在禁止臨時停車處所停車';
                     break;
-                case '5610103':
+                case '5610105':
                     $data_t->Law = '在公共汽車招呼站十公尺內停車';
                     break;
                 case '5610204':
