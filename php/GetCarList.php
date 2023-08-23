@@ -177,7 +177,7 @@ if ($result->num_rows > 0) {
                     $data_t->status = '已開單';
                     break;
                 case 3:
-                    $data_t->status = '未開單';
+                    $data_t->status = '不舉發單';
                     break;
             }
             

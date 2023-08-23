@@ -132,12 +132,12 @@ if ($result->num_rows > 0) {
     $record = mysqli_fetch_array($result);
     $toDayHandled = $record['count'];   //已開單
 }
-//本日案件(未開單)
+//本日案件(不舉發單)
 $sql = "SELECT count(*) AS count FROM `violation` WHERE `Datetime` BETWEEN '$toDay 00:00:00' AND '$toDay 23:59:59' AND `status` = '3'";
 $result = mysqli_query($conn, $sql) or die('MySQL select error'.mysqli_error($conn));
 if ($result->num_rows > 0) {
     $record = mysqli_fetch_array($result);
-    $toNoHandled = $record['count'];   //未開單
+    $toNoHandled = $record['count'];   //不舉發單
 
     //扣除未處理
     $toDayNotHandle = $dayCount - $toDayHandled - $toNoHandled;
@@ -193,12 +193,12 @@ if ($result->num_rows > 0) {
     $record = mysqli_fetch_array($result);
     $toMonthHandled = $record['count']; //已開單
 }
-//本月案件(未開單)
+//本月案件(不舉發單)
 $sql = "SELECT count(*) AS count FROM `violation` WHERE `Datetime` BETWEEN '$toFirstDay 00:00:00' AND '$toDay 23:59:59' AND `status` = '3'";
 $result = mysqli_query($conn, $sql) or die('MySQL select error'.mysqli_error($conn));
 if ($result->num_rows > 0) {
     $record = mysqli_fetch_array($result);
-    $toMonthNoHandled = $record['count']; //未開單
+    $toMonthNoHandled = $record['count']; //不舉發單
 
     //扣除未處理
     $toMonthNotHandle = $monthCount - $toMonthHandled - $toMonthNoHandled;
