@@ -60,16 +60,17 @@
       type="text/javascript"
     ></script>
 
-    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <!-- <script src="https://kit.fontawesome.com/a076d05399.js"></script> -->
 
     <script src="vendor/validata/js/jquery.validate.min.js"></script>
-
-    <script src="vendor/chart/Chart.min.js"></script>
 
     <!-- sweetalert plugin JavaScript-->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
     <!-- IE 解決在 IE 11 出現 'Promise' 未經定義的錯誤  Optional: include a polyfill for ES6 Promises for IE11 -->
     <script src="https://cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.min.js"></script>
+
+    <!-- 多選的東西 -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
 
     <script src="js/main.js"></script>
 
@@ -185,15 +186,13 @@
             <label for="txt_num">車牌號碼</label>
           </div>
           <div class="contain-field input-field col s6 gijgo-search-select">
-            <select id="txt_cartype" width="180">
+            <select name="txt_cartype" id="txt_cartype" width="180">
               <option value="" disabled="disabled" selected>車種</option>
               <option value="1">汽車</option>
               <option value="3">重機</option>
               <option value="4">輕機</option>
               <option value="2">拖車</option>
-              <option value="8">電動自行車</option>
-              <option value="9">電動輔助自行車</option>
-              <option value="A">腳踏自行車</option>
+              <option value="8">微型電動二輪</option>
             </select>
           </div>
           <div class="contain-field input-field col s6 gijgo-search-select">
@@ -281,7 +280,27 @@
                         <div class="text-body" id="m_datetime"></div>
                         <div class="text-body" id="m_location"></div>
                         <div class="text-body" id="m_detectLocation"></div>
-                        <div class="text-body" id="m_law"></div>
+                        <select id="m_law" width="100%">
+                          <option value="0">請選擇</option>
+                          <option value="5610104">
+                            在禁止臨時停車處所停車
+                          </option>
+                          <option value="5610105">
+                            在公共汽車招呼站十公尺內停車
+                          </option>
+                          <option value="5610204">在槽化線停車</option>
+                          <option value="5610501">
+                            在顯有妨礙他車通行處所停車
+                          </option>
+                          <option value="5610904">停車車種不依規定</option>
+                          <option value="5620002">
+                            併排停車（104年7月1日以後適用）
+                          </option>
+                          <option value="7410402">
+                            微型電動二輪車，不依規定停放車輛
+                          </option>
+                          <option value="違規停車">違規停車</option>
+                        </select>
                         <select id="m_carType" width="100%">
                           <option value="0" disabled="disabled" selected>
                             請選擇
@@ -338,6 +357,9 @@
                       >
                         變更為開單
                       </button>
+                      <button type="button" id="btn_edit" class="btn blue">
+                        確認修改
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -378,10 +400,10 @@
           format: "yyyy-mm-dd HH:MM",
         });
         $("#txt_date2").val(GetDateStr(0) + " 23:59");
+        $("#m_law").dropdown({ uiLibrary: "materialdesign" });
         $("#m_carType").dropdown({ uiLibrary: "materialdesign" });
         $("#txt_cartype").dropdown({ uiLibrary: "materialdesign" });
         $("#m_result").dropdown({ uiLibrary: "materialdesign" });
-        setDisable();
 
         $.ajax({
           url: "./php/GetDetectLocationList.php",
@@ -470,7 +492,15 @@
               align: "center",
               sortable: true,
               filterable: false,
-              width: 70,
+              width: 45,
+            },
+            {
+              field: "result",
+              title: "不開單原因",
+              align: "center",
+              sortable: true,
+              filterable: false,
+              width: 50,
             },
             {
               field: "status",
@@ -478,6 +508,15 @@
               align: "center",
               sortable: true,
               filterable: false,
+              width: 50,
+            },
+            {
+              field: "result",
+              title: "不開單原因",
+              align: "center",
+              sortable: true,
+              filterable: false,
+              hidden: true,
               width: 50,
             },
             {
@@ -527,9 +566,19 @@
           $("#m_carType").dropdown().value() === "0"
         ) {
           alert("請選擇車種");
+        } else if (
+          $("#m_law").dropdown().value() === null ||
+          $("#m_law").dropdown().value() === "0"
+        ) {
+          alert("請選擇違規法條");
         } else {
           SubmitChecked(grid);
         }
+      });
+
+      //確認修改
+      $("#btn_edit").on("click", function () {
+        SubmitEdit(grid);
       });
 
       function filterData() {
@@ -581,25 +630,97 @@
         $("#m_videoURL").attr("href", e.data.record.VideoURL);
         //$("#div_video video")[0].load();
         $("#m_detectLocation").text(e.data.record.DetectLocation);
+        $("#m_detectLocation").val(e.data.record.DetectLocation);
         $("#m_datetime").text(e.data.record.Datetime);
+        $("#m_datetime").val(e.data.record.Datetime);
         $("#m_location").text(e.data.record.Location);
         $("#m_carType").dropdown().value(e.data.record.carTypeValue);
-        $("#m_law").text("違規停車");
-        $("#m_result").dropdown().value(e.data.record.result);
+        $("#m_law").dropdown().value(0);
+        $("#m_result").dropdown().value(e.data.record.resultValue);
         $("#m_remark").val(e.data.record.remark);
-
-        setDisable();
 
         dialog.open("");
       }
 
       //送出開單
       function SubmitChecked(grid) {
+        //入案，科技執法案件審核資料
+        var postCaseData = {
+          SN: $("#m_id").val() + "0" + new Date().getTime(), //避免SN重複
+          ViolationDate: CoverRepublicOfChinaStr(
+            $("#m_datetime").val().substr(0, 10)
+          ),
+          ViolationTime: $("#m_datetime").val().substr(11).replaceAll(":", ""),
+          UnitId: "03B7", //苗栗縣警察局交通隊
+          PoliceName: getCookieByName("name"),
+          LicensePlate: $("#m_carNumber").val(),
+          VehicleType: $("#m_carType").val(),
+          RuleId: $("#m_law").val(),
+          Road: $("#m_detectLocation").val(),
+        };
+        $.ajax({
+          url: "./php/postCaseVerify.php",
+          type: "POST",
+          dataType: "json",
+          data: JSON.stringify(postCaseData),
+          contentType: "application/json",
+          async: false,
+          success: function (msg) {
+            if (msg.Message == "新增完成") {
+              $.ajax({
+                url: "./php/postCaseImage.php",
+                type: "POST",
+                dataType: "json",
+                data: JSON.stringify({
+                  image_url: document
+                    .getElementById("m_photoURL")
+                    .getAttribute("src")
+                    .substr(1),
+                  SN: $("#m_id").val(),
+                  No: msg.No,
+                }),
+                contentType: "application/json",
+                async: false,
+                success: function (msg) {
+                  if (msg.Message == "上傳成功") {
+                    // 執行管理系統送出開單
+                    postCar();
+                  }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                  console.log(XMLHttpRequest.responseText);
+
+                  //照片入案失敗
+                  swal.fire({
+                    title: "照片入案錯誤",
+                    icon: "error",
+                    showConfirmButton: true,
+                  });
+                },
+              });
+            }
+          },
+          error: function (XMLHttpRequest, textStatus, errorThrown) {
+            console.log(XMLHttpRequest.responseText);
+
+            //入案失敗
+            swal.fire({
+              title: "入案錯誤",
+              icon: "error",
+              showConfirmButton: true,
+            });
+          },
+        });
+      }
+
+      //確認修改
+      function SubmitEdit(grid) {
         var postdata = {
           RowNo: $("#m_id").val(),
           carNumber: $("#m_carNumber").val(),
           carType: $("#m_carType").val(),
-          status: "2",
+          law: $("#m_law").val(),
+          status: "3",
           result: $("#m_result").val(),
           remark: $("#m_remark").val(),
         };
@@ -612,8 +733,8 @@
           contentType: "application/json",
           success: function (msg) {
             if (msg.messageType == "OK") {
-              //開單成功
-              M.toast({ html: "開單成功" });
+              //修改成功
+              M.toast({ html: "修改成功" });
 
               //帶入下一筆
               var next = grid.getById(dataIndex + 1);
@@ -627,18 +748,18 @@
                 $("#m_datetime").text(next.Datetime);
                 $("#m_location").text(next.Location);
                 $("#m_carType").dropdown().value(next.carTypeValue);
-                $("#m_law").text("違規停車");
-                $("#m_result").dropdown().value(next.result);
+                $("#m_law").dropdown().value(0);
+                $("#m_result").dropdown().value(next.resultValue);
                 $("#m_remark").val(next.remark);
+
                 dataIndex = dataIndex + 1; //更新
               } else {
+                $("#table1").grid("destroy", true, true);
+                createFunc();
+                filterData();
+
                 dialog.close();
               }
-
-              //更新table資料
-              $("#table1").grid("destroy", true, true);
-              createFunc();
-              filterData();
             }
           },
           error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -646,9 +767,9 @@
 
             dialog.close();
 
-            //開單失敗
+            //修改失敗
             swal.fire({
-              title: "開單錯誤",
+              title: "修改失敗",
               icon: "error",
               showConfirmButton: true,
             });
@@ -667,7 +788,6 @@
           ),
           txt_addr: emptyStrToUndefined($("#txt_addr").dropdown().value()),
           status: "3",
-          remark: $("#m_remark").val(),
         };
 
         $.ajax({
@@ -689,8 +809,8 @@
                 $("#m_datetime").text(next.Datetime);
                 $("#m_location").text(next.Location);
                 $("#m_carType").dropdown().value(next.carTypeValue);
-                $("#m_law").text("違規停車");
-                $("#m_result").dropdown().value(next.result);
+                $("#m_law").dropdown().value(0);
+                $("#m_result").dropdown().value(next.resultValue);
                 $("#m_remark").val(next.remark);
 
                 dataIndex = dataIndex - 1; //更新
@@ -746,8 +866,8 @@
                 $("#m_datetime").text(next.Datetime);
                 $("#m_location").text(next.Location);
                 $("#m_carType").dropdown().value(next.carTypeValue);
-                $("#m_law").text("違規停車");
-                $("#m_result").dropdown().value(next.result);
+                $("#m_law").dropdown().value(0);
+                $("#m_result").dropdown().value(next.resultValue);
                 $("#m_remark").val(next.remark);
 
                 dataIndex = dataIndex + 1; //更新
@@ -789,21 +909,69 @@
         }
       }
 
-      function setDisable() {
-        //   修改功能只能管理者可以做，一般權限不能變更只能查詢
-        if (getCookieByName("auth") === "1") {
-          //使用者
-          document.getElementById("m_result").disabled = true;
-          document.getElementById("m_result").style.display = "block";
-          document.getElementById("m_result").style.margin = "-3px";
-          document.getElementsByTagName("button")[7].style.display = "none"; //固定第七個做隱藏
-          document.getElementById("m_remark").disabled = true;
-          $("#btn_checked").css("display", "none");
-        } else {
-          //管理者
-          document.getElementById("m_result").disabled = false;
-          document.getElementById("m_remark").disabled = false;
-        }
+      //執行送出開單
+      function postCar() {
+        var postdata = {
+          RowNo: $("#m_id").val(),
+          carNumber: $("#m_carNumber").val(),
+          carType: $("#m_carType").val(),
+          law: $("#m_law").val(),
+          status: "2",
+          result: "0",
+          remark: $("#m_remark").val(),
+        };
+
+        $.ajax({
+          url: "./php/EditCar.php",
+          type: "POST",
+          dataType: "json",
+          data: JSON.stringify(postdata),
+          contentType: "application/json",
+          success: function (msg) {
+            if (msg.messageType == "OK") {
+              //開單成功
+              M.toast({ html: "開單成功" });
+
+              //帶入下一筆
+              var next = grid.getById(dataIndex + 1);
+              if (next != undefined) {
+                $("#m_id").val(next.RowNo);
+                $("#m_carNumber").val(next.CarNumber);
+                $("#m_photoURL").attr("src", next.PhotoURL);
+                $("#m_videoURL").attr("href", next.VideoURL);
+                //$("#div_video video")[0].load();
+                $("#m_detectLocation").text(next.DetectLocation);
+                $("#m_datetime").text(next.Datetime);
+                $("#m_location").text(next.Location);
+                $("#m_carType").dropdown().value(next.carTypeValue);
+                $("#m_law").dropdown().value(0);
+                $("#m_result").dropdown().value(next.resultValue);
+                $("#m_remark").val(next.remark);
+
+                dataIndex = dataIndex + 1; //更新
+              } else {
+                dialog.close();
+              }
+
+              //更新table資料
+              $("#table1").grid("destroy", true, true);
+              createFunc();
+              filterData();
+            }
+          },
+          error: function (XMLHttpRequest, textStatus, errorThrown) {
+            console.log(XMLHttpRequest.responseText);
+
+            dialog.close();
+
+            //開單失敗
+            swal.fire({
+              title: "開單錯誤",
+              icon: "error",
+              showConfirmButton: true,
+            });
+          },
+        });
       }
     </script>
   </body>

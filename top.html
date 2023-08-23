@@ -302,9 +302,7 @@
                           <option value="3">重機</option>
                           <option value="4">輕機</option>
                           <option value="2">拖車</option>
-                          <option value="8">電動自行車</option>
-                          <option value="9">電動輔助自行車</option>
-                          <option value="A">腳踏自行車</option>
+                          <option value="8">微型電動二輪</option>
                         </select>
 
                         <div style="color: #e65100">
@@ -318,7 +316,7 @@
                         <div>
                           <select id="m_result" width="100%">
                             <option value="0" disabled="disabled" selected>
-                              請選擇
+                              未選擇
                             </option>
                             <option value="1">判別車號不完整</option>
                             <option value="2">車號模糊無法辨識</option>
@@ -543,6 +541,11 @@
           $("#m_carType").dropdown().value() === "0"
         ) {
           alert("請選擇車種");
+        } else if (
+          $("#m_law").dropdown().value() === null ||
+          $("#m_law").dropdown().value() === "0"
+        ) {
+          alert("請選擇違規法條");
         } else {
           SubmitChecked(grid);
         }
@@ -612,7 +615,7 @@
         $("#m_law")
           .dropdown()
           .value(setLawOptionValue(e.data.record.DetectLocation));
-        $("#m_result").dropdown().value(e.data.record.result);
+        $("#m_result").dropdown().value("0");
         $("#m_remark").val(e.data.record.remark);
 
         dialog.open("");
@@ -783,6 +786,7 @@
                 $("#m_detectLocation").text(next.DetectLocation);
                 $("#m_datetime").text(next.Datetime);
                 $("#m_location").text(next.Location);
+                $("#m_carType").dropdown().value("1"); //預設為汽車
                 $("#m_law")
                   .dropdown()
                   .value(setLawOptionValue(next.DetectLocation));
@@ -838,6 +842,7 @@
                 $("#m_detectLocation").text(next.DetectLocation);
                 $("#m_datetime").text(next.Datetime);
                 $("#m_location").text(next.Location);
+                $("#m_carType").dropdown().value("1"); //預設為汽車
                 $("#m_law")
                   .dropdown()
                   .value(setLawOptionValue(next.DetectLocation));
@@ -900,7 +905,7 @@
           carType: $("#m_carType").val(),
           law: $("#m_law").val(),
           status: "2",
-          result: $("#m_result").val(),
+          result: "0",
           remark: $("#m_remark").val(),
         };
 

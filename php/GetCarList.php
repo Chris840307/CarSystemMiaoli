@@ -30,7 +30,7 @@ $jSon['continuous_data_all'] = []; //存複數資料
 
 //白名單
 $sql = "SELECT * FROM `white_list` WHERE `status`='1'";
-$result = mysqli_query($conn, $sql) or die('MySQL select error'.mysqli_error($conn));
+$result = mysqli_query($conn, $sql) or die('MySQL select error' . mysqli_error($conn));
 if ($result->num_rows > 0) {
     while ($record = mysqli_fetch_array($result)) {
         $data_t = new stdClass();
@@ -46,10 +46,10 @@ if ($result->num_rows > 0) {
 //取得複數超過2筆資料
 $sql = 'SELECT `CarNumber`,COUNT(`CarNumber`) AS CarCount FROM `violation` WHERE `CarNumber` != NULL';
 if ($txt_date1 != null && $txt_date1 != 'undefined') {
-    $sql = $sql." AND `Datetime` BETWEEN '$txt_date1' AND '$txt_date2'";
+    $sql = $sql . " AND `Datetime` BETWEEN '$txt_date1' AND '$txt_date2'";
 }
-$sql = $sql.' GROUP BY `CarNumber`';
-$result = mysqli_query($conn, $sql) or die('MySQL select error'.mysqli_error($conn));
+$sql = $sql . ' GROUP BY `CarNumber`';
+$result = mysqli_query($conn, $sql) or die('MySQL select error' . mysqli_error($conn));
 if ($result->num_rows > 0) {
     while ($record = mysqli_fetch_array($result)) {
         if ($record['CarCount'] > '1' && $record['CarNumber'] != 'Unknown-1') {
@@ -65,7 +65,7 @@ for ($i = 0; $i < count($jSon['continuous_data_all']); ++$i) {
     $temp_car_time = '';
     foreach ($jSon['continuous_data_all'][$i] as $key => $value) {
         $sql = "SELECT * FROM `violation` WHERE `CarNumber` = '$value'";
-        $result = mysqli_query($conn, $sql) or die('MySQL select error'.mysqli_error($conn));
+        $result = mysqli_query($conn, $sql) or die('MySQL select error' . mysqli_error($conn));
         while ($record = mysqli_fetch_array($result)) {
             if ($temp_car_time === '') {
                 $temp_car_time = strtotime($record['Datetime']);
@@ -87,20 +87,20 @@ for ($i = 0; $i < count($jSon['continuous_data_all']); ++$i) {
 //車輛查詢
 $sql = "SELECT * FROM `violation` WHERE `status`='$status'";
 if ($txt_num != null && $txt_num != 'undefined') {
-    $sql = $sql." AND `CarNumber` = '$txt_num'";
+    $sql = $sql . " AND `CarNumber` = '$txt_num'";
 }
 if ($txt_cartype != null && $txt_cartype != 'undefined') {
-    $sql = $sql." AND `carType` = '$txt_cartype'";
+    $sql = $sql . " AND `carType` = '$txt_cartype'";
 }
 if ($txt_addr != null && $txt_addr != 'undefined') {
-    $sql = $sql." AND `DetectLocation` = '$txt_addr'";
+    $sql = $sql . " AND `DetectLocation` = '$txt_addr'";
 }
 if ($txt_date1 != null && $txt_date1 != 'undefined') {
-    $sql = $sql." AND `Datetime` BETWEEN '$txt_date1' AND '$txt_date2'";
+    $sql = $sql . " AND `Datetime` BETWEEN '$txt_date1' AND '$txt_date2'";
 }
-$sql = $sql.' ORDER BY CAST(`Datetime` AS UNSIGNED INTEGER) DESC';
+$sql = $sql . ' ORDER BY CAST(`Datetime` AS UNSIGNED INTEGER) DESC';
 // echo $sql;
-$result = mysqli_query($conn, $sql) or die('MySQL select error'.mysqli_error($conn));
+$result = mysqli_query($conn, $sql) or die('MySQL select error' . mysqli_error($conn));
 
 if ($result->num_rows > 0) {
     while ($record = mysqli_fetch_array($result)) {
@@ -112,14 +112,14 @@ if ($result->num_rows > 0) {
             $data_t->CarNumber = $record['CarNumber'];
             $data_t->Location = $record['Location'];
             if (substr($record['VideoURL'], 0, 4) == '/var') {
-                $data_t->VideoURL = '.'.substr($record['VideoURL'], 23);
+                $data_t->VideoURL = '.' . substr($record['VideoURL'], 23);
             } else {
-                $data_t->VideoURL = './'.str_replace('\\', '/', $record['VideoURL']);
+                $data_t->VideoURL = './' . str_replace('\\', '/', $record['VideoURL']);
             }
             if (substr($record['PhotoURL'], 0, 4) == '/var') {
-                $data_t->PhotoURL = '.'.substr($record['PhotoURL'], 23);
+                $data_t->PhotoURL = '.' . substr($record['PhotoURL'], 23);
             } else {
-                $data_t->PhotoURL = './'.str_replace('\\', '/', $record['PhotoURL']);
+                $data_t->PhotoURL = './' . str_replace('\\', '/', $record['PhotoURL']);
             }
             $data_t->DetectLocation = $record['DetectLocation'];
             $data_t->Datetime = $record['Datetime'];
@@ -180,8 +180,30 @@ if ($result->num_rows > 0) {
                     $data_t->status = '不舉發單';
                     break;
             }
-            
-            $data_t->result = $record['result'];
+            $data_t->resultValue = $record['result'];
+            switch ($record['result']) {
+                case 0:
+                    $data_t->result = '未選擇';
+                    break;
+                case 1:
+                    $data_t->result = '判別車號不完整';
+                    break;
+                case 2:
+                    $data_t->result = '車號模糊無法辨識';
+                    break;
+                case 3:
+                    $data_t->result = '特種車輛執行公務';
+                    break;
+                case 4:
+                    $data_t->result = '車牌遮蔽無法辨識';
+                    break;
+                case 5:
+                    $data_t->result = '車輛駛離無法辨識';
+                    break;
+                case 6:
+                    $data_t->result = '其他:';
+                    break;
+            }
             $data_t->remark = $record['remark'];
 
             //連續兩小時不舉發

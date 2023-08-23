@@ -324,9 +324,7 @@
                           <option value="3">重機</option>
                           <option value="4">輕機</option>
                           <option value="2">拖車</option>
-                          <option value="8">電動自行車</option>
-                          <option value="9">電動輔助自行車</option>
-                          <option value="A">腳踏自行車</option>
+                          <option value="8">微型電動二輪</option>
                         </select>
 
                         <div style="color: #e65100">
@@ -418,7 +416,6 @@
         $("#txt_cartype").dropdown({ uiLibrary: "materialdesign" });
         $("#m_result").dropdown({ uiLibrary: "materialdesign" });
         setDisable();
-        // $("#txt_cartype").formSelect();
 
         $.ajax({
           url: "./php/GetDetectLocationList.php",
@@ -444,7 +441,6 @@
             console.log(XMLHttpRequest.responseText);
           },
         });
-
         // #endregion 日期、選單格式化
 
         // #region 取得table資料
@@ -634,11 +630,13 @@
         $("#m_videoURL").attr("href", e.data.record.VideoURL);
         //$("#div_video video")[0].load();
         $("#m_detectLocation").text(e.data.record.DetectLocation);
+        $("#m_detectLocation").val(e.data.record.DetectLocation);
         $("#m_datetime").text(e.data.record.Datetime);
+        $("#m_datetime").val(e.data.record.Datetime);
         $("#m_location").text(e.data.record.Location);
         $("#m_carType").dropdown().value(e.data.record.carTypeValue);
         $("#m_law").dropdown().value(e.data.record.LawValue);
-        $("#m_result").dropdown().value(e.data.record.result);
+        $("#m_result").dropdown().value(e.data.record.resultValue);
         $("#m_remark").val(e.data.record.remark);
 
         setDisable();
@@ -682,7 +680,7 @@
                 $("#m_location").text(next.Location);
                 $("#m_carType").dropdown().value(next.carTypeValue);
                 $("#m_law").dropdown().value(next.LawValue);
-                $("#m_result").dropdown().value(next.result);
+                $("#m_result").dropdown().value(next.resultValue);
                 $("#m_remark").val(next.remark);
 
                 dataIndex = dataIndex + 1; //更新
@@ -746,7 +744,7 @@
                 $("#m_location").text(next.Location);
                 $("#m_carType").dropdown().value(next.carTypeValue);
                 $("#m_law").dropdown().value(next.LawValue);
-                $("#m_result").dropdown().value(next.result);
+                $("#m_result").dropdown().value(next.resultValue);
                 $("#m_remark").val(next.remark);
 
                 dataIndex = dataIndex + 1; //更新
@@ -783,7 +781,6 @@
           txt_cartype: emptyStrToUndefined(
             $("#txt_cartype").dropdown().value()
           ),
-
           txt_addr: emptyStrToUndefined($("#txt_addr").dropdown().value()),
           status: "2",
         };
@@ -808,7 +805,7 @@
                 $("#m_location").text(next.Location);
                 $("#m_carType").dropdown().value(next.carTypeValue);
                 $("#m_law").dropdown().value(next.LawValue);
-                $("#m_result").dropdown().value(next.result);
+                $("#m_result").dropdown().value(next.resultValue);
                 $("#m_remark").val(next.remark);
 
                 dataIndex = dataIndex - 1; //更新
@@ -865,7 +862,7 @@
                 $("#m_location").text(next.Location);
                 $("#m_carType").dropdown().value(next.carTypeValue);
                 $("#m_law").dropdown().value(next.LawValue);
-                $("#m_result").dropdown().value(next.result);
+                $("#m_result").dropdown().value(next.resultValue);
                 $("#m_remark").val(next.remark);
 
                 dataIndex = dataIndex + 1; //更新
