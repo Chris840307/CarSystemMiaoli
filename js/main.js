@@ -462,7 +462,7 @@ function CoverRepublicOfChinaStr(date) {
   var m =
     dd.getMonth() + 1 < 10 ? "0" + (dd.getMonth() + 1) : dd.getMonth() + 1; //取當月份的日期
   var d = dd.getDate() < 10 ? "0" + dd.getDate() : dd.getDate();
-  return y + m + d;
+  return y.toString() + m.toString() + d.toString();
 }
 
 //時間
