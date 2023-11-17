@@ -164,6 +164,9 @@ if ($result->num_rows > 0) {
                 case '7410402':
                     $data_t->Law = '微型電動二輪車，不依規定停放車輛';
                     break;
+                case '5610402':
+                    $data_t->Law = '在設有禁止停車標誌、標線之處所停車';
+                    break;
                 case '違規停車':
                     $data_t->Law = '違規停車';
                     break;
