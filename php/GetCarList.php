@@ -24,7 +24,7 @@ mysqli_query($conn, 'SET NAMES utf8');
 mysqli_select_db($conn, $dbname);
 
 $jSon['data'] = [];
-$jSon['white_data'] = [];
+$jSon['white_data'] = []; //存白名單資料
 $jSon['continuous_data'] = []; //存不舉發資料
 $jSon['continuous_data_all'] = []; //存複數資料
 
@@ -37,6 +37,7 @@ if ($result->num_rows > 0) {
         $data_t->carNumber = $record['carNumber'];
         $data_t->startTime = $record['startTime'];
         $data_t->endTime = $record['endTime'];
+        $data_t->DetectLocation = $record['DetectLocation'];
 
         array_push($jSon['white_data'], $data_t);
     }
@@ -223,19 +224,25 @@ if ($result->num_rows > 0) {
                 //查詢車號是否在白名單中
                 $white_data_index = array_search($record['CarNumber'], array_column($jSon['white_data'], 'carNumber'));
                 if ($white_data_index === false) {
-                    //不在白名單中
+                    //不在白名單中 需要舉發
                     array_push($jSon['data'], $data_t);
                 } else {
-                    //查詢車號是否在時段中
+                    //在白名單中 檢查車號是否在時段中
                     $car_datetime = strtotime($record['Datetime']);
+                    $car_addr = $record['DetectLocation'];
                     $white_data_startime = strtotime($jSon['white_data'][$white_data_index]->startTime);
                     $white_data_endtime = strtotime($jSon['white_data'][$white_data_index]->endTime);
 
                     if ($car_datetime > $white_data_startime && $car_datetime < $white_data_endtime) {
-                        //時段在白名單中不顯示
+                        //時段在白名單中 不顯示
                     } else {
-                        //時段不在白名單中可顯示
-                        array_push($jSon['data'], $data_t);
+                        //時段不在白名單中 檢查車號是否在設定地點中
+                        if ($car_addr === $jSon['white_data'][$white_data_index]->DetectLocation) {
+                            //在設定地點中 不顯示
+                        } else {
+                            //不在設定地點中 可顯示
+                            array_push($jSon['data'], $data_t);
+                        }
                     }
                 }
             }
