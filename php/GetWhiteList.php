@@ -23,22 +23,24 @@ $jSon['data'] = [];
 
 $sql = "SELECT * FROM `white_list` WHERE `CarNumber` != ''";
 if ($txt_num != null && $txt_num != 'undefined') {
-    $sql = $sql." AND `CarNumber` = '$txt_num'";
+    $sql = $sql . " AND `CarNumber` = '$txt_num'";
 }
 if ($status != null && $status != 'undefined') {
-    $sql = $sql." AND `status` = '$status'";
+    $sql = $sql . " AND `status` = '$status'";
 }
-$sql = $sql.' ORDER BY CAST(`id` AS UNSIGNED INTEGER) ASC';
-$result = mysqli_query($conn, $sql) or die('MySQL select error'.mysqli_error($conn));
+$sql = $sql . ' ORDER BY `carNumber` ASC, CAST(`id` AS UNSIGNED INTEGER) ASC';
+$result = mysqli_query($conn, $sql) or die('MySQL select error' . mysqli_error($conn));
 
 if ($result->num_rows > 0) {
     while ($record = mysqli_fetch_array($result)) {
         $data_t = new stdClass();
 
         $data_t->id = $record['id'];
+        $data_t->documentNumber = $record['documentNumber'];
         $data_t->carNumber = $record['carNumber'];
         $data_t->startTime = $record['startTime'];
         $data_t->endTime = $record['endTime'];
+        $data_t->DetectLocation = $record['DetectLocation'];
         $data_t->statusVol = $record['status'];
         switch ($record['status']) {
             case 1:

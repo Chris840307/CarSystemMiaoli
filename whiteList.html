@@ -217,9 +217,18 @@
           <input
             type="text"
             class="gj-textbox-md"
+            name="d_documentNumber"
+            id="d_documentNumber"
+            placeholder="公文文號"
+          />
+        </div>
+        <div class="form-row">
+          <input
+            type="text"
+            class="gj-textbox-md"
             name="d_carNumber"
             id="d_carNumber"
-            placeholder="請輸入車牌號碼"
+            placeholder="車牌號碼"
           />
         </div>
         <div class="form-row">
@@ -228,7 +237,7 @@
             class="gj-textbox-md"
             name="d_startTime"
             id="d_startTime"
-            placeholder="請輸入起始時間"
+            placeholder="起始時間"
           />
         </div>
         <div class="form-row">
@@ -237,8 +246,13 @@
             class="gj-textbox-md"
             name="d_endTime"
             id="d_endTime"
-            placeholder="請輸入結束時間"
+            placeholder="結束時間"
           />
+        </div>
+        <div class="form-row">
+          <select id="d_DetectLocation" width="100%">
+            <option value="" disabled="disabled" selected>請選擇地點</option>
+          </select>
         </div>
         <div class="form-row">
           <select id="d_status" width="100%">
@@ -273,14 +287,41 @@
         checkConnect();
 
         //#region 日期格式化
-        $("#d_startTime").timepicker({
-          showOtherMonths: true,
+        $("#d_startTime").datetimepicker({
+          footer: true,
+          uiLibrary: "materialdesign",
+          format: "yyyy-mm-dd HH:MM",
         });
-        $("#d_endTime").timepicker({
-          showOtherMonths: true,
+        $("#d_endTime").datetimepicker({
+          footer: true,
+          uiLibrary: "materialdesign",
+          format: "yyyy-mm-dd HH:MM",
         });
         $("#d_status").dropdown({ uiLibrary: "materialdesign" });
         $("#txt_carType").dropdown({ uiLibrary: "materialdesign" });
+        //地點下拉式選單
+        $.ajax({
+          url: "./php/GetDetectLocationList.php",
+          type: "GET",
+          dataType: "json",
+          contentType: "application/json",
+          async: false,
+          success: function (msg) {
+            if (msg.messageType == "OK") {
+              for (i = 0; i < msg.data.length; i++) {
+                var option = document.createElement("option");
+                option.text = msg.data[i].DetectLocation;
+                option.value = msg.data[i].DetectLocation;
+                var select = document.getElementById("d_DetectLocation");
+                select.appendChild(option);
+              }
+              $("#d_DetectLocation").dropdown({ uiLibrary: "materialdesign" });
+            }
+          },
+          error: function (XMLHttpRequest, textStatus, errorThrown) {
+            console.log(XMLHttpRequest.responseText);
+          },
+        });
         // #endregion 日期格式化
 
         // #region 取得table資料
@@ -305,9 +346,11 @@
       //修改
       function Edit(e) {
         $("#ID").val(e.data.record.id);
+        $("#d_documentNumber").val(e.data.record.documentNumber);
         $("#d_carNumber").val(e.data.record.carNumber);
         $("#d_startTime").val(e.data.record.startTime);
         $("#d_endTime").val(e.data.record.endTime);
+        $("#d_DetectLocation").dropdown().value(e.data.record.DetectLocation);
         $("#d_status").dropdown().value(e.data.record.statusVol);
 
         document.getElementById("btnSave").style.display = "block";
@@ -320,9 +363,11 @@
       function Save() {
         var postdata = {
           id: $("#ID").val(),
+          documentNumber: $("#d_documentNumber").val(),
           carNumber: $("#d_carNumber").val(),
           startTime: $("#d_startTime").val(),
           endTime: $("#d_endTime").val(),
+          DetectLocation: $("#d_DetectLocation").val(),
           status: $("#d_status").val(),
         };
 
@@ -360,11 +405,66 @@
         });
       }
 
+      //刪除
+      function Delete(e) {
+        swal
+          .fire({
+            title: "確定是否要刪除",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "確定",
+            cancelButtonText: "取消",
+          })
+          .then(function () {
+            var postdata = { id: e.data.record.id };
+            $.ajax({
+              type: "POST",
+              url: "./php/DeleteWhiteList.php",
+              cache: false,
+              contentType: "application/json",
+              data: JSON.stringify(postdata),
+              success: function (msg) {
+                if (msg.messageType == "OK") {
+                  swal.fire({
+                    title: "刪除成功",
+                    icon: "success",
+                    confirmButtonColor: "#3085d6",
+                    confirmButtonText: "確定",
+                  });
+
+                  $("#table1").grid("destroy", true, true);
+                  createFunc();
+                  filterData();
+                } else {
+                  swal.fire({
+                    title: "刪除失敗",
+                    icon: "error",
+                    confirmButtonColor: "#3085d6",
+                    confirmButtonText: "確定",
+                  });
+                }
+              },
+              error: function (jqXHR, textStatus, errorThrown) {
+                swal.fire({
+                  title: "刪除失敗",
+                  icon: "error",
+                  confirmButtonColor: "#3085d6",
+                  confirmButtonText: "確定",
+                });
+              },
+            });
+          });
+      }
+
       //新增
       function Add() {
+        $("#d_documentNumber").val("");
         $("#d_carNumber").val("");
         $("#d_startTime").val("");
         $("#d_endTime").val("");
+        $("#d_DetectLocation").dropdown().value("");
         $("#d_status").dropdown().value("");
 
         document.getElementById("btnSave").style.display = "none";
@@ -376,9 +476,11 @@
       //送出新增
       function AddSave() {
         var postdata = {
+          documentNumber: $("#d_documentNumber").val(),
           carNumber: $("#d_carNumber").val(),
           startTime: $("#d_startTime").val(),
           endTime: $("#d_endTime").val(),
+          DetectLocation: $("#d_DetectLocation").val(),
           status: $("#d_status").val(),
         };
 
@@ -431,6 +533,14 @@
               hidden: true,
             },
             {
+              field: "documentNumber",
+              title: "公文文號",
+              align: "center",
+              sortable: true,
+              filterable: false,
+              width: 80,
+            },
+            {
               field: "carNumber",
               title: "車牌",
               align: "center",
@@ -445,8 +555,8 @@
               sortable: true,
               filterable: false,
               width: 90,
-              type: "date",
-              format: "HH:MM",
+              type: "datetime",
+              format: "yyyy-mm-dd HH:MM",
             },
             {
               field: "endTime",
@@ -455,8 +565,16 @@
               sortable: true,
               filterable: false,
               width: 90,
-              type: "date",
-              format: "HH:MM",
+              type: "datetime",
+              format: "yyyy-mm-dd HH:MM",
+            },
+            {
+              field: "DetectLocation",
+              title: "地點",
+              align: "center",
+              sortable: true,
+              filterable: false,
+              width: 80,
             },
             {
               field: "status",
@@ -473,8 +591,15 @@
               align: "center",
               events: { click: Edit },
             },
+            {
+              title: "刪除",
+              width: 64,
+              tmpl: '<span class="material-icons gj-cursor-pointer">delete</span>',
+              align: "center",
+              events: { click: Delete },
+            },
           ],
-          pager: { limit: 3, sizes: [3, 50, 100, 200] },
+          pager: { limit: 10, sizes: [3, 50, 100, 200] },
         });
       }
 
