@@ -17,7 +17,6 @@ $txt_date1 = $_POST['txt_date1'];
 $txt_date2 = $_POST['txt_date2'];
 $txt_num = $_POST['txt_num'];
 $txt_cartype = $_POST['txt_cartype'];
-$txt_law = $_POST['txt_law'];
 $txt_addr = $_POST['txt_addr'];
 
 $conn = mysqli_connect($dbhost, $dbuser, $dbpass) or die('Error with MySQL connection');
@@ -30,19 +29,16 @@ mysqli_select_db($conn, $dbname);
 
 $sql = "SELECT * FROM `violation` WHERE `Datetime` BETWEEN '$txt_date1' AND '$txt_date2'";
 if ($txt_num != null && $txt_num != 'undefined') {
-    $sql = $sql." AND `CarNumber` = '$txt_num'";
+    $sql = $sql . " AND `CarNumber` = '$txt_num'";
 }
 if ($txt_cartype != null && $txt_cartype != 'undefined') {
-    $sql = $sql." AND `carType` = '$txt_cartype'";
-}
-if ($txt_law != null && $txt_law != 'undefined') {
-    $sql = $sql." AND `Law` = '$txt_law'";
+    $sql = $sql . " AND `carType` = '$txt_cartype'";
 }
 if ($txt_addr != null && $txt_addr != 'undefined') {
-    $sql = $sql." AND `DetectLocation` = '$txt_addr'";
+    $sql = $sql . " AND `DetectLocation` = '$txt_addr'";
 }
-$sql = $sql." AND `status` = '2'";
-$result = mysqli_query($conn, $sql) or die('MySQL select error'.mysqli_error($conn));
+$sql = $sql . " AND `status` = '2'";
+$result = mysqli_query($conn, $sql) or die('MySQL select error' . mysqli_error($conn));
 
 //圖片處理
 $Photo_arr = [];
@@ -52,7 +48,7 @@ $i = 0;
 while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
     if ($result->num_rows > 0) {
         //依照日期建立資料夾
-        $dirPath = '../export/'.date('Y-m-d', strtotime($row['Datetime']));
+        $dirPath = '../export/' . date('Y-m-d', strtotime($row['Datetime']));
         if (!file_exists($dirPath)) {
             mkdir($dirPath, 0777, true);
         }
@@ -65,7 +61,7 @@ while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         $name_Datetime_temp = str_replace(':', '', $name_Datetime_temp);
         $name_Datetime = str_replace(' ', '', $name_Datetime_temp);
         // copy("../" . $Photo_arr[$i], "../export/" . $name_Datetime."_". $name_carID[sizeof($name_carID) - 3] . ".jpg"); //複製到開創的資料夾
-        copy($Photo_arr[$i], '../export/'.$dirPath.'/'.$name_Datetime.'_'.$name_carID[sizeof($name_carID) - 3].'.jpg'); //苗栗路徑不一樣
+        copy($Photo_arr[$i], '../export/' . $dirPath . '/' . $name_Datetime . '_' . $name_carID[sizeof($name_carID) - 3] . '.jpg'); //苗栗路徑不一樣
 
         ++$i;
     }
@@ -110,5 +106,5 @@ echo $i;
 if ($i != 0) {
     header('Location:download.php');
 } else {
-    header('Location:../noData.html');
+    header('Location:../noDataBechecked.html');
 }

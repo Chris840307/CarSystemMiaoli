@@ -195,7 +195,6 @@
                 placeholder="日期："
               />
             </div>
-
             <div class="contain-field input-field col s6">
               <input type="text" name="txt_num" id="txt_num" class="validate" />
               <label for="txt_num">車牌號碼</label>
@@ -909,13 +908,13 @@
 
       //下載ini及照片
       document.getElementById("submit").onclick = function () {
-        document.myform.action = "php/exportcase.php";
+        document.myform.action = "php/exportcaseBechecked.php";
         document.getElementById("getDownloadData").submit();
       };
 
       //下載照片
       document.getElementById("submit_img").onclick = function () {
-        document.myform.action = "php/exportcaseImg.php";
+        document.myform.action = "php/exportcaseImgBechecked.php";
         document.getElementById("getDownloadData").submit();
       };
 
