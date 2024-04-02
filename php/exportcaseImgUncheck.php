@@ -74,7 +74,7 @@ $rootPath = realpath('../export');
 // Initialize archive object
 $zip = new ZipArchive();
 
-$r = $zip->open('/var/www/html/CarSystem/已開單案件.zip', ZipArchive::CREATE | ZipArchive::OVERWRITE);
+$r = $zip->open('/var/www/html/CarSystem/不舉發單案件.zip', ZipArchive::CREATE | ZipArchive::OVERWRITE);
 var_dump($r);
 
 // Create recursive directory iterator
@@ -104,7 +104,7 @@ $r = $zip->close();
 
 echo $i;
 if ($i != 0) {
-    header('Location:download.php');
+    header('Location:downloadUncheck.php');
 } else {
     header('Location:../noDataUncheck.html');
 }

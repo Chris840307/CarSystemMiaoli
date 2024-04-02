@@ -165,7 +165,7 @@ if ($i != 0) {
     header('Content-Transfer-Encoding: binary');
     header('Content-Description: File Transfer');
     header('Cache-Control: must-revalidate');
-    header('Location:download.php');
+    header('Location:downloadBechecked.php');
 } else {
     header('Location:../noDataBechecked.html');
 }

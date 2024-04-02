@@ -104,7 +104,7 @@ $r = $zip->close();
 
 echo $i;
 if ($i != 0) {
-    header('Location:download.php');
+    header('Location:downloadBechecked.php');
 } else {
     header('Location:../noDataBechecked.html');
 }
