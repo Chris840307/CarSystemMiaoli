@@ -1,0 +1,11 @@
+ezyang/htmlpurifier       v4.17.0 Standards compliant HTML filter written in PHP
+maennchen/zipstream-php   2.1.0   ZipStream is a library for dynamically streaming dynamic zip files from PHP without wr...
+markbaker/complex         3.0.2   PHP Class for working with complex numbers
+markbaker/matrix          3.0.1   PHP Class for working with matrices
+myclabs/php-enum          1.7.7   PHP Enum implementation
+phpoffice/phpspreadsheet  1.19.0  PHPSpreadsheet - Read, Create and Write Spreadsheet documents in PHP - Spreadsheet engine
+psr/http-client           1.0.3   Common interface for HTTP clients
+psr/http-factory          1.0.2   Common interfaces for PSR-7 HTTP message factories
+psr/http-message          1.1     Common interface for HTTP messages
+psr/simple-cache          1.0.1   Common interfaces for simple caching
+symfony/polyfill-mbstring v1.29.0 Symfony polyfill for the Mbstring extension
