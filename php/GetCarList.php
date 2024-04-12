@@ -205,7 +205,7 @@ if ($result->num_rows > 0) {
                     $data_t->result = '車輛駛離無法辨識';
                     break;
                 case 6:
-                    $data_t->result = '其他:';
+                    $data_t->result = '工程、警用、救護車輛';
                     break;
             }
             $data_t->remark = $record['remark'];
