@@ -175,6 +175,12 @@
               >
                 <i class="ti-image"></i>
               </a>
+              <a
+                class="btn-floating waves-effect waves-light modal-trigger"
+                id="submit_car"
+              >
+                <i class="ti-truck"></i>
+              </a>
             </div>
           </div>
 
@@ -290,7 +296,7 @@
                         <div class="text-title">違規法條</div>
                         <div class="text-title">車種</div>
                         <div class="text-title">車牌號碼</div>
-                        <div class="text-title">不開單原因</div>
+                        <div class="text-title">不舉發理由</div>
                         <div class="text-title">備註</div>
                       </div>
                       <div class="data-right">
@@ -350,7 +356,7 @@
                             <option value="3">特種車輛執行公務</option>
                             <option value="4">車牌遮蔽無法辨識</option>
                             <option value="5">車輛駛離無法辨識</option>
-                            <option value="6">其他:</option>
+                            <option value="6">工程、警用、救護車輛</option>
                           </select>
                         </div>
                         <div>
@@ -516,7 +522,7 @@
             },
             {
               field: "result",
-              title: "不開單原因",
+              title: "不舉發理由",
               align: "center",
               sortable: true,
               filterable: false,
@@ -532,7 +538,7 @@
             },
             {
               field: "result",
-              title: "不開單原因",
+              title: "不舉發理由",
               align: "center",
               sortable: true,
               filterable: false,
@@ -586,11 +592,6 @@
           $("#m_carType").dropdown().value() === "0"
         ) {
           alert("請選擇車種");
-        } else if (
-          $("#m_law").dropdown().value() === null ||
-          $("#m_law").dropdown().value() === "0"
-        ) {
-          alert("請選擇違規法條");
         } else {
           SubmitChecked(grid);
         }
@@ -655,7 +656,7 @@
         $("#m_datetime").val(e.data.record.Datetime);
         $("#m_location").text(e.data.record.Location);
         $("#m_carType").dropdown().value(e.data.record.carTypeValue);
-        $("#m_law").dropdown().value(0);
+        $("#m_law").dropdown().value(e.data.record.LawValue);
         $("#m_result").dropdown().value(e.data.record.resultValue);
         $("#m_remark").val(e.data.record.remark);
 
@@ -768,7 +769,7 @@
                 $("#m_datetime").text(next.Datetime);
                 $("#m_location").text(next.Location);
                 $("#m_carType").dropdown().value(next.carTypeValue);
-                $("#m_law").dropdown().value(0);
+                $("#m_law").dropdown().value(next.LawValue);
                 $("#m_result").dropdown().value(next.resultValue);
                 $("#m_remark").val(next.remark);
 
@@ -829,7 +830,7 @@
                 $("#m_datetime").text(next.Datetime);
                 $("#m_location").text(next.Location);
                 $("#m_carType").dropdown().value(next.carTypeValue);
-                $("#m_law").dropdown().value(0);
+                $("#m_law").dropdown().value(next.LawValue);
                 $("#m_result").dropdown().value(next.resultValue);
                 $("#m_remark").val(next.remark);
 
@@ -886,7 +887,7 @@
                 $("#m_datetime").text(next.Datetime);
                 $("#m_location").text(next.Location);
                 $("#m_carType").dropdown().value(next.carTypeValue);
-                $("#m_law").dropdown().value(0);
+                $("#m_law").dropdown().value(next.LawValue);
                 $("#m_result").dropdown().value(next.resultValue);
                 $("#m_remark").val(next.remark);
 
@@ -941,6 +942,12 @@
         document.getElementById("getDownloadData").submit();
       };
 
+      //特種車輛不舉發匯出
+      document.getElementById("submit_car").onclick = function () {
+        document.myform.action = "php/exportSpecialCar.php";
+        document.getElementById("getDownloadData").submit();
+      };
+
       //執行送出開單
       function postCar() {
         var postdata = {
@@ -976,7 +983,7 @@
                 $("#m_datetime").text(next.Datetime);
                 $("#m_location").text(next.Location);
                 $("#m_carType").dropdown().value(next.carTypeValue);
-                $("#m_law").dropdown().value(0);
+                $("#m_law").dropdown().value(next.LawValue);
                 $("#m_result").dropdown().value(next.resultValue);
                 $("#m_remark").val(next.remark);
 
