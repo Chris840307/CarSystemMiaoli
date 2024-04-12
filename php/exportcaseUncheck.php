@@ -46,23 +46,23 @@ $Time_arr = [];
 $i = 0;
 
 if ($result->num_rows > 0) {
-    while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+    while ($record = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         //依照日期建立資料夾
-        $dirPath = '../export/' . date('Y-m-d', strtotime($row['Datetime']));
+        $dirPath = '../export/' . date('Y-m-d', strtotime($record['Datetime']));
         if (!file_exists($dirPath)) {
             mkdir($dirPath, 0777, true);
         }
 
         //取得主機編號
-        $key = array_search($row['DetectLocation'], array_column($jSon['data'], 'addr')) ? array_search($row['DetectLocation'], array_column($jSon['data'], 'addr')) : 'no';
+        $key = array_search($record['DetectLocation'], array_column($jSon['data'], 'addr')) ? array_search($record['DetectLocation'], array_column($jSon['data'], 'addr')) : 'no';
         $SerialNo = $jSon['data'][$key]->SerialNo;
 
         //圖片處理
-        $Photo_arr[$i] = $row['PhotoURL']; //路徑名稱也許要改,放到copy裡面
-        $Time_arr[$i] = $row['Datetime'];
+        $Photo_arr[$i] = $record['PhotoURL']; //路徑名稱也許要改,放到copy裡面
+        $Time_arr[$i] = $record['Datetime'];
         // echo $Photo_arr[$i];
         // $name_carID = preg_split(' /[\\|\\/.,]/', $Photo_arr[$i]);
-        $name_carID = $row['CarNumber'];
+        $name_carID = $record['CarNumber'];
         $name_Datetime_temp = str_replace('-', '', $Time_arr[$i]);
         $name_Datetime_temp = str_replace(':', '', $name_Datetime_temp);
         $name_Datetime = str_replace(' ', '', $name_Datetime_temp);
@@ -73,20 +73,20 @@ if ($result->num_rows > 0) {
         $file = fopen('../export/'.$dirPath.'/'.$name_Datetime.'_'.$name_carID.'.txt', 'w'); //開啟txt檔案
         fwrite($file, mb_convert_encoding('證號='."\r\n","big5","utf-8"));
         fwrite($file, mb_convert_encoding('主機='."\r\n","big5","utf-8"));
-        fwrite($file, mb_convert_encoding('地點='.$row['DetectLocation']."\r\n","big5","utf-8"));
+        fwrite($file, mb_convert_encoding('地點='.$record['DetectLocation']."\r\n","big5","utf-8"));
         fwrite($file, mb_convert_encoding('速限=0km'."\r\n","big5","utf-8"));
         fwrite($file, mb_convert_encoding('違法編號=1'."\r\n","big5","utf-8"));
         fwrite($file, mb_convert_encoding('類型=違規停車'."\r\n","big5","utf-8"));
         fwrite($file, mb_convert_encoding('車道=車道1'."\r\n","big5","utf-8"));
-        fwrite($file, mb_convert_encoding('編號='.$row['SerialNo']."\r\n","big5","utf-8"));
-        fwrite($file, mb_convert_encoding('日期='.date('Y/m/d', strtotime($row['Datetime']))."\r\n","big5","utf-8"));
-        fwrite($file, mb_convert_encoding('時間='.date('H:i:s', strtotime($row['Datetime']))."\r\n","big5","utf-8"));
+        fwrite($file, mb_convert_encoding('編號='.$record['SerialNo']."\r\n","big5","utf-8"));
+        fwrite($file, mb_convert_encoding('日期='.date('Y/m/d', strtotime($record['Datetime']))."\r\n","big5","utf-8"));
+        fwrite($file, mb_convert_encoding('時間='.date('H:i:s', strtotime($record['Datetime']))."\r\n","big5","utf-8"));
         fwrite($file, mb_convert_encoding('紅燈=0.0秒'."\r\n","big5","utf-8"));
         fwrite($file, mb_convert_encoding('黃燈=0.0秒'."\r\n","big5","utf-8"));
         fwrite($file, mb_convert_encoding('間隔=0.0秒'."\r\n","big5","utf-8"));
         fwrite($file, mb_convert_encoding('線圈=0cm'."\r\n","big5","utf-8"));
         fwrite($file, mb_convert_encoding('範圍=1'."\r\n","big5","utf-8"));
-        fwrite($file, mb_convert_encoding('車牌='.$row['CarNumber']."\r\n","big5","utf-8"));
+        fwrite($file, mb_convert_encoding('車牌='.$record['CarNumber']."\r\n","big5","utf-8"));
         fwrite($file, mb_convert_encoding('操作者姓名=系統管理員'."\r\n","big5","utf-8"));
         fwrite($file, mb_convert_encoding('Title_1=test1'."\r\n","big5","utf-8"));
         fwrite($file, mb_convert_encoding('Title_2=test2'."\r\n","big5","utf-8"));
@@ -98,20 +98,20 @@ if ($result->num_rows > 0) {
         $file_ini = fopen('../export/' . $dirPath . '/' . $name_Datetime . '_' . $name_carID . '.ini', 'w'); //開啟ini檔案
         fwrite($file_ini, mb_convert_encoding('證號=' . "\r\n", "big5", "utf-8"));
         fwrite($file_ini, mb_convert_encoding('主機=' . "\r\n", "big5", "utf-8"));
-        fwrite($file_ini, mb_convert_encoding('地點=' . $row['DetectLocation'] . "\r\n", "big5", "utf-8"));
+        fwrite($file_ini, mb_convert_encoding('地點=' . $record['DetectLocation'] . "\r\n", "big5", "utf-8"));
         fwrite($file_ini, mb_convert_encoding('速限=0km' . "\r\n", "big5", "utf-8"));
         fwrite($file_ini, mb_convert_encoding('違法編號=1' . "\r\n", "big5", "utf-8"));
         fwrite($file_ini, mb_convert_encoding('類型=違規停車' . "\r\n", "big5", "utf-8"));
         fwrite($file_ini, mb_convert_encoding('車道=車道1' . "\r\n", "big5", "utf-8"));
-        fwrite($file_ini, mb_convert_encoding('編號=' . $row['SerialNo'] . "\r\n", "big5", "utf-8"));
-        fwrite($file_ini, mb_convert_encoding('日期=' . date('Y/m/d', strtotime($row['Datetime'])) . "\r\n", "big5", "utf-8"));
-        fwrite($file_ini, mb_convert_encoding('時間=' . date('H:i:s', strtotime($row['Datetime'])) . "\r\n", "big5", "utf-8"));
+        fwrite($file_ini, mb_convert_encoding('編號=' . $record['SerialNo'] . "\r\n", "big5", "utf-8"));
+        fwrite($file_ini, mb_convert_encoding('日期=' . date('Y/m/d', strtotime($record['Datetime'])) . "\r\n", "big5", "utf-8"));
+        fwrite($file_ini, mb_convert_encoding('時間=' . date('H:i:s', strtotime($record['Datetime'])) . "\r\n", "big5", "utf-8"));
         fwrite($file_ini, mb_convert_encoding('紅燈=0.0秒' . "\r\n", "big5", "utf-8"));
         fwrite($file_ini, mb_convert_encoding('黃燈=0.0秒' . "\r\n", "big5", "utf-8"));
         fwrite($file_ini, mb_convert_encoding('間隔=0.0秒' . "\r\n", "big5", "utf-8"));
         fwrite($file_ini, mb_convert_encoding('線圈=0cm' . "\r\n", "big5", "utf-8"));
         fwrite($file_ini, mb_convert_encoding('範圍=1' . "\r\n", "big5", "utf-8"));
-        fwrite($file_ini, mb_convert_encoding('車牌=' . $row['CarNumber'] . "\r\n", "big5", "utf-8"));
+        fwrite($file_ini, mb_convert_encoding('車牌=' . $record['CarNumber'] . "\r\n", "big5", "utf-8"));
         fwrite($file_ini, mb_convert_encoding('操作者姓名=系統管理員' . "\r\n", "big5", "utf-8"));
         fwrite($file_ini, mb_convert_encoding('Title_1=test1' . "\r\n", "big5", "utf-8"));
         fwrite($file_ini, mb_convert_encoding('Title_2=test2' . "\r\n", "big5", "utf-8"));

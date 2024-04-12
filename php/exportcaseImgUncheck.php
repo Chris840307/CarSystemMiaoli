@@ -46,15 +46,15 @@ $Time_arr = [];
 $i = 0;
 
 if ($result->num_rows > 0) {
-    while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+    while ($record = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         //依照日期建立資料夾
-        $dirPath = '../export/' . date('Y-m-d', strtotime($row['Datetime']));
+        $dirPath = '../export/' . date('Y-m-d', strtotime($record['Datetime']));
         if (!file_exists($dirPath)) {
             mkdir($dirPath, 0777, true);
         }
 
-        $Photo_arr[$i] = $row['PhotoURL']; //路徑名稱也許要改,放到copy裡面
-        $Time_arr[$i] = $row['Datetime'];
+        $Photo_arr[$i] = $record['PhotoURL']; //路徑名稱也許要改,放到copy裡面
+        $Time_arr[$i] = $record['Datetime'];
         // echo $Photo_arr[$i];
         $name_carID = preg_split(' /[\\|\\/.,]/', $Photo_arr[$i]);
         $name_Datetime_temp = str_replace('-', '', $Time_arr[$i]);
