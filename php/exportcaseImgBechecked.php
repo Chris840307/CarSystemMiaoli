@@ -45,8 +45,8 @@ $Photo_arr = [];
 $Time_arr = [];
 $i = 0;
 
-while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-    if ($result->num_rows > 0) {
+if ($result->num_rows > 0) {
+    while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         //依照日期建立資料夾
         $dirPath = '../export/' . date('Y-m-d', strtotime($row['Datetime']));
         if (!file_exists($dirPath)) {
