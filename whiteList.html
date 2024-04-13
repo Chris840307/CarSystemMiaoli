@@ -119,9 +119,11 @@
         <div class="guided-tour-menu">
           <span><a href="main.html">首頁</a></span>
           <span>&nbsp;>&nbsp;</span>
+          <span style="color: #9e9e9e">系統管理</span>
+          <span>&nbsp;>&nbsp;</span>
           <span>白名單管理</span>
 
-          <div class="menu-ican">
+          <div class="menu-ican" onclick="add_btn();">
             <a
               class="btn-floating waves-effect waves-light modal-trigger"
               onclick="Add()"
@@ -635,8 +637,10 @@
           data: JSON.stringify(postdata),
           contentType: "application/json",
           success: function (msg) {
-            for (var i = 0; i < msg.data.length; i++) {
-              grid.addRow(msg.data[i]);
+            if (msg?.data?.length > 0) {
+              for (var i = 0; i < msg.data.length; i++) {
+                grid.addRow(msg.data[i]);
+              }
             }
           },
           error: function (XMLHttpRequest, textStatus, errorThrown) {
