@@ -17,39 +17,33 @@ $conn = mysqli_connect($dbhost, $dbuser, $dbpass) or die('Error with MySQL conne
 mysqli_query($conn, 'SET NAMES utf8');
 mysqli_select_db($conn, $dbname);
 
+//車種
+$carTypes  = []; //存車種資料
+$sql = "SELECT * FROM `car_type`";
+$result = mysqli_query($conn, $sql) or die('MySQL select error' . mysqli_error($conn));
+if ($result->num_rows > 0) {
+    while ($record = mysqli_fetch_array($result)) {
+        $carTypes[$record['value']] = $record['type'];
+    }
+}
+
 //標題
-$csv_export = '車種,次數'."\n";
+$csv_export = '車種,次數' . "\n";
 $csv_export .= '';
 
 $sql = "SELECT `carType`,COUNT(`carType`) AS count FROM `violation` WHERE `Datetime` BETWEEN '$txt_date1' AND '$txt_date2' AND `status`='2' GROUP BY `carType`";
 // echo $sql;
-$result = mysqli_query($conn, $sql) or die('MySQL select error'.mysqli_error($conn));
+$result = mysqli_query($conn, $sql) or die('MySQL select error' . mysqli_error($conn));
 
 //產生csv
 if ($result->num_rows > 0) {
     while ($record = mysqli_fetch_array($result)) {
         //塞資料
-        switch ($record['carType']) {
-            case '1':
-                $data_t->carType = '汽車';
-                break;
-            case '2':
-                $data_t->carType = '拖車';
-                break;
-            case '3':
-                $data_t->carType = '重機';
-                break;
-            case '4':
-                $data_t->carType = '輕機';
-                break;
-            case '99':
-                $data_t->carType = '微型電動二輪';
-                break;
-        }
-        $csv_export .= $carType.','.$record['count']."\n";
+        $data_t->carType = isset($carTypes[$record['carType']]) ? $carTypes[$record['carType']] : NULL;
+        $csv_export .= $carType . ',' . $record['count'] . "\n";
     }
     $csv_export .= '';
 }
 
-   echo chr(0xEF).chr(0xBB).chr(0xBF);  // 解决乱码
-   echo $csv_export;
+echo chr(0xEF) . chr(0xBB) . chr(0xBF);  // 解决乱码
+echo $csv_export;

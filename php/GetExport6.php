@@ -21,38 +21,32 @@ $conn = mysqli_connect($dbhost, $dbuser, $dbpass) or die('Error with MySQL conne
 mysqli_query($conn, 'SET NAMES utf8');
 mysqli_select_db($conn, $dbname);
 
+//車種
+$carTypes  = []; //存車種資料
+$sql = "SELECT * FROM `car_type`";
+$result = mysqli_query($conn, $sql) or die('MySQL select error' . mysqli_error($conn));
+if ($result->num_rows > 0) {
+    while ($record = mysqli_fetch_array($result)) {
+        $carTypes[$record['value']] = $record['type'];
+    }
+}
+
 $jSon['data'] = [];
 
-    $sql = "SELECT `carType`,COUNT(`carType`) AS count FROM `violation` WHERE `Datetime` BETWEEN '$txt_date1' AND '$txt_date2' AND `status`='2' GROUP BY `carType`";
-    // echo $sql;
-    $result = mysqli_query($conn, $sql) or die('MySQL select error'.mysqli_error($conn));
+$sql = "SELECT `carType`,COUNT(`carType`) AS count FROM `violation` WHERE `Datetime` BETWEEN '$txt_date1' AND '$txt_date2' AND `status`='2' GROUP BY `carType`";
+// echo $sql;
+$result = mysqli_query($conn, $sql) or die('MySQL select error' . mysqli_error($conn));
 
-    if ($result->num_rows > 0) {
-        while ($record = mysqli_fetch_array($result)) {
-            $data_t = new stdClass();
+if ($result->num_rows > 0) {
+    while ($record = mysqli_fetch_array($result)) {
+        $data_t = new stdClass();
 
-            $data_t->carTypeVol = $record['carType'];
-            switch ($record['carType']) {
-                case '1':
-                    $data_t->carType = '汽車';
-                    break;
-                case '2':
-                    $data_t->carType = '拖車';
-                    break;
-                case '3':
-                    $data_t->carType = '重機';
-                    break;
-                case '4':
-                    $data_t->carType = '輕機';
-                    break;
-                case '99':
-                    $data_t->carType = '微型電動二輪';
-                    break;
-            }
-            $data_t->count = $record['count'];
+        $data_t->carTypeVol = $record['carType'];
+        $data_t->carType = isset($carTypes[$record['carType']]) ? $carTypes[$record['carType']] : NULL;
+        $data_t->count = $record['count'];
 
-            array_push($jSon['data'], $data_t);
-        }
+        array_push($jSon['data'], $data_t);
     }
+}
 
-    echo json_encode(['data' => $jSon['data']]);
+echo json_encode(['data' => $jSon['data']]);

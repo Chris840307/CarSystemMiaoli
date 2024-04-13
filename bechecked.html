@@ -202,11 +202,6 @@
             <div class="contain-field input-field col s6 gijgo-search-select">
               <select name="txt_cartype" id="txt_cartype" width="180">
                 <option value="" disabled="disabled" selected>車種</option>
-                <option value="1">汽車</option>
-                <option value="3">重機</option>
-                <option value="4">輕機</option>
-                <option value="2">拖車</option>
-                <option value="8">微型電動二輪</option>
               </select>
             </div>
             <div class="contain-field input-field col s6 gijgo-search-select">
@@ -322,11 +317,6 @@
                           <option value="0" disabled="disabled" selected>
                             請選擇
                           </option>
-                          <option value="1">汽車</option>
-                          <option value="3">重機</option>
-                          <option value="4">輕機</option>
-                          <option value="2">拖車</option>
-                          <option value="8">微型電動二輪</option>
                         </select>
 
                         <div style="color: #e65100">
@@ -414,8 +404,6 @@
         });
         $("#txt_date2").val(GetDateStr(0) + " 23:59");
         $("#m_law").dropdown({ uiLibrary: "materialdesign" });
-        $("#m_carType").dropdown({ uiLibrary: "materialdesign" });
-        $("#txt_cartype").dropdown({ uiLibrary: "materialdesign" });
         $("#m_result").dropdown({ uiLibrary: "materialdesign" });
         setDisable();
 
@@ -434,9 +422,37 @@
                 var select = document.getElementById("txt_addr");
                 select.appendChild(option);
               }
-              $("#txt_addr").dropdown({
-                uiLibrary: "materialdesign",
-              });
+              $("#txt_addr").dropdown({ uiLibrary: "materialdesign" });
+            }
+          },
+          error: function (XMLHttpRequest, textStatus, errorThrown) {
+            console.log(XMLHttpRequest.responseText);
+          },
+        });
+        $.ajax({
+          url: "./php/GetCarTypeList.php",
+          type: "GET",
+          dataType: "json",
+          contentType: "application/json",
+          async: false,
+          success: function (msg) {
+            if (msg.messageType == "OK") {
+              for (i = 0; i < msg.data.length; i++) {
+                var txt_option = document.createElement("option");
+                txt_option.text = msg.data[i].type;
+                txt_option.value = msg.data[i].value;
+                var txt_select = document.getElementById("txt_cartype");
+                txt_select.appendChild(txt_option);
+
+                var m_option = document.createElement("option");
+                m_option.text = msg.data[i].type;
+                m_option.value = msg.data[i].value;
+                var m_select = document.getElementById("m_carType");
+                m_select.appendChild(m_option);
+              }
+
+              $("#txt_cartype").dropdown({ uiLibrary: "materialdesign" });
+              $("#m_carType").dropdown({ uiLibrary: "materialdesign" });
             }
           },
           error: function (XMLHttpRequest, textStatus, errorThrown) {

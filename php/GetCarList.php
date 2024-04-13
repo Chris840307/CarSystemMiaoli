@@ -28,6 +28,16 @@ $jSon['white_data'] = []; //存白名單資料
 $jSon['continuous_data'] = []; //存不舉發資料
 $jSon['continuous_data_all'] = []; //存複數資料
 
+//車種
+$carTypes  = []; //存車種資料
+$sql = "SELECT * FROM `car_type`";
+$result = mysqli_query($conn, $sql) or die('MySQL select error' . mysqli_error($conn));
+if ($result->num_rows > 0) {
+    while ($record = mysqli_fetch_array($result)) {
+        $carTypes[$record['value']] = $record['type'];
+    }
+}
+
 //白名單
 $sql = "SELECT * FROM `white_list` WHERE `status`='1'";
 $result = mysqli_query($conn, $sql) or die('MySQL select error' . mysqli_error($conn));
@@ -125,23 +135,7 @@ if ($result->num_rows > 0) {
             $data_t->DetectLocation = $record['DetectLocation'];
             $data_t->Datetime = $record['Datetime'];
             $data_t->carTypeValue = $record['carType'];
-            switch ($record['carType']) {
-                case '1':
-                    $data_t->carType = '汽車';
-                    break;
-                case '2':
-                    $data_t->carType = '拖車';
-                    break;
-                case '3':
-                    $data_t->carType = '重機';
-                    break;
-                case '4':
-                    $data_t->carType = '輕機';
-                    break;
-                case '99':
-                    $data_t->carType = '微型電動二輪';
-                    break;
-            }
+            $data_t->carType = isset($carTypes[$record['carType']]) ? $carTypes[$record['carType']] : NULL;
             $data_t->LawValue = $record['Law'];
             switch ($record['Law']) {
                 case '5610104':

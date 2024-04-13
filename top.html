@@ -292,18 +292,15 @@
                           <option value="7410402">
                             微型電動二輪車，不依規定停放車輛
                           </option>
-                          <option value="5610402">在設有禁止停車標誌、標線之處所停車</option>
+                          <option value="5610402">
+                            在設有禁止停車標誌、標線之處所停車
+                          </option>
                           <option value="違規停車">違規停車</option>
                         </select>
                         <select id="m_carType" width="100%">
                           <option value="0" disabled="disabled" selected>
                             請選擇
                           </option>
-                          <option value="1">汽車</option>
-                          <option value="3">重機</option>
-                          <option value="4">輕機</option>
-                          <option value="2">拖車</option>
-                          <option value="8">微型電動二輪</option>
                         </select>
 
                         <div style="color: #e65100">
@@ -395,7 +392,6 @@
         });
         $("#txt_date2").val(GetDateStr(0) + " 23:59");
         $("#m_law").dropdown({ uiLibrary: "materialdesign" });
-        $("#m_carType").dropdown({ uiLibrary: "materialdesign" });
         $("#m_result").dropdown({ uiLibrary: "materialdesign" });
 
         $.ajax({
@@ -416,6 +412,28 @@
               $("#txt_addr").dropdown({
                 uiLibrary: "materialdesign",
               });
+            }
+          },
+          error: function (XMLHttpRequest, textStatus, errorThrown) {
+            console.log(XMLHttpRequest.responseText);
+          },
+        });
+        $.ajax({
+          url: "./php/GetCarTypeList.php",
+          type: "GET",
+          dataType: "json",
+          contentType: "application/json",
+          async: false,
+          success: function (msg) {
+            if (msg.messageType == "OK") {
+              for (i = 0; i < msg.data.length; i++) {
+                var option = document.createElement("option");
+                option.text = msg.data[i].type;
+                option.value = msg.data[i].value;
+                var select = document.getElementById("m_carType");
+                select.appendChild(option);
+              }
+              $("#m_carType").dropdown({ uiLibrary: "materialdesign" });
             }
           },
           error: function (XMLHttpRequest, textStatus, errorThrown) {
