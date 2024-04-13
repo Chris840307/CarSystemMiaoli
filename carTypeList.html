@@ -121,7 +121,7 @@
           <span>&nbsp;>&nbsp;</span>
           <span style="color: #9e9e9e">系統管理</span>
           <span>&nbsp;>&nbsp;</span>
-          <span>白名單管理</span>
+          <span>車種設定</span>
 
           <div class="menu-ican">
             <a
@@ -135,19 +135,15 @@
 
         <div class="contain-header">
           <div class="contain-field input-field col s6">
-            <input type="text" name="txt_num" id="txt_num" class="validate" />
-            <label for="txt_num">車牌號碼：</label>
-          </div>
-          <div class="contain-field input-field col s6">
             <div class="d-flex">
               <p>
                 <label>
                   <input
                     class="with-gap"
-                    name="txt_status"
-                    id="txt_status0"
+                    name="txt_specialCar"
+                    id="txt_specialCar0"
                     type="radio"
-                    value=""
+                    value="0"
                     checked
                   />
                   <span>全選</span>
@@ -157,24 +153,12 @@
                 <label>
                   <input
                     class="with-gap"
-                    name="txt_status"
-                    id="txt_status1"
+                    name="txt_specialCar"
+                    id="txt_specialCar1"
                     type="radio"
                     value="1"
                   />
-                  <span>啟用</span>
-                </label>
-              </p>
-              <p>
-                <label>
-                  <input
-                    class="with-gap"
-                    name="txt_status"
-                    id="txt_status2"
-                    type="radio"
-                    value="2"
-                  />
-                  <span>不啟用</span>
+                  <span>特殊車種</span>
                 </label>
               </p>
             </div>
@@ -187,14 +171,6 @@
               style="background-color: #4d85ff; border-radius: 20px"
             >
               GO
-              <i class="far fa-hand-point-left"></i>
-            </a>
-            <a
-              class="waves-effect waves-light btn"
-              id="btn_reset"
-              style="background-color: #4d85ff; border-radius: 20px"
-            >
-              清除
               <i class="far fa-hand-point-left"></i>
             </a>
           </div>
@@ -219,51 +195,51 @@
           <input
             type="text"
             class="gj-textbox-md"
-            name="d_documentNumber"
-            id="d_documentNumber"
-            placeholder="公文文號"
+            name="d_carType"
+            id="d_carType"
+            placeholder="車種"
           />
         </div>
         <div class="form-row">
           <input
             type="text"
             class="gj-textbox-md"
-            name="d_carNumber"
-            id="d_carNumber"
-            placeholder="車牌號碼"
+            name="d_carTypeValue"
+            id="d_carTypeValue"
+            placeholder="值"
           />
         </div>
         <div class="form-row">
-          <input
-            type="text"
-            class="gj-textbox-md"
-            name="d_startTime"
-            id="d_startTime"
-            placeholder="起始時間"
-          />
-        </div>
-        <div class="form-row">
-          <input
-            type="text"
-            class="gj-textbox-md"
-            name="d_endTime"
-            id="d_endTime"
-            placeholder="結束時間"
-          />
-        </div>
-        <div class="form-row">
-          <select id="d_DetectLocation" width="100%">
-            <option value="" disabled="disabled" selected>請選擇地點</option>
-          </select>
-        </div>
-        <div class="form-row">
-          <select id="d_status" width="100%">
-            <option value="" disabled="disabled" selected>
-              請選擇是否啟用
-            </option>
-            <option value="2">不啟用</option>
-            <option value="1" selected>啟用</option>
-          </select>
+          <div class="d-flex">
+            <p style="margin-top: 3px">
+              <span>特殊車種： </span>
+            </p>
+            <p>
+              <label>
+                <input
+                  class="with-gap"
+                  name="d_specialCar"
+                  id="d_specialCar0"
+                  type="radio"
+                  value="1"
+                />
+                <span>是</span>
+              </label>
+            </p>
+            <p>
+              <label>
+                <input
+                  class="with-gap"
+                  name="d_specialCar"
+                  id="d_specialCar1"
+                  type="radio"
+                  value="0"
+                  checked
+                />
+                <span>否</span>
+              </label>
+            </p>
+          </div>
         </div>
       </div>
       <div data-role="footer">
@@ -289,41 +265,6 @@
         checkConnect();
 
         //#region 日期格式化
-        $("#d_startTime").datetimepicker({
-          footer: true,
-          uiLibrary: "materialdesign",
-          format: "yyyy-mm-dd HH:MM",
-        });
-        $("#d_endTime").datetimepicker({
-          footer: true,
-          uiLibrary: "materialdesign",
-          format: "yyyy-mm-dd HH:MM",
-        });
-        $("#d_status").dropdown({ uiLibrary: "materialdesign" });
-        $("#txt_carType").dropdown({ uiLibrary: "materialdesign" });
-        //地點下拉式選單
-        $.ajax({
-          url: "./php/GetDetectLocationList.php",
-          type: "GET",
-          dataType: "json",
-          contentType: "application/json",
-          async: false,
-          success: function (msg) {
-            if (msg.messageType == "OK") {
-              for (i = 0; i < msg.data.length; i++) {
-                var option = document.createElement("option");
-                option.text = msg.data[i].DetectLocation;
-                option.value = msg.data[i].DetectLocation;
-                var select = document.getElementById("d_DetectLocation");
-                select.appendChild(option);
-              }
-              $("#d_DetectLocation").dropdown({ uiLibrary: "materialdesign" });
-            }
-          },
-          error: function (XMLHttpRequest, textStatus, errorThrown) {
-            console.log(XMLHttpRequest.responseText);
-          },
-        });
         // #endregion 日期格式化
 
         // #region 取得table資料
@@ -348,33 +289,37 @@
       //修改
       function Edit(e) {
         $("#ID").val(e.data.record.id);
-        $("#d_documentNumber").val(e.data.record.documentNumber);
-        $("#d_carNumber").val(e.data.record.carNumber);
-        $("#d_startTime").val(e.data.record.startTime);
-        $("#d_endTime").val(e.data.record.endTime);
-        $("#d_DetectLocation").dropdown().value(e.data.record.DetectLocation);
-        $("#d_status").dropdown().value(e.data.record.statusVol);
-
+        $("#d_carType").val(e.data.record.type);
+        $("#d_carTypeValue").val(e.data.record.value);
+        $("[name=d_specialCar]").val();
+        switch (e.data.record.specialVol) {
+          case "1":
+            $("#d_specialCar0").prop("checked", true);
+            break;
+          case "0":
+            $("#d_specialCar1").prop("checked", true);
+            break;
+          default:
+        }
         document.getElementById("btnSave").style.display = "block";
         document.getElementById("btnSubmit").style.display = "none";
 
-        dialog.open("修改白名單");
+        dialog.open("修改車種");
       }
 
       //送出修改
       function Save() {
         var postdata = {
           id: $("#ID").val(),
-          documentNumber: $("#d_documentNumber").val(),
-          carNumber: $("#d_carNumber").val(),
-          startTime: $("#d_startTime").val(),
-          endTime: $("#d_endTime").val(),
-          DetectLocation: $("#d_DetectLocation").val(),
-          status: $("#d_status").val(),
+          type: $("#d_carType").val(),
+          value: $("#d_carTypeValue").val(),
+          specialCar: emptyStrToUndefined(
+            document.querySelector('input[name="d_specialCar"]:checked').value
+          ),
         };
 
         $.ajax({
-          url: "./php/EditWhiteList.php",
+          url: "./php/EditCarType.php",
           type: "POST",
           cache: false,
           contentType: "application/json",
@@ -423,7 +368,7 @@
             var postdata = { id: e.data.record.id };
             $.ajax({
               type: "POST",
-              url: "./php/DeleteWhiteList.php",
+              url: "./php/DeleteCarType.php",
               cache: false,
               contentType: "application/json",
               data: JSON.stringify(postdata),
@@ -462,32 +407,28 @@
 
       //新增
       function Add() {
-        $("#d_documentNumber").val("");
-        $("#d_carNumber").val("");
-        $("#d_startTime").val("");
-        $("#d_endTime").val("");
-        $("#d_DetectLocation").dropdown().value("");
-        $("#d_status").dropdown().value("");
+        $("#d_carType").val("");
+        $("#d_carTypeValue").val("");
+        $("#d_specialCar1").prop("checked", true); //預設為"否"
 
         document.getElementById("btnSave").style.display = "none";
         document.getElementById("btnSubmit").style.display = "block";
 
-        dialog.open("新增白名單");
+        dialog.open("新增車種");
       }
 
       //送出新增
       function AddSave() {
         var postdata = {
-          documentNumber: $("#d_documentNumber").val(),
-          carNumber: $("#d_carNumber").val(),
-          startTime: $("#d_startTime").val(),
-          endTime: $("#d_endTime").val(),
-          DetectLocation: $("#d_DetectLocation").val(),
-          status: $("#d_status").val(),
+          type: $("#d_carType").val(),
+          value: $("#d_carTypeValue").val(),
+          specialCar: emptyStrToUndefined(
+            document.querySelector('input[name="d_specialCar"]:checked').value
+          ),
         };
 
         $.ajax({
-          url: "./php/PostWhiteList.php",
+          url: "./php/PostCarType.php",
           type: "POST",
           cache: false,
           contentType: "application/json",
@@ -528,59 +469,31 @@
           columns: [
             {
               field: "id",
+              title: "ID",
               align: "center",
               sortable: false,
               filterable: false,
               width: 50,
-              hidden: true,
             },
             {
-              field: "documentNumber",
-              title: "公文文號",
+              field: "type",
+              title: "車種",
               align: "center",
               sortable: true,
               filterable: false,
               width: 80,
             },
             {
-              field: "carNumber",
-              title: "車牌",
+              field: "value",
+              title: "值",
               align: "center",
               sortable: true,
               filterable: false,
               width: 80,
             },
             {
-              field: "startTime",
-              title: "起始時間",
-              align: "center",
-              sortable: true,
-              filterable: false,
-              width: 90,
-              type: "datetime",
-              format: "yyyy-mm-dd HH:MM",
-            },
-            {
-              field: "endTime",
-              title: "終止時間",
-              align: "center",
-              sortable: true,
-              filterable: false,
-              width: 90,
-              type: "datetime",
-              format: "yyyy-mm-dd HH:MM",
-            },
-            {
-              field: "DetectLocation",
-              title: "地點",
-              align: "center",
-              sortable: true,
-              filterable: false,
-              width: 80,
-            },
-            {
-              field: "status",
-              title: "狀態",
+              field: "specialCar",
+              title: "特殊車種",
               align: "center",
               sortable: true,
               filterable: false,
@@ -612,26 +525,15 @@
         filterData();
       });
 
-      //清除
-      $("#btn_reset").on("click", function () {
-        $("#txt_num").val("");
-        document.getElementById("txt_status0").checked = true;
-
-        $("#table1").grid("destroy", true, true);
-        createFunc();
-        filterData();
-      });
-
       function filterData() {
         var postdata = {
-          txt_num: emptyStrToUndefined($("#txt_num").val()),
-          status: emptyStrToUndefined(
-            document.querySelector('input[name="txt_status"]:checked').value
+          specialCar: emptyStrToUndefined(
+            document.querySelector('input[name="txt_specialCar"]:checked').value
           ),
         };
 
         $.ajax({
-          url: "./php/GetWhiteList.php",
+          url: "./php/GetCarType.php",
           type: "POST",
           dataType: "json",
           data: JSON.stringify(postdata),
