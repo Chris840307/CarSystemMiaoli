@@ -703,6 +703,7 @@
           status: "3",
           result: $("#m_result").val(),
           remark: $("#m_remark").val(),
+          policeName: getCookieByName("name"),
         };
 
         $.ajax({
@@ -908,6 +909,7 @@
           status: "2",
           result: "0",
           remark: $("#m_remark").val(),
+          policeName: getCookieByName("name"),
         };
 
         $.ajax({

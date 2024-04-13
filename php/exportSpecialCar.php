@@ -122,7 +122,7 @@ if ($result->num_rows > 0) {
                 break;
         }
         $content_arr[5] = $cResult;
-        $content_arr[7] = $record['people'];
+        $content_arr[7] = $record['PoliceName'];
         $content_arr[8] = $record['remark'];
 
         $data[$i + 2] = $content_arr; //從第三行開始

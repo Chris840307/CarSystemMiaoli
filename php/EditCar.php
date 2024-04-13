@@ -18,18 +18,19 @@ $law = $str_json->{'law'};
 $status = $str_json->{'status'};
 $remark = $str_json->{'remark'};
 $result = $str_json->{'result'};
+$policeName = $str_json->{'policeName'};
 
 $conn = mysqli_connect($dbhost, $dbuser, $dbpass) or die('Error with MySQL connection');
 
 mysqli_query($conn, 'SET NAMES utf8');
 mysqli_select_db($conn, $dbname);
 
-$sql = "UPDATE `violation` SET `CarNumber`='$carNumber',`status`='$status',`Law`='$law',`remark`='$remark',`result`='$result'";
+$sql = "UPDATE `violation` SET `CarNumber`='$carNumber', `status`='$status', `Law`='$law', `remark`='$remark', `result`='$result', `PoliceName`='$policeName'";
 if ($carType != null && $carType != '') {
-    $sql = $sql.",`carType`='$carType'";
+    $sql = $sql . ",`carType`='$carType'";
 }
-$sql = $sql." WHERE `RowNo` = '$RowNo'";
+$sql = $sql . " WHERE `RowNo` = '$RowNo'";
 // echo $sql;
-$result = mysqli_query($conn, $sql) or die('MySQL select error'.mysqli_error($conn));
+$result = mysqli_query($conn, $sql) or die('MySQL select error' . mysqli_error($conn));
 
 echo json_encode(['messageType' => 'OK']);
