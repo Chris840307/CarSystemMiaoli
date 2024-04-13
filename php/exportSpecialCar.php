@@ -31,17 +31,17 @@ mysqli_query($conn, 'SET NAMES utf8');
 mysqli_select_db($conn, $dbname);
 
 
-$sql = "SELECT * FROM `violation` WHERE `Datetime` BETWEEN '$txt_date1' AND '$txt_date2'";
+$sql = "SELECT * FROM `violation` JOIN `car_type` ON violation.carType = car_type.value WHERE violation.Datetime BETWEEN '$txt_date1' AND '$txt_date2'";
 if ($txt_num != null && $txt_num != 'undefined') {
-    $sql = $sql . " AND `CarNumber` = '$txt_num'";
+    $sql = $sql . " AND violation.CarNumber = '$txt_num'";
 }
 if ($txt_cartype != null && $txt_cartype != 'undefined') {
-    $sql = $sql . " AND `carType` = '$txt_cartype'";
+    $sql = $sql . " AND violation.carType = '$txt_cartype'";
 }
 if ($txt_addr != null && $txt_addr != 'undefined') {
-    $sql = $sql . " AND `DetectLocation` = '$txt_addr'";
+    $sql = $sql . " AND violation.DetectLocation = '$txt_addr'";
 }
-$sql = $sql . " AND `status` = '3'";
+$sql = $sql . " AND violation.status = '3' AND car_type.specialCar = '1'";
 $result = mysqli_query($conn, $sql) or die('MySQL select error' . mysqli_error($conn));
 
 
