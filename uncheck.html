@@ -689,7 +689,7 @@
           ),
           ViolationTime: $("#m_datetime").val().substr(11).replaceAll(":", ""),
           UnitId: "03B7", //苗栗縣警察局交通隊
-          PoliceName: getCookieByName("name"),
+          PoliceName: getCookieByName("CarName"),
           LicensePlate: $("#m_carNumber").val(),
           VehicleType: $("#m_carType").val(),
           RuleId: $("#m_law").val(),
@@ -760,7 +760,7 @@
           status: "3",
           result: $("#m_result").val(),
           remark: $("#m_remark").val(),
-          policeName: getCookieByName("name"),
+          policeName: getCookieByName("CarName"),
         };
 
         $.ajax({
@@ -975,7 +975,7 @@
           status: "2",
           result: "0",
           remark: $("#m_remark").val(),
-          policeName: getCookieByName("name"),
+          policeName: getCookieByName("CarName"),
         };
 
         $.ajax({

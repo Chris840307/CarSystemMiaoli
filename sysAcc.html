@@ -399,7 +399,7 @@
           success: function (msg) {
             dialog.close();
             if (msg.messageType == "OK") {
-              if ($("#d_edit_acc").val() == getCookieByName("account")) {
+              if ($("#d_edit_acc").val() == getCookieByName("CarAccount")) {
                 swal
                   .fire({
                     title: "修改成功，請重新登入",
@@ -668,7 +668,7 @@
 
       function filterData() {
         var postdata = {
-          auth: getCookieByName("auth"),
+          auth: getCookieByName("CarAuth"),
           txt_acc: emptyStrToUndefined($("#txt_acc").val()),
           txt_status: emptyStrToUndefined($("#txt_status").val()),
         };

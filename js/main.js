@@ -267,19 +267,19 @@ function delCookie(name) {
 
 //登出
 function logout() {
-  delCookie("account");
-  delCookie("name");
-  delCookie("status");
-  delCookie("auth");
+  delCookie("CarAccount");
+  delCookie("CarName");
+  delCookie("CarStatus");
+  delCookie("CarAuth");
   window.location.replace("./index.html");
 }
 
 //檢查連線是否過期
 function checkConnect() {
   if (
-    getCookieByName("name") == "" ||
-    getCookieByName("name") == undefined ||
-    getCookieByName("name") == null
+    getCookieByName("CarName") == "" ||
+    getCookieByName("CarName") == undefined ||
+    getCookieByName("CarName") == null
   ) {
     logout();
   }
