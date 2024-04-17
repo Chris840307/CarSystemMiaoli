@@ -177,6 +177,12 @@
               </a>
               <a
                 class="btn-floating waves-effect waves-light modal-trigger"
+                id="submit_list"
+              >
+                <i class="ti-file"></i>
+              </a>
+              <a
+                class="btn-floating waves-effect waves-light modal-trigger"
                 id="submit_car"
               >
                 <i class="ti-truck"></i>
@@ -563,11 +569,10 @@
             },
             {
               field: "remark",
-              title: "其他",
+              title: "備註",
               align: "center",
               sortable: true,
               filterable: false,
-              hidden: true,
               width: 50,
             },
             {
@@ -959,6 +964,12 @@
         document.getElementById("getDownloadData").submit();
       };
 
+      //匯出不舉發明細
+      document.getElementById("submit_list").onclick = function () {
+        document.myform.action = "php/exportUncheckList.php";
+        document.getElementById("getDownloadData").submit();
+      };
+      
       //特種車輛不舉發匯出
       document.getElementById("submit_car").onclick = function () {
         document.myform.action = "php/exportSpecialCar.php";
