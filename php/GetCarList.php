@@ -55,7 +55,7 @@ if ($result->num_rows > 0) {
 
 //連續舉發
 //取得複數超過2筆資料
-$sql = 'SELECT `CarNumber`,COUNT(`CarNumber`) AS CarCount FROM `violation` WHERE `CarNumber` != NULL';
+$sql = 'SELECT `CarNumber`,COUNT(`CarNumber`) AS CarCount FROM `violation` WHERE `CarNumber` != "NULL"';
 if ($txt_date1 != null && $txt_date1 != 'undefined') {
     $sql = $sql . " AND `Datetime` BETWEEN '$txt_date1' AND '$txt_date2'";
 }
