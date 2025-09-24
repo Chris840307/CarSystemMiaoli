@@ -250,6 +250,13 @@
                   onerror="newsImgLoadError()"
                   onclick="onClickImage('m_photoURL')"
                 />
+		            <img
+                  src=""
+                  style="margin-bottom: 0.8%; max-width: 800px"
+                  id="m_photoURL2"
+                  onerror="newsImgLoadError()"
+                  onclick="onClickImage('m_photoURL2')"
+                />
               </div>
             </div>
             <div
@@ -610,12 +617,12 @@
         modal: true,
         // minWidth: 1350,
         // minHeight: 755,
-        height: "95%",
+        height: ($(window).height() - 100),
         width: "90%",
         // width: window.screen.availWidth - window.screen.availWidth * 0.2,
         // height: window.screen.availHeight - window.screen.availHeight * 0.1,
         // height: $(window).height() - 50,
-      });
+      }).css({height:($(window).height() - 100), overflow:"auto"});
 
       //審核
       function Edit(e) {
@@ -623,6 +630,7 @@
         $("#m_id").val(e.data.record.RowNo);
         $("#m_carNumber").val(e.data.record.CarNumber);
         $("#m_photoURL").attr("src", e.data.record.PhotoURL);
+        $("#m_photoURL2").attr("src", e.data.record.PhotoURL2);
         $("#m_videoURL").attr("href", e.data.record.VideoURL);
         //$("#div_video video")[0].load();
         $("#m_detectLocation").text(e.data.record.DetectLocation);
@@ -741,6 +749,7 @@
                 $("#m_id").val(next.RowNo);
                 $("#m_carNumber").val(next.CarNumber);
                 $("#m_photoURL").attr("src", next.PhotoURL);
+                $("#m_photoURL2").attr("src", next.PhotoURL2);
                 $("#m_videoURL").attr("href", next.VideoURL);
                 //$("#div_video video")[0].load();
                 $("#m_detectLocation").text(next.DetectLocation);
@@ -801,6 +810,7 @@
                 $("#m_id").val(next.RowNo);
                 $("#m_carNumber").val(next.CarNumber);
                 $("#m_photoURL").attr("src", next.PhotoURL);
+		            $("#m_photoURL2").attr("src", next.PhotoURL2);
                 $("#m_videoURL").attr("href", next.VideoURL);
                 //$("#div_video video")[0].load();
                 $("#m_detectLocation").text(next.DetectLocation);
@@ -857,6 +867,7 @@
                 $("#m_id").val(next.RowNo);
                 $("#m_carNumber").val(next.CarNumber);
                 $("#m_photoURL").attr("src", next.PhotoURL);
+	              $("#m_photoURL2").attr("src", next.PhotoURL2);
                 $("#m_videoURL").attr("href", next.VideoURL);
                 //$("#div_video video")[0].load();
                 $("#m_detectLocation").text(next.DetectLocation);
@@ -947,6 +958,7 @@
                 $("#m_id").val(next.RowNo);
                 $("#m_carNumber").val(next.CarNumber);
                 $("#m_photoURL").attr("src", next.PhotoURL);
+		            $("#m_photoURL2").attr("src", next.PhotoURL2);
                 $("#m_videoURL").attr("href", next.VideoURL);
                 //$("#div_video video")[0].load();
                 $("#m_detectLocation").text(next.DetectLocation);
